@@ -1,5 +1,5 @@
 # Paradox
-A Unix-type kernel!
+A Unix-like kernel!
 
 ## Building
 Raw Image:
