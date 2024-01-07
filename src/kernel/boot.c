@@ -41,9 +41,14 @@ void init_boot(int debug_info)
     printf("Welcome to ");
     printfColor(77, 166, 255, 0, 0, 0, "Paradox\n");
     char* nreturn =  get_nighterm_return_string(nstatus);
-    int mreturn = main();
+    int mreturn = main(); 
 
     if(debug_info) {
         printf("Debug Info:\n - %hhu module(s) loaded\n - Nighterm return code: %s\n - Main return code: %d", mod_request.response->module_count, nreturn, mreturn);
     }   
+
+    for(int i = 0; i < mod_request.response->module_count; i++) {
+        printf("%s: %u\n", mod_request.response->modules[i]->path, mod_request.response->modules[i]->size);
+    }
+    
 }

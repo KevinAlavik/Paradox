@@ -12,6 +12,14 @@
         "system_error": "c",
         "utilities.h": "c",
         "vga.h": "c",
-        "nighterm.h": "c"
+        "nighterm.h": "c",
+        "mutex": "c",
+        "new": "c",
+        "streambuf": "c",
+        "functional": "c",
+        "typeinfo": "c",
+        "variant": "c",
+        "strings.h": "c",
+        "rtc.h": "c"
     }
 }
