@@ -1,6 +1,6 @@
 #include <printf.h>
 
 int main() {
-    // Do after boot things here
-    return 0;
+    printf("\nHello from main!\n\n");
+    return 69;
 }
