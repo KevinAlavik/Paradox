@@ -10,6 +10,8 @@
         "memory.h": "c",
         "sys_log.h": "c",
         "system_error": "c",
-        "utilities.h": "c"
+        "utilities.h": "c",
+        "vga.h": "c",
+        "nighterm.h": "c"
     }
 }
