@@ -4,6 +4,8 @@
 #include <system/idt/idt.h>
 #include <system/cpu/cpu.h>
 #include <system/memory/memory.h>
+#include <system/logger/sys_log.h>
+#include <system/utilities/utilities.h>
 
 #include <printf.h>
 
@@ -29,7 +31,9 @@ void init_boot()
                                       framebuffer->pitch,
                                       framebuffer->bpp,
                                       malloc);
-
-    init_physical_memory();
+    log(OK, "Initiaized Nighterm");
     init_idt();
+    log(OK, "Initiaized IDT");
+    init_physical_memory();
+    log(OK, "Initiaized PMM");
 }

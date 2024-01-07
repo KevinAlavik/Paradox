@@ -7,6 +7,9 @@
         "printf.h": "c",
         "cpu.h": "c",
         "limine.h": "c",
-        "memory.h": "c"
+        "memory.h": "c",
+        "sys_log.h": "c",
+        "system_error": "c",
+        "utilities.h": "c"
     }
 }
