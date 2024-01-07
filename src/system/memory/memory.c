@@ -24,7 +24,7 @@ void init_physical_memory()
     for (size_t i = 0; i < memmap->entry_count; i++) {
         struct limine_memmap_entry *entry = memmap->entries[i];
         if (entry->type == LIMINE_MEMMAP_USABLE){
-            printf("Initializing memory block at %lu with a size of %lu\n", entry->base, entry->length);
+            printf("Initializing memory block at 0x%lx with a size of 0x%lx\n", entry->base, entry->length);
             if(i!=memmap->entry_count){
                 initialize_memory_block(entry->base, entry->length, (memmap->entries[i+1])->base); // jkghjdfjkghdfkjghdkjfgh
             }
@@ -33,7 +33,7 @@ void init_physical_memory()
             }
         }
         else{
-            printf("Unusable memory block at %lu\n", entry->base);
+            printf("Unusable memory block at 0x%lx\n", entry->base);
         }
     }
         

@@ -1,6 +1,6 @@
 #include <printf.h>
+#include <kernel/boot.h>
 
 int main() {
-    printf("\nHello from main!\n\n");
     return 69;
 }
