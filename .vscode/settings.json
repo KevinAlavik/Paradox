@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.c": "c",
+        "memory": "c",
+        "panic.h": "c",
+        "idt.h": "c",
+        "printf.h": "c",
+        "cpu.h": "c",
+        "limine.h": "c",
+        "memory.h": "c"
+    }
+}
