@@ -6,7 +6,6 @@
 #include <system/memory/memory.h>
 #include <system/logger/sys_log.h>
 #include <system/utilities/utilities.h>
-#include <kernel/main.h>
 #include <printf.h>
 
 static volatile struct limine_module_request mod_request = {
@@ -17,13 +16,13 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST,
     .revision = 1};
 
-void init_boot(int debug_info)
+void init_boot(int debug_info) 
 {
     static struct limine_framebuffer *framebuffer;
 
     struct limine_file *font = mod_request.response->modules[0];
     framebuffer = framebuffer_request.response->framebuffers[0];
-
+    
     int nstatus = nighterm_initialize(font->address,
                                       framebuffer->address,
                                       framebuffer->width,
@@ -31,6 +30,11 @@ void init_boot(int debug_info)
                                       framebuffer->pitch,
                                       framebuffer->bpp,
                                       malloc);
+
+    if(!nstatus) { 
+        dprintf("Nighterm failed to initialize, got status: %s", get_nighterm_return_string(nstatus));
+        hcf();    
+    }
     log(OK, "Initiaized Nighterm");
     init_idt();
     log(OK, "Initiaized IDT");
@@ -41,10 +45,9 @@ void init_boot(int debug_info)
     printf("Welcome to ");
     printfColor(77, 166, 255, 0, 0, 0, "Paradox\n");
     char* nreturn =  get_nighterm_return_string(nstatus);
-    int mreturn = main(); 
 
     if(debug_info) {
-        printf("Debug Info:\n - %hhu module(s) loaded\n - Nighterm return code: %s\n - Main return code: %d", mod_request.response->module_count, nreturn, mreturn);
+        printf("Debug Info:\n - %hhu module(s) loaded\n - Nighterm return code: %s\n", mod_request.response->module_count, nreturn);
     }   
 
     for(int i = 0; i < mod_request.response->module_count; i++) {

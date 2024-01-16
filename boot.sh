@@ -6,7 +6,7 @@ make -C limine
 if [[ "$OSTYPE" == "darwin"* ]]; then
     make CC=x86_64-elf-gcc LD=x86_64-elf-ld
 else
-    make
+    make 
 fi
 
 mkdir -p iso_root

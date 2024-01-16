@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <system/cpu/panic.h>
-#include <printf.h>#
+#include <printf.h>
 
 
 void panic(const char *reason, int_frame_t frame)

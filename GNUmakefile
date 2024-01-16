@@ -100,4 +100,4 @@ obj/%.asm.o: src/%.asm GNUmakefile
  
 .PHONY: clean
 clean:
-	rm -rf bin obj
+	rm -rf bin obj image.iso
