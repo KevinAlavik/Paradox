@@ -1,0 +1,7 @@
+[submodule "limine"]
+	path = limine
+	url = https://github.com/limine-bootloader/limine.git
+	branch = v6.x-branch-binary
+[submodule "src/nighterm"]
+	path = src/nighterm
+	url = https://github.com/schkwve/nighterm-extended.git
