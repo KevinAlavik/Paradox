@@ -20,10 +20,7 @@ void init_boot(int debug_info) {
   struct limine_file *font = mod_request.response->modules[0];
   framebuffer = framebuffer_request.response->framebuffers[0];
 
-  int nstatus = nighterm_initialize(
-      font->address, framebuffer->address, framebuffer->width,
-      framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
-
+  int nstatus = nighterm_initialize(font->address, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
   if (!nstatus) {
     dprintf("Nighterm failed to initialize, got status: %s",
             get_nighterm_return_string(nstatus));
