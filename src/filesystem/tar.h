@@ -19,6 +19,6 @@ struct tar_header
 extern struct tar_header *headers[32];
 
 unsigned int getsize(const char *in);
-unsigned int parse(unsigned int address);
+unsigned int parse_tar(unsigned int address);
 
 #endif // TAR_H_
