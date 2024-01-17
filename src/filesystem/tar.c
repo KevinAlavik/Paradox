@@ -26,7 +26,7 @@ unsigned int parse_tar(unsigned int address)
  
         struct tar_header *header = (struct tar_header *)address;
  
-        if (header->filename[0] == '\0')
+        if (header->filename[i] == '\0')
             break;
  
         unsigned int size = getsize(header->size);
