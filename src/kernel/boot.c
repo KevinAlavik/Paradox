@@ -7,6 +7,7 @@
 #include <system/logger/sys_log.h>
 #include <system/memory/memory.h>
 #include <system/utilities/utilities.h>
+#include <filesystem/ramdisk.h>
 
 static volatile struct limine_module_request mod_request = {
     .id = LIMINE_MODULE_REQUEST, .revision = 0};
@@ -17,13 +18,18 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
 void init_boot(int debug_info) {
   static struct limine_framebuffer *framebuffer;
 
-  struct limine_file *font = mod_request.response->modules[0];
+  struct limine_file *ramdisk = mod_request.response->modules[0];
   framebuffer = framebuffer_request.response->framebuffers[0];
 
-  int nstatus = nighterm_initialize(font->address, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
+  int rstatus = init_ramdisk(ramdisk);
+  if (!rstatus) {
+    dprintf("Ramdisk failed to initialize, got status: %d", rstatus);
+    hcf();
+  }
+
+  int nstatus = nighterm_initialize(NULL, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
   if (!nstatus) {
-    dprintf("Nighterm failed to initialize, got status: %s",
-            get_nighterm_return_string(nstatus));
+    dprintf("Nighterm failed to initialize, got status: %s", get_nighterm_return_string(nstatus));
     hcf();
   }
   log(OK, "Initiaized Nighterm");

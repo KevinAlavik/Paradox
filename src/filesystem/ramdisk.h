@@ -3,6 +3,12 @@
 
 #include <limine.h>
 
-int init_ramdisk(struct* limine_module ramdisk);
+struct ramdisk
+{
+    
+};
+
+
+int init_ramdisk(struct limine_file *ramdisk);
 
 #endif // RAMDISK_H_

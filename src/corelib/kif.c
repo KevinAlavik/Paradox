@@ -1,8 +1,23 @@
 #include "kif.h"
-#include <stdint.h>
 
-void draw_image(char* rawData, uint64_t startX, uint64_t startY) {
-    uint64_t x = startX, y = startY;
+void draw_image(char* rawData, uint64_t x, uint64_t y) {
+
+    uint64_t width = 0, height = 0;
+    int i = 0;
+    while (rawData[i] != ' ') {
+        width = width * 10 + (rawData[i] - '0');
+        i++;
+    }
+    i++;
+    while (rawData[i] != '\n') {
+        height = height * 10 + (rawData[i] - '0');
+        i++;
+    }
+
+    i++;
+
+    uint64_t startX = x, startY = y;
+    uint64_t currentX = startX, currentY = startY;
     uint8_t r, g, b;
 
     while (rawData[i] != '\0') {
@@ -25,7 +40,16 @@ void draw_image(char* rawData, uint64_t startX, uint64_t startY) {
         }
         i++;
 
-        draw_pixel(x, y, r, g, b);
-        x++;
+        nighterm_putpixel(currentX, currentY, r, g, b);
+        currentX++;
+
+        if (currentX == startX + width) {
+            currentX = startX;
+            currentY++;
+
+            if (currentY == startY + height) {
+                break;
+            }
+        }
     }
 }

@@ -10,7 +10,10 @@ else
 fi
 
 mkdir -p iso_root
-cp -v bin/"$OS_NAME" public/* limine.cfg limine/limine-bios.sys \
+
+tar -cvf public/ramdisk.tar public/*
+
+cp -v bin/"$OS_NAME" public/ramdisk.tar limine.cfg limine/limine-bios.sys \
     limine/limine-bios-cd.bin limine/limine-uefi-cd.bin iso_root/
 
 mkdir -p iso_root/EFI/BOOT
