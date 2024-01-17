@@ -1,6 +1,8 @@
 #ifndef TAR_H_
 #define TAR_H_
 
+#include <stdint.h>
+#include <stddef.h>
 
 struct tar_header
 {
