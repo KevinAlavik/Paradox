@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 
-#define draw_pixel(x, y, r, g, b) plot_pixel(x, y, r, g, b)
+#include <nighterm/backend/vga.h>
 
-// ^^^ Change the plot_pixel function to your draw thing
+#define draw_pixel(x, y, r, g, b) nighterm_putpixel(uint64_t x, uint64_t y, uint8_t r, uint8_t b, uint8_t g)
 
 void draw_image(char* rawData, uint64_t startX, uint64_t startY)
 
