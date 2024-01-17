@@ -1,5 +1,7 @@
 #include "tar.h"
 
+struct tar_header *headers[32]
+
 unsigned int getsize(const char *in)
 {
  
@@ -14,7 +16,7 @@ unsigned int getsize(const char *in)
  
 }
 
-unsigned int parse(unsigned int address)
+unsigned int parse_tar(unsigned int address)
 {
  
     unsigned int i;
