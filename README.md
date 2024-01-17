@@ -13,4 +13,6 @@ Build .iso and run with qemu:
 
 ## Credits
 - [schkwve](https://github.com/schkwve)
-    - Made [**nighterm-extended**](https://github.com/schkwve/extended)
+    - Made [**nighterm-extended**](https://github.com/schkwve/nighterm-extended)
+- [nexacopic](https://github.com/nexacopic)
+    - Made the [**physical memory manager**](https://github.com/nexacopic/nash/blob/main/src/libc/mem.h)
