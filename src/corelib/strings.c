@@ -36,3 +36,26 @@ int strlen(const char *str)
 
 	return n;
 }
+
+char *strdup(const char *src) {
+    char *dst = malloc(strlen (src) + 1);
+    if (dst == NULL) return NULL; 
+    strcpy(dst, src);                     
+    return dst;                            
+}
+
+void strcpy(char dest[], const char source[])
+{
+    int i = 0;
+    while (1)
+    {
+        dest[i] = source[i];
+
+        if (dest[i] == '\0')
+        {
+            break;
+        }
+
+        i++;
+    } 
+}

@@ -3,16 +3,6 @@
 #include <system/memory/memory.h>
 #include <strings.h>
 
-unsigned int getsize(const char *in) {
-  unsigned int size = 0;
-  unsigned int count = 1;
-
-  for (int j = 11; j > 0; j--, count *= 8)
-    size += ((in[j - 1] - '0') * count);
-
-  return size;
-}
-
 void extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tar) {
   tar->files = NULL;
   tar->fileCount = 0;

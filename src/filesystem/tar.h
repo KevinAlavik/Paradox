@@ -24,8 +24,6 @@ struct Tar {
   unsigned int fileCount;
 };
 
-unsigned int getsize(const char *in);
-
 void extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tar);
 
 void printFileContent(const struct File *file);
