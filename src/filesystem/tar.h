@@ -28,6 +28,10 @@ unsigned int getsize(const char *in);
 
 void extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tar);
 
+void printFileContent(const struct File *file);
+
+void printTarContents(const struct Tar *tar);
+
 void freeTar(struct Tar *tar);
 
 #endif /* TAR_H */
