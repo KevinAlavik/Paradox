@@ -1,6 +1,11 @@
 #ifndef TAR_H
 #define TAR_H
 
+#include <printf.h>
+#include <system/memory/memory.h>
+#include <string.h>
+#include <system/cpu/cpu.h>
+
 struct TarHeader {
   char filename[100];
   char mode[8];
@@ -19,10 +24,17 @@ struct File {
   int isDirectory;
 };
 
+struct Node {
+  struct File data;
+  struct Node *next;
+};
+
 struct Tar {
-  struct File *files;
+  struct Node *files;
   unsigned int fileCount;
 };
+
+
 
 void extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tar);
 

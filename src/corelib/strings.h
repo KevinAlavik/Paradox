@@ -1,9 +1,12 @@
-#include <stdint.h>
-#include <stddef.h>
-#include <system/memory/memory.h>
+#ifndef STRINGS_H
+#define STRINGS_H
 
+#include <stddef.h>
+
+size_t strlen(const char *str);
+char *strdup(const char *src);
 int strncmp(const char *s1, const char *s2, size_t n);
 char *strncpy(char *dest, const char *src, size_t n);
-int strlen(const char *str);
-char *strdup(const char *src);
-void strcpy(char dest[], const char source[]);
+char *strcpy(char *dest, const char *src);
+
+#endif /* STRINGS_H */

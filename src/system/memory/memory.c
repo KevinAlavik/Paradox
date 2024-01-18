@@ -24,7 +24,7 @@ void init_physical_memory()
     for (size_t i = 0; i < memmap->entry_count; i++) {
         struct limine_memmap_entry *entry = memmap->entries[i];
         if (entry->type == LIMINE_MEMMAP_USABLE){
-            printf("Initializing memory block at 0x%lx with a size of 0x%lx\n", entry->base, entry->length);
+            //printf("Initializing memory block at 0x%lx with a size of 0x%lx\n", entry->base, entry->length);
             if(i!=memmap->entry_count){
                 initialize_memory_block(entry->base, entry->length, (memmap->entries[i+1])->base); // jkghjdfjkghdfkjghdkjfgh
             }
@@ -33,7 +33,7 @@ void init_physical_memory()
             }
         }
         else{
-            printf("Unusable memory block at 0x%lx\n", entry->base);
+            //printf("Unusable memory block at 0x%lx\n", entry->base);
         }
     }
         
@@ -127,12 +127,6 @@ void free(void *ptr) {
     }
 }
 
-size_t getsize(void * p) {
-    size_t * in = p;
-    if (in) { --in; return *in; }
-    return -1;
-}
-
 void *realloc(void *ptr,size_t size) {
     void *newptr;
     int msize;
@@ -143,4 +137,15 @@ void *realloc(void *ptr,size_t size) {
     memcpy(newptr, ptr, msize);
     free(ptr);
     return newptr;
+}
+
+
+unsigned int getsize(const char *in) {
+  unsigned int size = 0;
+  unsigned int count = 1;
+
+  for (int j = 11; j > 0; j--, count *= 8)
+    size += ((in[j - 1] - '0') * count);
+
+  return size;
 }

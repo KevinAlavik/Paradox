@@ -14,6 +14,6 @@ struct Ramdisk
 extern struct Ramdisk *ramdisk;
 
 int init_ramdisk(struct limine_file *tarfile);
-void clean_ramdisk();
+void clean_ramdisk(struct Tar *tar);
 
 #endif // RAMDISK_H_

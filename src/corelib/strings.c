@@ -1,61 +1,50 @@
 #include "strings.h"
+#include <stddef.h>
+#include <system/memory/memory.h>
 
-int strncmp(const char *s1, const char *s2, size_t n)
-{
-	while (n && *s1 && (*s1 == *s2)) {
-		++s1;
-		++s2;
-		--n;
-	}
-	if (n == 0) {
-		return 0;
-	} else {
-		return (*(uint8_t *)s1 - *(uint8_t *)s2);
-	}
-}
-
-char *strncpy(char *dest, const char *src, size_t n)
-{
-	size_t i;
-	for (i = 0; i < n; i++) {
-		dest[i] = src[i];
-		if (src[i] == '\0') {
-			break;
-		}
-	}
-	return dest + i;
-}
-
-int strlen(const char *str)
-{
-	int n = 0;
-	while (*str != '\0') {
-		n++;
-		str++;
-	}
-
-	return n;
+size_t strlen(const char *str) {
+    size_t n = 0;
+    while (str[n] != '\0') {
+        n++;
+    }
+    return n;
 }
 
 char *strdup(const char *src) {
-    char *dst = malloc(strlen (src) + 1);
-    if (dst == NULL) return NULL; 
-    strcpy(dst, src);                     
-    return dst;                            
+    size_t length = strlen(src);
+    char *dst = malloc(length + 1);
+    if (dst != NULL) {
+        strncpy(dst, src, length + 1);
+    }
+    return dst;
 }
 
-void strcpy(char dest[], const char source[])
-{
-    int i = 0;
-    while (1)
-    {
-        dest[i] = source[i];
+int strncmp(const char *s1, const char *s2, size_t n) {
+    while (n && *s1 && (*s1 == *s2)) {
+        ++s1;
+        ++s2;
+        --n;
+    }
+    if (n == 0) {
+        return 0;
+    } else {
+        return (*(unsigned char *)s1 - *(unsigned char *)s2);
+    }
+}
 
-        if (dest[i] == '\0')
-        {
-            break;
-        }
+char *strncpy(char *dest, const char *src, size_t n) {
+    size_t i;
+    for (i = 0; i < n && src[i] != '\0'; i++) {
+        dest[i] = src[i];
+    }
+    for (; i < n; i++) {
+        dest[i] = '\0';
+    }
+    return dest;
+}
 
-        i++;
-    } 
+char *strcpy(char *dest, const char *src) {
+    char *start = dest;
+    while ((*dest++ = *src++) != '\0');
+    return start;
 }

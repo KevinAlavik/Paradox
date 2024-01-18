@@ -16,6 +16,5 @@ int memcmp(const void *s1, const void *s2, size_t n);
 
 void *malloc(size_t size);
 void free(void *ptr);
-
-size_t getsize(void * p);
+unsigned int getsize(const char *in);
 void *realloc(void *ptr,size_t size);

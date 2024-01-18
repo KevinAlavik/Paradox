@@ -1,13 +1,37 @@
 #include "tar.h"
-#include <printf.h>
-#include <system/memory/memory.h>
-#include <strings.h>
 
-void extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tar) {
+
+void addFile(struct Tar *tar, const struct File *file) {
+  struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+  if (!newNode) {
+    return 1;
+  }
+
+  memcpy(&newNode->data, file, sizeof(struct File));
+  newNode->next = NULL;
+
+  if (tar->files == NULL) {
+    tar->files = newNode;
+  } else {
+    struct Node *current = tar->files;
+  hcf();
+    while (current->next != NULL) {
+      current = current->next;
+    }
+    current->next = newNode;
+  }
+
+  tar->fileCount++;
+}
+
+void extractTarData(const char *rawData, unsigned int dataSize,
+                    struct Tar *tar) {
   tar->files = NULL;
   tar->fileCount = 0;
 
-  for (unsigned int offset = 0; offset < dataSize;) {
+  unsigned int offset = 0;
+
+  while (offset < dataSize) {
     struct TarHeader *header = (struct TarHeader *)(rawData + offset);
 
     if (header->filename[0] == '\0') {
@@ -27,36 +51,19 @@ void extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tar)
       file.content = NULL;
     }
 
-    tar->files =
-        realloc(tar->files, (tar->fileCount + 1) * sizeof(struct File));
-    tar->files[tar->fileCount] = file;
-    tar->fileCount++;
+    addFile(tar, &file);
 
     offset += ((file.size + 511) / 512 + 1) * 512;
   }
 }
 
-void printFileContent(const struct File *file) {
-  printf("Name: %s\n", file->name);
-  printf("Type: %s\n", file->isDirectory ? "Directory" : "File");
-  printf("Size: %u bytes\n", file->size);
-  if (!file->isDirectory) {
-    printf("Content: %s\n\n", file->content);
-  } else {
-    printf("Content: (Not available for directories)\n\n");
-  }
-}
-
-void printTarContents(const struct Tar *tar) {
-  for (unsigned int i = 0; i < tar->fileCount; ++i) {
-    printFileContent(&tar->files[i]);
-  }
-}
-
 void freeTar(struct Tar *tar) {
-  for (unsigned int i = 0; i < tar->fileCount; ++i) {
-    free(tar->files[i].name);
-    free(tar->files[i].content);
+  struct Node *current = tar->files;
+  while (current != NULL) {
+    struct Node *next = current->next;
+    free(current->data.name);
+    free(current->data.content);
+    free(current);
+    current = next;
   }
-  free(tar->files);
 }
