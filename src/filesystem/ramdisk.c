@@ -2,7 +2,11 @@
 
 #include <filesystem/tar.h>
 
+
 int init_ramdisk(struct limine_file *ramdisk) {
-  uint64_t tarData = parse_tar((unsigned int)ramdisk->address);
+  struct Tar tar;
+  extractTarData((const char *)ramdisk->address, ramdisk->size, &tar);
+  printTarContents(&tar);
+  freeTar(&tar);
   return 0;
 }
