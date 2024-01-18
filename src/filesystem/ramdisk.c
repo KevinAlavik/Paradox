@@ -7,7 +7,7 @@ int init_ramdisk(struct limine_file *tarfile) {
   extractTarData((const char *)tarfile->address, tarfile->size, &tar);
   ramdisk->tar = &tar;
   
-  if(ramdisk->tar->fileCount =< 0) {
+  if(ramdisk->tar->fileCount <= 0) {
     free(ramdisk->tar);
     freeTar(&tar);
     return 1;
