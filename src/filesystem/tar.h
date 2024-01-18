@@ -1,24 +1,33 @@
-#ifndef TAR_H_
-#define TAR_H_
+#ifndef TAR_H
+#define TAR_H
 
-#include <stdint.h>
-#include <stddef.h>
-
-struct tar_header
-{
-    char filename[100];
-    char mode[8];
-    char uid[8];
-    char gid[8];
-    char size[12];
-    char mtime[12];
-    char chksum[8];
-    char typeflag[1];
+struct TarHeader {
+  char filename[100];
+  char mode[8];
+  char uid[8];
+  char gid[8];
+  char size[12];
+  char mtime[12];
+  char chksum[8];
+  char typeflag[1];
 };
 
-extern struct tar_header *headers[32];
+struct File {
+  char *name;
+  char *content;
+  unsigned int size;
+  int isDirectory;
+};
+
+struct Tar {
+  struct File *files;
+  unsigned int fileCount;
+};
 
 unsigned int getsize(const char *in);
-unsigned int parse_tar(unsigned int address);
 
-#endif // TAR_H_
+void extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tar);
+
+void freeTar(struct Tar *tar);
+
+#endif /* TAR_H */
