@@ -5,15 +5,15 @@ struct Tar *tar;
 
 int init_ramdisk(struct limine_file *tarfile) {
   extractTarData((const char *)tarfile->address, tarfile->size, &tar);
-  ramdisk->tar = &tar;
+  // ramdisk->tar = &tar;
   
-  if(ramdisk->tar->fileCount <= 0) {
-    free(ramdisk->tar);
-    freeTar(&tar);
-    return 1;
-  }
+  // if(ramdisk->tar->fileCount <= 0) {
+  //   free(ramdisk->tar);
+  //   freeTar(&tar);
+  //   return 1;
+  // }
 
-  ramdisk->fileCount = ramdisk->tar->fileCount;
+  // ramdisk->fileCount = ramdisk->tar->fileCount;
   return 0;
 }
 
