@@ -1,12 +1,23 @@
 #include "ramdisk.h"
 
-#include <filesystem/tar.h>
+struct Ramdisk *ramdisk;
+struct Tar *tar;
 
+int init_ramdisk(struct limine_file *tarfile) {
+  extractTarData((const char *)tarfile->address, tarfile->size, &tar);
+  ramdisk->tar = &tar;
+  
+  if(ramdisk->tar->fileCount >= 0) {
+    free(ramdisk->tar);
+    freeTar(&tar);
+    return 1;
+  }
 
-int init_ramdisk(struct limine_file *ramdisk) {
-  struct Tar tar;
-  extractTarData((const char *)ramdisk->address, ramdisk->size, &tar);
-  printTarContents(&tar);
-  freeTar(&tar);
+  ramdisk->fileCount = ramdisk->tar->fileCount;
   return 0;
+}
+
+void clean_ramdisk() {  
+  free(ramdisk->tar);
+  freeTar(&tar);
 }
