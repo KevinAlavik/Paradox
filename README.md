@@ -1,5 +1,5 @@
 # Paradox
-A Unix-like kernel!
+program to make computer compute
 
 ## Building
 Raw Image:
