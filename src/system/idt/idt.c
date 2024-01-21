@@ -1,4 +1,4 @@
-#include <system/idt/idt.h>
+#include "idt.h"
 #include <system/cpu/panic.h>
 #include <system/cpu/cpu.h>
 #include <stdint.h>

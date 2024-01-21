@@ -1,23 +1,22 @@
 #include "ramdisk.h"
+#include <system/memory/memory.h>
+#include <strings.h>
+#include <printf.h>
 
-struct Ramdisk *ramdisk;
-struct Tar *tar;
+int init_ramdisk(struct limine_file *tarfile, struct Ramdisk *ramdisk) {
+    const char *rawData = (const char *)tarfile->address;
 
-int init_ramdisk(struct limine_file *tarfile) {
-  extractTarData((const char *)tarfile->address, tarfile->size, &tar);
-  ramdisk->tar = &tar;
+    unsigned int tarCount = 0;
+    struct Tar tars[MAX_TARS];
+    extractTarData(rawData, tarfile->size, tars, &tarCount);
 
-  if (ramdisk->tar->fileCount <= 0) {
-    free(ramdisk->tar);
-    freeTar(&tar);
-    return 1;
-  }
+    ramdisk->tar = (struct Tar *)malloc(tarCount * sizeof(struct Tar));
 
-  ramdisk->fileCount = ramdisk->tar->fileCount;
-  return 0;
-}
+    if (!ramdisk->tar) {
+       dprintf("Ramdisk has no tars? (Ramdisk Size: %d) (Tar Size: %d) (File ammount: %d)\n", sizeof(ramdisk), sizeof(ramdisk->tar), ramdisk->fileCount);
+       return 1;
+    }
 
-void clean_ramdisk(struct Tar *tar) {
-  free(ramdisk->tar);
-  freeTar(&tar);
+    ramdisk->fileCount = tarCount;
+    return 0;
 }

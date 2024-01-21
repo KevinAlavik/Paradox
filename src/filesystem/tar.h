@@ -1,10 +1,7 @@
 #ifndef TAR_H
 #define TAR_H
 
-#include <printf.h>
-#include <system/memory/memory.h>
-#include <string.h>
-#include <system/cpu/cpu.h>
+#define MAX_TARS 100
 
 struct TarHeader {
   char filename[100];
@@ -24,24 +21,14 @@ struct File {
   int isDirectory;
 };
 
-struct Node {
-  struct File data;
-  struct Node *next;
-};
-
 struct Tar {
-  struct Node *files;
+  struct File *files;
   unsigned int fileCount;
 };
 
-
-
-void extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tar);
-
+void extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tars, unsigned int *tarCount);
 void printFileContent(const struct File *file);
-
 void printTarContents(const struct Tar *tar);
-
 void freeTar(struct Tar *tar);
 
 #endif /* TAR_H */

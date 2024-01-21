@@ -18,29 +18,27 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
 void init_boot(int debug_info) {
   static struct limine_framebuffer *framebuffer;
 
-  struct limine_file *rdisk = mod_request.response->modules[0];
   framebuffer = framebuffer_request.response->framebuffers[0];
-
-
-  int rstatus = init_ramdisk(rdisk);
-  if (!rstatus) {
-    dprintf("Ramdisk failed to initialize, got status: %d", rstatus);
-    hcf();
-  }
-
-  int nstatus = nighterm_initialize(NULL, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
-
-  if (!nstatus) {
-    dprintf("Nighterm failed to initialize, got status: %s",
-            get_nighterm_return_string(nstatus));
-    hcf();
-  }
-
+  struct limine_file *rdisk = mod_request.response->modules[0];
+  dprintf("\033c");
 
   init_idt();
+  dprintf("Initialized IDT\n");
+  init_physical_memory();
+  dprintf("Initialized PMM\n");
 
-  for (int i = 0; i < mod_request.response->module_count; i++) {
-    printf("%s: %u\n", mod_request.response->modules[i]->path,
-           mod_request.response->modules[i]->size);
+  struct Ramdisk *ramdisk;
+  int rstatus = init_ramdisk(rdisk, &ramdisk);
+
+  if (rstatus) {
+    dprintf("Ramdisk failed to initialize, got status: %d\n", rstatus);
+    hcf();
+  }
+
+  dprintf("Loaded ramdisk, file count: %d", ramdisk->fileCount);
+
+  for (int i = 0; i < ramdisk->tar->fileCount; i++) {
+    struct File *file = &(ramdisk->tar->files[i]);
+    dprintf("- %s", file->name);
   }
 }

@@ -1,19 +1,15 @@
-#ifndef RAMDISK_H_
-#define RAMDISK_H_
-
-#include <limine.h>
+#ifndef RAMDISK_H
+#define RAMDISK_H
 
 #include <filesystem/tar.h>
+#include <limine.h>
+#include <stdint.h>
 
-struct Ramdisk
-{
+struct Ramdisk {
   struct Tar *tar;
   unsigned int fileCount;
 };
 
-extern struct Ramdisk *ramdisk;
+int init_ramdisk(struct limine_file *tarfile, struct Ramdisk *ramdisk);
 
-int init_ramdisk(struct limine_file *tarfile);
-void clean_ramdisk(struct Tar *tar);
-
-#endif // RAMDISK_H_
+#endif /* RAMDISK_H */
