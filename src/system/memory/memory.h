@@ -18,3 +18,4 @@ void *malloc(size_t size);
 void free(void *ptr);
 unsigned int getsize(const char *in);
 void *realloc(void *ptr,size_t size);
+unsigned long strtoul(const char *nptr, char **endptr, int base);

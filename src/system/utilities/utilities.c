@@ -47,3 +47,4 @@ char* get_nighterm_return_string(int return_code) {
             return "Unknown return code";
     }
 }
+

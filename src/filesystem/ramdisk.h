@@ -5,9 +5,16 @@
 #include <limine.h>
 #include <stdint.h>
 
+struct RamdiskFile {
+    char *name;
+    char *content;
+    size_t size;
+    int isDirectory;
+};
+
 struct Ramdisk {
-  struct Tar *tar;
-  unsigned int fileCount;
+    struct RamdiskFile *files;
+    unsigned int fileCount;
 };
 
 int init_ramdisk(struct limine_file *tarfile, struct Ramdisk *ramdisk);

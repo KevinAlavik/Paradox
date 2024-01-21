@@ -27,18 +27,19 @@ void init_boot(int debug_info) {
   init_physical_memory();
   dprintf("Initialized PMM\n");
 
-  struct Ramdisk *ramdisk;
+  struct Ramdisk ramdisk;  // Allocate the Ramdisk structure
   int rstatus = init_ramdisk(rdisk, &ramdisk);
 
-  if (rstatus) {
-    dprintf("Ramdisk failed to initialize, got status: %d\n", rstatus);
-    hcf();
+  if (!rstatus) {
+      dprintf("Ramdisk failed to initialize, got status: %d\n", rstatus);
+      hcf();
   }
 
-  dprintf("Loaded ramdisk, file count: %d", ramdisk->fileCount);
+  dprintf("Loaded ramdisk, file count: %d\n", ramdisk.fileCount);
 
-  for (int i = 0; i < ramdisk->tar->fileCount; i++) {
-    struct File *file = &(ramdisk->tar->files[i]);
-    dprintf("- %s", file->name);
+  for (unsigned int i = 0; i < ramdisk.fileCount; i++) {
+      struct RamdiskFile *file = &(ramdisk.files[i]);
+      dprintf("- %s\n", file->name);
   }
+
 }

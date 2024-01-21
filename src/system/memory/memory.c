@@ -149,3 +149,60 @@ unsigned int getsize(const char *in) {
 
   return size;
 }
+
+unsigned long strtoul(const char *nptr, char **endptr, int base) {
+    unsigned long result = 0;
+    int sign = 1;
+
+    // Handle optional sign
+    if (*nptr == '-') {
+        sign = -1;
+        ++nptr;
+    } else if (*nptr == '+') {
+        ++nptr;
+    }
+
+    // Determine base if not provided
+    if (base == 0) {
+        if (*nptr == '0') {
+            if (*(nptr + 1) == 'x' || *(nptr + 1) == 'X') {
+                base = 16;
+                nptr += 2;
+            } else {
+                base = 8;
+            }
+        } else {
+            base = 10;
+        }
+    }
+
+    // Convert digits to integer
+    while (1) {
+        char c = *nptr;
+        int digit;
+
+        if (c >= '0' && c <= '9') {
+            digit = c - '0';
+        } else if (c >= 'a' && c <= 'z') {
+            digit = c - 'a' + 10;
+        } else if (c >= 'A' && c <= 'Z') {
+            digit = c - 'A' + 10;
+        } else {
+            break;  // Not a valid digit
+        }
+
+        if (digit >= base) {
+            break;  // Invalid digit for the base
+        }
+
+        result = result * base + digit;
+        ++nptr;
+    }
+
+    // Set endptr if provided
+    if (endptr != NULL) {
+        *endptr = (char *)nptr;
+    }
+
+    return result * sign;
+}
