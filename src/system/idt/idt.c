@@ -3,6 +3,7 @@
 #include <system/cpu/cpu.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <printf.h>
 
 #define NULL (0)
 
@@ -51,6 +52,7 @@ static const char *exception_strings[32] = {
 extern void load_idt(uint64_t);
 
 void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags) {
+    dprintf("[IDT] Setting IDT gate for interrupt %d. Base: %u, Sel: %u, Flags: %u\n", num, base, sel, flags);
     idt[num].offset_low = (base & 0xFFFF);
     idt[num].offset_middle = (base >> 16) & 0xFFFF;
     idt[num].offset_high = (base >> 32) & 0xFFFFFFFF;
@@ -61,12 +63,13 @@ void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags) {
 }
 
 void init_idt() {
+    dprintf("[IDT] Initializing IDT\n");
     idt_p.limit = sizeof(idt_entry_t) * IDT_ENTRIES - 1;
     idt_p.base = (uint64_t)&idt;
 
     for (size_t i = 0; i < 16; i++) {
-		irq_handlers[i] = NULL;
-	}
+        irq_handlers[i] = NULL;
+    }
 
     for (int i = 0; i < IDT_ENTRIES; ++i) {
         set_idt_gate(i, isr_tbl[i], 0x28, 0x8E);
@@ -75,34 +78,42 @@ void init_idt() {
     // TODO: Remap and enable PIC
 
     load_idt((uint64_t)&idt_p);
+    dprintf("[IDT] IDT Initialization complete\n");
 }
 
 void excp_handler(int_frame_t frame) {
-	if (frame.vector < 0x20) {
+    dprintf("[IDT] Handling exception with vector %d\n", frame.vector);
+
+    if (frame.vector < 0x20) {
+        dprintf("[IDT] Exception: %s\n", exception_strings[frame.vector]);
         panic(exception_strings[frame.vector], frame);
         hcf();
-	} else if (frame.vector >= 0x20 && frame.vector <= 0x2f) {
-        // NOTE: This is intentionally left commented out because PIC is not initialized yet.
-		int irq = frame.vector - 0x20;
+    } else if (frame.vector >= 0x20 && frame.vector <= 0x2f) {
+        dprintf("[IDT] Handling IRQ: %d\n", frame.vector - 0x20);
 
-		//if (irq_handlers[irq] != NULL) {
-			//irq_handlers[irq]();
-		//}
+        // NOTE: This is intentionally left commented out because PIC is not initialized yet.
+        int irq = frame.vector - 0x20;
+
+        //if (irq_handlers[irq] != NULL) {
+        //    irq_handlers[irq]();
+        //}
 
         //pic_send_eoi();
-		//apic_send_eoi();
-
-	} else if (frame.vector == 0x80) {
+        //apic_send_eoi();
+    } else if (frame.vector == 0x80) {
+        dprintf("[IDT] Handling system call\n");
         // handle syscalls here
     }
 }
 
 void irq_register(uint8_t irq, interrupt_handler handler)
 {
-	irq_handlers[irq] = handler;
+    dprintf("[IDT] Registering IRQ handler for IRQ %d\n", irq);
+    irq_handlers[irq] = handler;
 }
 
 void irq_deregister(uint8_t irq)
 {
-	irq_handlers[irq] = NULL;
+    dprintf("[IDT] Deregistering IRQ handler for IRQ %d\n", irq);
+    irq_handlers[irq] = NULL;
 }

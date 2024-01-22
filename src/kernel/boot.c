@@ -25,7 +25,7 @@ void init_boot(int debug_info)
     framebuffer = framebuffer_request.response->framebuffers[0];
     struct limine_file *rdisk = mod_request.response->modules[0];
     dprintf("\033c");
-    dprintf("\n----- Start of boot proccess -----\n\n");
+    dprintf("[System] Initialized kmsg stream (simulated).\n");
 
     init_idt();
     dprintf("[System] Initialized IDT\n");
@@ -100,8 +100,6 @@ void init_boot(int debug_info)
         dprintf("[System] Initialized Nighterm with code: %s\n", get_nighterm_return_string(nstatus));
     }
 
-    dprintf("\n----- End of boot proccess: Start kmsg -----\n");
-
     int maxRetries = 5;
     int retryCount = 0;
     int kstatus;
@@ -139,5 +137,5 @@ void init_boot(int debug_info)
         hcf(); // Replace with shutdown later on
     }
 
-    hlt();
+    hlt(); // This is needed, if you remove this it exits the boot function and continues to a hcf(); and that breaks things
 }
