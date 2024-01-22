@@ -7,8 +7,8 @@
 #include <stddef.h>
 
 struct TarHeader {
-    char filename[100];
-    char size[12];
+    char filename[1000];
+    char size[100];
     char typeflag[1];
 };
 

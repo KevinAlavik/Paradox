@@ -49,4 +49,5 @@ void init_boot(int debug_info)
     }
 
     dprintf("\nAwesome ramdisk!\n");
+
 }

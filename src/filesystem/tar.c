@@ -41,7 +41,7 @@ int extractTarData(const char *rawData, unsigned int dataSize, struct Tar *tars,
         if (!file.isDirectory) {
             // Load file content
             file.content = (char *)malloc(file.size + 1);
-            memcpy(file.content, rawData + offset + 512, file.size);
+            memcpy(file.content, rawData + offset + 512, file.size + 1);
             file.content[file.size] = '\0';
             printf("[TAR] File content: %s\n", file.content);
         } else {
