@@ -39,16 +39,24 @@ void init_boot(int debug_info)
 
     dprintf("[System] Loaded ramdisk, file count: %d\n", ramdisk->fileCount);
 
-    if(debug_info) {
+    if (debug_info)
+    {
         for (unsigned int i = 0; i < ramdisk->fileCount; i++)
         {
             struct RamdiskFile *file = &(ramdisk->files[i]);
-            dprintf("- File Name: %s\n", file->name);
-            dprintf("  - Size: %d\n", file->size);
-            dprintf("  - Directory: %d\n", file->isDirectory);
-            dprintf("  - Content: %s\n", file->content);
+            dprintf("[%s] Size: %d\n", file->name, file->size);
+            dprintf("[%s] Directory: %d\n", file->name, file->isDirectory);
+            dprintf("[%s] Content: %s\n", file->name, file->content);
         }
     }
 
     dprintf("[System] Starting display...\n");
+
+    int nstatus = nighterm_initialize(&(ramdisk->files[0]).content, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
+    if (nstatus) {
+        dprintf("[System] Nightem failed to initialize, got code: %s", get_nighterm_return_string(nstatus));
+        hcf();
+    } else {
+        dprintf("[System] Initialized Nighterm with code: %s", get_nighterm_return_string(nstatus));
+    }
 }
