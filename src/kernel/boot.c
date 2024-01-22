@@ -1,8 +1,6 @@
 #include <kernel/boot.h>
 #include <kernel/kernel.h>
-#include <filesystem/ramdisk.h>
 #include <kernel/boot.h>
-#include <limine.h>
 #include <nighterm/nighterm.h>
 #include <printf.h>
 #include <system/cpu/cpu.h>
@@ -11,10 +9,12 @@
 #include <system/memory/memory.h>
 #include <system/utilities/utilities.h>
 
-static volatile struct limine_module_request mod_request = {
+struct Ramdisk *ramdisk;
+
+volatile struct limine_module_request mod_request = {
     .id = LIMINE_MODULE_REQUEST, .revision = 0};
 
-static volatile struct limine_framebuffer_request framebuffer_request = {
+volatile struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST, .revision = 1};
 
 void init_boot(int debug_info)
@@ -25,6 +25,7 @@ void init_boot(int debug_info)
     framebuffer = framebuffer_request.response->framebuffers[0];
     struct limine_file *rdisk = mod_request.response->modules[0];
     dprintf("\033c");
+    dprintf("\n----- Start of boot proccess -----\n\n");
 
     init_idt();
     dprintf("[System] Initialized IDT\n");
@@ -32,7 +33,6 @@ void init_boot(int debug_info)
     dprintf("[System] Initialized PMM\n");
     dprintf("\n");
 
-    struct Ramdisk *ramdisk;
     int rstatus = init_ramdisk(rdisk, &ramdisk);
     dprintf("\n");
 
@@ -42,6 +42,7 @@ void init_boot(int debug_info)
         hcf();
     }
 
+    dprintf("[System] Loaded modules, file count: %d\n", mod_request.response->module_count);
     dprintf("[System] Loaded ramdisk, file count: %d\n\n", ramdisk->fileCount);
 
     if (debug_info)
@@ -99,7 +100,7 @@ void init_boot(int debug_info)
         dprintf("[System] Initialized Nighterm with code: %s\n", get_nighterm_return_string(nstatus));
     }
 
-    dprintf("\n----- End of boot proccess -----\n\n");
+    dprintf("\n----- End of boot proccess: Start kmsg -----\n");
 
     int maxRetries = 5;
     int retryCount = 0;
@@ -116,7 +117,8 @@ void init_boot(int debug_info)
         else if (kstatus == 1)
         {
             dprintf("[Kernel Warning] Kernel quit unexpectedly (%d)! Trying to relaunch (%d/%d)\n", kstatus, retryCount + 1, maxRetries);
-            if(retryCount + 1 == 5) {
+            if (retryCount + 1 == 5)
+            {
                 kstatus = main();
             }
         }

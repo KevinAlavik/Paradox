@@ -75,5 +75,5 @@ obj/%.asm.o: src/%.asm GNUmakefile
 
 .PHONY: clean
 clean:
-	rm -rf bin obj Paradox.raw.bin image.iso public/ramdisk.tar
+	rm -rf bin obj Paradox.raw.bin image.iso ramdisk/ramdisk.tar
 

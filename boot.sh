@@ -13,9 +13,9 @@ fi
 
 mkdir -p iso_root
 
-tar -cvf public/ramdisk.tar public/*
+tar -cvf ramdisk/ramdisk.tar ramdisk/*
 
-cp -v bin/"$OS_NAME" public/ramdisk.tar limine.cfg limine/limine-bios.sys \
+cp -v bin/"$OS_NAME" ramdisk/ramdisk.tar modules/* limine.cfg limine/limine-bios.sys \
     limine/limine-bios-cd.bin limine/limine-uefi-cd.bin iso_root/
 
 mkdir -p iso_root/EFI/BOOT
