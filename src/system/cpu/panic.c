@@ -5,8 +5,8 @@
 
 void panic(const char *reason, int_frame_t frame)
 {
-    dprintf(":(\n");
-    dprintf("%s\n", reason);
+    dprintf("\n\n");
+    dprintf("Kernel Panic!!! (%s)\n", reason);
     dprintf("dumping registers\n\n");
     dprintf("rax: 0x%.16llx, rbx: 0x%.16llx, rcx: 0x%.16llx, rdx: 0x%.16llx\n", frame.rax, frame.rbx, frame.rcx, frame.rdx);
 	dprintf("rsp: 0x%.16llx, rbp: 0x%.16llx, rsi: 0x%.16llx, rdi: 0x%.16llx\n", frame.rsp, frame.rbp, frame.rsi, frame.rdi);

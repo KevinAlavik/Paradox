@@ -1,1 +1,1 @@
-this is a simple text file
+This is a test file for the ramdisk
