@@ -18,6 +18,7 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
 void init_boot(int debug_info)
 {
     static struct limine_framebuffer *framebuffer;
+    int nstatus;
 
     framebuffer = framebuffer_request.response->framebuffers[0];
     struct limine_file *rdisk = mod_request.response->modules[0];
@@ -47,12 +48,15 @@ void init_boot(int debug_info)
             dprintf("[%s] Size: %d\n", file->name, file->size);
             dprintf("[%s] Directory: %d\n", file->name, file->isDirectory);
             dprintf("[%s] Content: %s\n", file->name, file->content);
+
+            if(file->name == "public/kfont.psf") {
+                nstatus = nighterm_initialize(file->content, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
+            }
         }
     }
 
     dprintf("[System] Starting display...\n");
 
-    int nstatus = nighterm_initialize(&(ramdisk->files[0]).content, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
     if (nstatus) {
         dprintf("[System] Nightem failed to initialize, got code: %s", get_nighterm_return_string(nstatus));
         hcf();
