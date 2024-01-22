@@ -11,7 +11,7 @@ int init_ramdisk(struct limine_file *tarfile, struct Ramdisk *ramdisk) {
 
   dprintf("[Ramdisk] Start initializing ramdisk\n");
 
-  int result = extractTarData(rawData, tarfile->size, tars, &tarCount);
+  int result = extractTarData(rawData, tarfile->size, tars);
 
   dprintf("[Ramdisk] Ramdisk initialized successfully\n");
 
