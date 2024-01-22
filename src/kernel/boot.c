@@ -24,30 +24,31 @@ void init_boot(int debug_info)
     dprintf("\033c");
 
     init_idt();
-    dprintf("Initialized IDT\n");
+    dprintf("[System] Initialized IDT\n");
     init_physical_memory();
-    dprintf("Initialized PMM\n");
+    dprintf("[System] Initialized PMM\n");
 
-    struct Ramdisk *ramdisk; // Allocate the Ramdisk structure
+    struct Ramdisk *ramdisk;
     int rstatus = init_ramdisk(rdisk, &ramdisk);
 
     if (rstatus)
     {
-        dprintf("Ramdisk failed to initialize, got status: %d\n", rstatus);
+        dprintf("[System] Ramdisk failed to initialize, got status: %d\n", rstatus);
         hcf();
     }
 
-    dprintf("\nLoaded ramdisk, file count: %d\n", ramdisk->fileCount);
+    dprintf("[System] Loaded ramdisk, file count: %d\n", ramdisk->fileCount);
 
-    for (unsigned int i = 0; i < ramdisk->fileCount; i++)
-    {
-        struct RamdiskFile *file = &(ramdisk->files[i]);
-        dprintf("- File Name: %s\n", file->name);
-        dprintf("  - Size: %d\n", file->size);
-        dprintf("  - Directory: %d\n", file->isDirectory);
-        dprintf("  - Content: %s\n", file->content);
+    if(debug_info) {
+        for (unsigned int i = 0; i < ramdisk->fileCount; i++)
+        {
+            struct RamdiskFile *file = &(ramdisk->files[i]);
+            dprintf("- File Name: %s\n", file->name);
+            dprintf("  - Size: %d\n", file->size);
+            dprintf("  - Directory: %d\n", file->isDirectory);
+            dprintf("  - Content: %s\n", file->content);
+        }
     }
 
-    dprintf("\nAwesome ramdisk!\n");
-
+    dprintf("[System] Starting display...\n");
 }
