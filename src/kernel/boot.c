@@ -49,7 +49,8 @@ void init_boot(int debug_info)
             dprintf("[%s] Directory: %d\n", file->name, file->isDirectory);
             dprintf("[%s] Content: %s\n", file->name, file->content);
 
-            if(file->name == "public/kfont.psf") {
+            if (endsWith(file->name, ".psf"))
+            {
                 nstatus = nighterm_initialize(file->content, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
             }
         }
@@ -57,10 +58,13 @@ void init_boot(int debug_info)
 
     dprintf("[System] Starting display...\n");
 
-    if (nstatus) {
+    if (nstatus)
+    {
         dprintf("[System] Nightem failed to initialize, got code: %s", get_nighterm_return_string(nstatus));
         hcf();
-    } else {
+    }
+    else
+    {
         dprintf("[System] Initialized Nighterm with code: %s", get_nighterm_return_string(nstatus));
     }
 }

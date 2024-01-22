@@ -1,6 +1,7 @@
 #include "strings.h"
 #include <stddef.h>
 #include <system/memory/memory.h>
+#include <system/utilities/utilities.h>
 
 size_t strlen(const char *str) {
     size_t n = 0;
@@ -47,4 +48,17 @@ char *strcpy(char *dest, const char *src) {
     char *start = dest;
     while ((*dest++ = *src++) != '\0');
     return start;
+}
+
+int strcmp(const char *s1, const char *s2) {
+    while (*s1 && *s2) {
+        int diff = tolower((unsigned char)*s1) - tolower((unsigned char)*s2);
+        if (diff != 0) {
+            return diff;
+        }
+        s1++;
+        s2++;
+    }
+
+    return tolower((unsigned char)*s1) - tolower((unsigned char)*s2);
 }
