@@ -39,6 +39,7 @@ void init_boot(int debug_info)
     }
 
     dprintf("[System] Loaded ramdisk, file count: %d\n", ramdisk->fileCount);
+    dprintf("[System] Starting display...\n");
 
     if (debug_info)
     {
@@ -51,12 +52,12 @@ void init_boot(int debug_info)
 
             if (endsWith(file->name, ".psf"))
             {
+                dprintf("[System] Found a font at %s\n", file->name);
+                dprintf("[System] Using %s as deafult font for nighterm\n", file->name);
                 nstatus = nighterm_initialize(file->content, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
             }
         }
     }
-
-    dprintf("[System] Starting display...\n");
 
     if (nstatus)
     {
