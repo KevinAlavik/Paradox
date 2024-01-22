@@ -108,31 +108,33 @@ void init_boot(int debug_info)
     do
     {
         kstatus = main(); // Launch the kernel
-
-        if (kstatus != 0 && kstatus != 22)
+        if (kstatus == 0)
         {
-            dprintf("[Kernel Warning] Kernel quited unexpectedly (%d)! Trying to relaunch (%d/%d)\n", kstatus, retryCount + 1, maxRetries);
+            dprintf("[Kernel Success] Kernel quit successfully, shutting down!\n");
+            hcf(); // Replace with shutdown later on
+        }
+        else if (kstatus == 1)
+        {
+            dprintf("[Kernel Warning] Kernel quit unexpectedly (%d)! Trying to relaunch (%d/%d)\n", kstatus, retryCount + 1, maxRetries);
+            if(retryCount + 1 == 5) {
+                kstatus = main();
+            }
+        }
+        else if (kstatus == 2)
+        {
+            printf("[Kernel Panic] Kernel panicked and quit, please see kmsg for extra info.\n");
+            dprintf("[Kernel Panic] Kernel panicked and quit, the kernel process returned with a 2 that means something went really wrong, and we are shutting down your computer!\n");
+            hcf(); // Replace with shutdown later on
         }
 
         retryCount++;
 
-    } while (retryCount < maxRetries && (kstatus != 0 && kstatus != 22));
+    } while (retryCount < maxRetries && kstatus == 1);
 
-    dprintf("\n---------------------------------\n");
-
-    if (kstatus != 22)
+    if (kstatus == 1)
     {
-        if (retryCount >= maxRetries)
-        {
-            printf("[Kernel Error] Failed to launch the kernel after %d attempts. Please shutdown your computer!\n", maxRetries);
-            dprintf("Kernel quited with an unexpected reason (%d) and couldn't be relaunched.\n", kstatus);
-            hcf();
-        }
-        else
-        {
-            printf("[Kernel Warning] Kernel quited unexpectedly (see debug log)! Please shutdown your computer!\n"); // Display warning for the user to shutdown
-            dprintf("Kernel quited with an unexpected reason (%d) after %d attempts.\n", kstatus, retryCount);
-        }
+        dprintf("[Kernel Warning] Kernel quit unexpectedly (We tried to rescue it but failed), shutting down...\n", retryCount);
+        hcf(); // Replace with shutdown later on
     }
 
     hlt();

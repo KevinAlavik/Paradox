@@ -1,6 +1,14 @@
+/*
+
+Kernel Entry - Paradox OS
+-------------------------
+ · Do not return anything until you want to intentionally quit (see header for return codes)
+
+*/
+
+#include <kernel/kernel.h>
 #include <printf.h>
 
 int main() {
-    dprintf("[kmesg] Hello, World!\n");
-    return 1;
+    printf("Hello, World!\n");
 }
