@@ -8,6 +8,8 @@ Kernel Entry - Paradox OS
 
 #include <kernel/kernel.h>
 #include <kernel/boot.h>
+#include <system/processes/processes.h>
+
 #include <kif.h>
 #include <printf.h>
 

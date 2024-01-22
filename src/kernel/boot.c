@@ -8,6 +8,8 @@
 #include <system/logger/sys_log.h>
 #include <system/memory/memory.h>
 #include <system/utilities/utilities.h>
+#include <system/pit/pit.h>
+#include <system/pic/pic.h>
 
 struct Ramdisk *ramdisk;
 
@@ -17,20 +19,36 @@ volatile struct limine_module_request mod_request = {
 volatile struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST, .revision = 1};
 
+struct limine_framebuffer *framebuffer;
+
 void init_boot(int debug_info)
 {
-    static struct limine_framebuffer *framebuffer;
     int nstatus;
 
     framebuffer = framebuffer_request.response->framebuffers[0];
     struct limine_file *rdisk = mod_request.response->modules[0];
-    dprintf("\033c");
     dprintf("[System] Initialized kmsg stream (simulated).\n");
 
+    dprintf("[System Check] Checking framebuffer...\n");
+    if (sizeof(framebuffer) <= 0) {
+        dprintf("[Kernel Error] Framebuffer has an invalid size (%d)...\n", sizeof(framebuffer));
+        hcf();
+    } else if (framebuffer->width <= 0) {
+        dprintf("[Kernel Error] Framebuffer width is an invalid ammount (%d)...\n", framebuffer->width);
+        hcf();
+    } else if (framebuffer->height <= 0) {
+        dprintf("[Kernel Error] Framebuffer height is an invalid ammount (%d)...\n", framebuffer->height);
+        hcf();
+    }
+    dprintf("[System Check] OK. Framebuffer was fine (%dx%d)\n", framebuffer->width, framebuffer->height);
     init_idt();
     dprintf("[System] Initialized IDT\n");
     init_physical_memory();
     dprintf("[System] Initialized PMM\n");
+    i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, false);
+    dprintf("[System] Initialized PIC\n");
+    init_pit();
+    dprintf("[System] Initialized PIT\n");
     dprintf("\n");
 
     int rstatus = init_ramdisk(rdisk, &ramdisk);
@@ -66,6 +84,18 @@ void init_boot(int debug_info)
             {
                 dprintf("[System] Found a font at %s\n", file->name);
                 dprintf("[System] Using %s as deafult font for nighterm\n", file->name);
+                dprintf("[System Check] Checking framebuffer (second time)...\n");
+                if (sizeof(framebuffer) <= 0) {
+                    dprintf("[Kernel Error] Framebuffer has an invalid size (%d)...\n", sizeof(framebuffer));
+                    hcf();
+                } else if (framebuffer->width <= 0) {
+                    dprintf("[Kernel Error] Framebuffer width is an invalid ammount (%d)...\n", framebuffer->width);
+                    hcf();
+                } else if (framebuffer->height <= 0) {
+                    dprintf("[Kernel Error] Framebuffer height is an invalid ammount (%d)...\n", framebuffer->height);
+                    hcf();
+                }
+                dprintf("[System Check] OK. Framebuffer was fine (%dx%d)\n", framebuffer->width, framebuffer->height);
                 nstatus = nighterm_initialize(file->content, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, malloc);
                 if (nstatus == NIGHTERM_FONT_INVALID)
                 {

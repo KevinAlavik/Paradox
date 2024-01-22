@@ -2,6 +2,7 @@
 #include <printf.h>
 #include <strings.h>
 #include <system/memory/memory.h>
+#include <kernel/boot.h>
 
 int init_ramdisk(struct limine_file *tarfile, struct Ramdisk *ramdisk) {
   const char *rawData = (const char *)tarfile->address;
@@ -14,6 +15,10 @@ int init_ramdisk(struct limine_file *tarfile, struct Ramdisk *ramdisk) {
   int result = extractTarData(rawData, tarfile->size, tars);
 
   dprintf("[Ramdisk] Ramdisk initialized successfully\n");
+
+  for (int tar = 0; tar < tars->fileCount; tar++) {
+    int size = tars->files[tar].size;
+  }
 
   ramdisk->files = &tars->files;
   ramdisk->fileCount = &tars->fileCount;
