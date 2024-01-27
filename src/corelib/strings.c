@@ -11,6 +11,47 @@ size_t strlen(const char *str) {
     return n;
 }
 
+long strtol(const char *nptr, char **endptr, int base) {
+    long result = 0;
+    int sign = 1;
+
+    // Skip leading whitespaces
+    while (*nptr == ' ' || (*nptr >= '\t' && *nptr <= '\r')) {
+        nptr++;
+    }
+
+    // Check for the sign
+    if (*nptr == '-' || *nptr == '+') {
+        sign = (*nptr++ == '-') ? -1 : 1;
+    }
+
+    // Determine the base if not provided
+    if (base == 0) {
+        base = (*nptr == '0' && (nptr[1] == 'x' || nptr[1] == 'X')) ? 16 : 10;
+    }
+
+    // Parse the digits
+    while ((*nptr >= '0' && *nptr <= '9') ||
+           (base == 16 && ((*nptr >= 'a' && *nptr <= 'f') || (*nptr >= 'A' && *nptr <= 'F')))) {
+        int digit = *nptr - '0';
+        if (base == 16 && *nptr >= 'a') {
+            digit = (*nptr - 'a') + 10;
+        } else if (base == 16 && *nptr >= 'A') {
+            digit = (*nptr - 'A') + 10;
+        }
+
+        result = result * base + digit;
+        nptr++;
+    }
+
+    // Set endptr if provided
+    if (endptr != NULL) {
+        *endptr = (char *)nptr;
+    }
+
+    return result * sign;
+}
+
 char *strdup(const char *src) {
     size_t length = strlen(src);
     char *dst = malloc(length + 1);

@@ -50,8 +50,9 @@ void init_boot(int debug_info)
     init_pit();
     dprintf("[System] Initialized PIT\n");
     dprintf("\n");
-
+    
     int rstatus = init_ramdisk(rdisk, &ramdisk);
+    
     dprintf("\n");
 
     if (rstatus)

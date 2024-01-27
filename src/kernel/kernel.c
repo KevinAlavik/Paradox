@@ -8,12 +8,14 @@ Kernel Entry - Paradox OS
 
 #include <kernel/kernel.h>
 #include <kernel/boot.h>
+#include <filesystem/ramdisk.h>
 #include <system/processes/processes.h>
+#include <nighterm/nighterm.h>
 
 #include <kif.h>
 #include <printf.h>
 
-int main() {
-    draw_image((char*)mod_request.response->modules[1]->address, 0, 0); // Draw bootlogo, a skull for now
-    printf("Hello, World!\n");
+int main()
+{
+    dprintf("Hello, World!\n");
 }
