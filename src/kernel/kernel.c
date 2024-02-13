@@ -31,7 +31,8 @@ int main()
     printf("\n");
 
     visualize_pmm(term.font_header.height * term.cy, PAGE_SIZE);
-
+    
+    printf("åäö");
 
     hlt();
 }

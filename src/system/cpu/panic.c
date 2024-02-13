@@ -4,6 +4,7 @@
 #include <nighterm/backends/vga.h>
 #include <nighterm/nighterm.h>
 #include <system/drivers/speaker.h>
+#include <system/memory/pmm.h>
 
 #include <printf.h>
 #include <kif.h>
@@ -40,6 +41,8 @@ void panic(const char *reason, int_frame_t frame)
     dprintf("[KERNEL PANIC] r8:  0x%.16llx, r9:  0x%.16llx, r10: 0x%.16llx, r11: 0x%.16llx\n", frame.r8, frame.r9, frame.r10, frame.r11);
     dprintf("[KERNEL PANIC] r12: 0x%.16llx, r13: 0x%.16llx, r14: 0x%.16llx, r15: 0x%.16llx\n", frame.r12, frame.r13, frame.r14, frame.r15);
     dprintf("[KERNEL PANIC] rfl: 0x%.16llx, rip: 0x%.16llx, cs:  0x%.16llx, ss:  0x%.16llx\n", frame.rflags, frame.rip, frame.cs, frame.ss);
+
+    visualize_pmm(0, PAGE_SIZE);
 
     beep();
     hcf();

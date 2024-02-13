@@ -125,6 +125,7 @@ void pmm_free(void *ptr)
 }
 
 void visualize_pmm(int startY, int endY) {
+    update_memory();
     if (bitmap == NULL || framebuffer == NULL) {
         return;
     }
