@@ -38,7 +38,7 @@ $(eval $(call DEFAULT_VAR,NASMFLAGS,$(DEFAULT_NASMFLAGS)))
 override DEFAULT_LDFLAGS :=
 $(eval $(call DEFAULT_VAR,LDFLAGS,$(DEFAULT_LDFLAGS)))
 
-override CFLAGS += -O0 -Ilimine -Isrc  -Isrc/corelib -Wall -Wextra -std=gnu11 -ffreestanding -fno-stack-protector -fno-stack-check -fno-lto -fno-PIE -fno-PIC -m64 -march=x86-64 -mabi=sysv -mcmodel=kernel -mno-80387 -mno-mmx -mno-sse -mno-sse2 -mno-red-zone -DPRINTF_DISABLE_SUPPORT_FLOAT -DHEAP_ACCESSABLE
+override CFLAGS += -O0 -Ilimine -Isrc  -Isrc/corelib -Wall -Wextra -std=gnu11 -ffreestanding -fno-stack-protector -fno-stack-check -fno-lto -fno-PIE -fno-PIC -m64 -march=x86-64 -mabi=sysv -mcmodel=kernel -mno-80387 -mno-mmx -mno-sse -mno-sse2 -mno-red-zone -DPRINTF_DISABLE_SUPPORT_FLOAT -DHEAP_ACCESSABLE -msse
 
 override LDFLAGS += -nostdlib -static -m elf_x86_64 -z max-page-size=0x1000 -T linker.ld
 

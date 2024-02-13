@@ -16,6 +16,12 @@ volatile struct limine_module_request mod_request = {
 volatile struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST, .revision = 1};
 
+volatile struct limine_hhdm_request hhdm_request = {
+    .id = LIMINE_HHDM_REQUEST,
+    .revision = 0
+};
+
+
 struct limine_framebuffer *framebuffer;
 
 void init_boot(int debug_info)
@@ -25,6 +31,8 @@ void init_boot(int debug_info)
     dprintf("[System] Initialized kmsg stream.\n");
     init_idt();
     dprintf("[System] Initialized IDT\n");
+    init_pmm();
+    dprintf("[System] Initialized PMM\n");
     i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, false);
     dprintf("[System] Initialized PIC\n");
     init_pit();

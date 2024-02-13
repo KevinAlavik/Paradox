@@ -5,6 +5,7 @@
 
 extern volatile struct limine_module_request mod_request;
 extern volatile struct limine_framebuffer_request framebuffer_request;
+extern volatile struct limine_hhdm_request hhdm_request;
 extern struct limine_framebuffer *framebuffer;
 void init_boot(int debug_info);
 

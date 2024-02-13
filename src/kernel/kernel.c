@@ -17,20 +17,21 @@ Kernel Entry - Paradox OS
 
 #include <kif.h>
 #include <printf.h>
+#include <transform.h>
 
 int main()
 {   
+    uint64_t hhdm_offset = hhdm_request.response->offset;
+
     draw_image((char*)mod_request.response->modules[1]->address, framebuffer->width/2, framebuffer->height/2, 1);
     char* boot_info = (char*)mod_request.response->modules[2]->address;
-    printf("Boot Info: %s, Mode: pre-boot (parked)\n", boot_info);
+    printf("%s, Mode: pre-boot (parked)\n", boot_info);
     printf("Nighterm Info: %s, %dx%d\n", term.title, framebuffer->width / term.font_header.width, framebuffer->height / term.font_header.height);
+    printf("Free Memory: %dMB\n", bytes_to_megabytes(free_memory));   
     printf("\n");
-    printf("pre-boot status codes:\n");
-    printf(" - normal: This just waits for the OS to finish up some things.\n");
-    printf(" - parked: The OS is parked in pre-boot, waiting for signal to continue booting...\n");
-    printf(" - critical: Something failed in the startup process, check logs/debugcon.log if you are running QEMU (./boot.sh)\n\n");
 
-    nighterm_clear();
-    // pmm_init();
+    visualize_pmm(term.font_header.height * term.cy, PAGE_SIZE);
+
+
     hlt();
 }
