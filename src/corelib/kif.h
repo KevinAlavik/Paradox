@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-void draw_image(char* rawData, uint64_t x, uint64_t y);
+void draw_image(char* rawData, uint64_t x, uint64_t y, int mode);
 
 #endif // KIF_H_

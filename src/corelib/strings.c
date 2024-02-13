@@ -1,7 +1,5 @@
 #include "strings.h"
 #include <stddef.h>
-#include <system/memory/memory.h>
-#include <system/utilities/utilities.h>
 
 size_t strlen(const char *str) {
     size_t n = 0;
@@ -15,22 +13,18 @@ long strtol(const char *nptr, char **endptr, int base) {
     long result = 0;
     int sign = 1;
 
-    // Skip leading whitespaces
     while (*nptr == ' ' || (*nptr >= '\t' && *nptr <= '\r')) {
         nptr++;
     }
 
-    // Check for the sign
     if (*nptr == '-' || *nptr == '+') {
         sign = (*nptr++ == '-') ? -1 : 1;
     }
 
-    // Determine the base if not provided
     if (base == 0) {
         base = (*nptr == '0' && (nptr[1] == 'x' || nptr[1] == 'X')) ? 16 : 10;
     }
 
-    // Parse the digits
     while ((*nptr >= '0' && *nptr <= '9') ||
            (base == 16 && ((*nptr >= 'a' && *nptr <= 'f') || (*nptr >= 'A' && *nptr <= 'F')))) {
         int digit = *nptr - '0';
@@ -44,7 +38,6 @@ long strtol(const char *nptr, char **endptr, int base) {
         nptr++;
     }
 
-    // Set endptr if provided
     if (endptr != NULL) {
         *endptr = (char *)nptr;
     }
@@ -52,14 +45,14 @@ long strtol(const char *nptr, char **endptr, int base) {
     return result * sign;
 }
 
-char *strdup(const char *src) {
-    size_t length = strlen(src);
-    char *dst = malloc(length + 1);
-    if (dst != NULL) {
-        strncpy(dst, src, length + 1);
-    }
-    return dst;
-}
+// char *strdup(const char *src) {
+//     size_t length = strlen(src);
+//     char *dst = malloc(length + 1);
+//     if (dst != NULL) {
+//         strncpy(dst, src, length + 1);
+//     }
+//     return dst;
+// }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
     while (n && *s1 && (*s1 == *s2)) {
@@ -102,4 +95,57 @@ int strcmp(const char *s1, const char *s2) {
     }
 
     return tolower((unsigned char)*s1) - tolower((unsigned char)*s2);
+}
+
+uint64_t strtoul(const char *str, char **endptr, int base) {
+    uint64_t result = 0;
+    int digit;
+
+    while (isspace((unsigned char)*str)) {
+        str++;
+    }
+
+    int sign = 1;
+    if (*str == '+' || *str == '-') {
+        sign = (*str++ == '+') ? 1 : -1;
+    }
+
+    if ((base == 0 || base == 16) && *str == '0' && (str[1] == 'x' || str[1] == 'X')) {
+        str += 2;
+        base = 16;
+    } else if (base == 0 && *str == '0') {
+        str++;
+        base = 8;
+    }
+
+    while (isxdigit((unsigned char)*str) && (digit = isdigit((unsigned char)*str) ? *str - '0' : (islower((unsigned char)*str) ? tolower((unsigned char)*str) - 'a' + 10 : tolower((unsigned char)*str) - 'A' + 10)) < base) {
+        result = result * base + digit;
+        str++;
+    }
+
+    if (endptr != NULL) {
+        *endptr = (char *)str;
+    }
+
+    return sign * result;
+}
+
+uint64_t octal_str_to_uint64(const char *str) {
+    return strtoul(str, NULL, 8);
+}
+
+int isdigit(unsigned char c) {
+    return (c >= '0' && c <= '9');
+}
+
+int isxdigit(unsigned char c) {
+    return (isdigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'));
+}
+
+int isspace(int c) {
+    return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v' || c == '\f');
+}
+
+int islower(int c) {
+    return (c >= 'a' && c <= 'z');
 }

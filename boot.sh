@@ -13,9 +13,12 @@ fi
 
 mkdir -p iso_root
 
-tar -cvf ramdisk/ramdisk.tar ramdisk/*
+# tar -cvf ramdisk/ramdisk.tar ramdisk/*
 
-cp -v bin/"$OS_NAME" ramdisk/ramdisk.tar modules/* limine.cfg limine/limine-bios.sys \
+PARADOX_VER=0.1.1
+echo -n "Build Version: Paradox v$(echo $PARADOX_VER), Build Date: $(date "+%A (%m/%d/%Y) %H:%M")" > modules/build_info.txt
+
+cp -v bin/"$OS_NAME" modules/* limine.cfg limine/limine-bios.sys \
     limine/limine-bios-cd.bin limine/limine-uefi-cd.bin iso_root/
 
 mkdir -p iso_root/EFI/BOOT
@@ -32,4 +35,4 @@ xorriso -as mkisofs -b limine-bios-cd.bin \
 ./limine/limine bios-install image.iso
 rm -rf iso_root
 # Execute qemu-system-x86_64 with passed arguments
-qemu-system-x86_64 -hda image.iso "${@}"  
+qemu-system-x86_64 -vga std -debugcon stdio -audiodev coreaudio,id=audio0 -machine pcspk-audiodev=audio0 -hda image.iso "${@}"  

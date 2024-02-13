@@ -1,8 +1,7 @@
 #include "kif.h"
 #include <printf.h>
 
-void draw_image(char* rawData, uint64_t x, uint64_t y) {
-
+void draw_image(char* rawData, uint64_t x, uint64_t y, int mode) {
     uint64_t width = 0, height = 0;
     int i = 0;
 
@@ -29,7 +28,17 @@ void draw_image(char* rawData, uint64_t x, uint64_t y) {
 
     i++;
 
-    uint64_t startX = x, startY = y;
+    uint64_t startX, startY;
+    if (mode == 1) {
+        // Calculate starting position for center mode
+        startX = x - width / 2;
+        startY = y - height / 2;
+    } else {
+        // Default mode, use given coordinates
+        startX = x;
+        startY = y;
+    }
+
     uint64_t currentX = startX, currentY = startY;
     uint8_t r, g, b;
 

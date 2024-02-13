@@ -1,0 +1,289 @@
+[System] Initialized kmsg stream.
+[IDT] Initializing IDT
+[IDT] Setting IDT gate for interrupt 0. Base: 2147499954, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 1. Base: 2147499961, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 2. Base: 2147499968, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 3. Base: 2147499975, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 4. Base: 2147499982, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 5. Base: 2147499989, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 6. Base: 2147499996, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 7. Base: 2147500003, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 8. Base: 2147500010, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 9. Base: 2147500015, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 10. Base: 2147500022, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 11. Base: 2147500030, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 12. Base: 2147500038, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 13. Base: 2147500046, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 14. Base: 2147500054, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 15. Base: 2147500062, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 16. Base: 2147500072, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 17. Base: 2147500082, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 18. Base: 2147500090, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 19. Base: 2147500100, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 20. Base: 2147500110, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 21. Base: 2147500120, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 22. Base: 2147500130, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 23. Base: 2147500140, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 24. Base: 2147500150, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 25. Base: 2147500160, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 26. Base: 2147500170, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 27. Base: 2147500180, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 28. Base: 2147500190, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 29. Base: 2147500200, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 30. Base: 2147500210, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 31. Base: 2147500218, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 32. Base: 2147500228, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 33. Base: 2147500238, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 34. Base: 2147500248, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 35. Base: 2147500258, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 36. Base: 2147500268, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 37. Base: 2147500278, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 38. Base: 2147500288, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 39. Base: 2147500298, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 40. Base: 2147500308, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 41. Base: 2147500318, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 42. Base: 2147500328, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 43. Base: 2147500338, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 44. Base: 2147500348, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 45. Base: 2147500358, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 46. Base: 2147500368, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 47. Base: 2147500378, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 48. Base: 2147500388, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 49. Base: 2147500398, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 50. Base: 2147500408, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 51. Base: 2147500418, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 52. Base: 2147500428, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 53. Base: 2147500438, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 54. Base: 2147500448, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 55. Base: 2147500458, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 56. Base: 2147500468, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 57. Base: 2147500478, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 58. Base: 2147500488, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 59. Base: 2147500498, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 60. Base: 2147500508, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 61. Base: 2147500518, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 62. Base: 2147500528, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 63. Base: 2147500538, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 64. Base: 2147500548, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 65. Base: 2147500558, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 66. Base: 2147500568, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 67. Base: 2147500578, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 68. Base: 2147500588, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 69. Base: 2147500598, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 70. Base: 2147500608, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 71. Base: 2147500618, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 72. Base: 2147500628, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 73. Base: 2147500638, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 74. Base: 2147500648, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 75. Base: 2147500658, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 76. Base: 2147500668, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 77. Base: 2147500678, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 78. Base: 2147500688, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 79. Base: 2147500698, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 80. Base: 2147500708, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 81. Base: 2147500718, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 82. Base: 2147500728, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 83. Base: 2147500738, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 84. Base: 2147500748, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 85. Base: 2147500758, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 86. Base: 2147500768, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 87. Base: 2147500778, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 88. Base: 2147500788, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 89. Base: 2147500798, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 90. Base: 2147500808, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 91. Base: 2147500818, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 92. Base: 2147500828, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 93. Base: 2147500838, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 94. Base: 2147500848, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 95. Base: 2147500858, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 96. Base: 2147500868, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 97. Base: 2147500878, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 98. Base: 2147500888, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 99. Base: 2147500898, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 100. Base: 2147500908, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 101. Base: 2147500918, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 102. Base: 2147500928, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 103. Base: 2147500938, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 104. Base: 2147500948, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 105. Base: 2147500958, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 106. Base: 2147500968, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 107. Base: 2147500978, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 108. Base: 2147500988, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 109. Base: 2147500998, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 110. Base: 2147501008, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 111. Base: 2147501018, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 112. Base: 2147501028, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 113. Base: 2147501038, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 114. Base: 2147501048, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 115. Base: 2147501058, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 116. Base: 2147501068, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 117. Base: 2147501078, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 118. Base: 2147501088, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 119. Base: 2147501098, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 120. Base: 2147501108, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 121. Base: 2147501118, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 122. Base: 2147501128, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 123. Base: 2147501138, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 124. Base: 2147501148, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 125. Base: 2147501158, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 126. Base: 2147501168, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 127. Base: 2147501178, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 128. Base: 2147501188, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 129. Base: 2147501201, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 130. Base: 2147501214, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 131. Base: 2147501227, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 132. Base: 2147501240, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 133. Base: 2147501253, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 134. Base: 2147501266, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 135. Base: 2147501279, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 136. Base: 2147501292, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 137. Base: 2147501305, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 138. Base: 2147501318, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 139. Base: 2147501331, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 140. Base: 2147501344, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 141. Base: 2147501357, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 142. Base: 2147501370, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 143. Base: 2147501383, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 144. Base: 2147501396, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 145. Base: 2147501409, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 146. Base: 2147501422, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 147. Base: 2147501435, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 148. Base: 2147501448, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 149. Base: 2147501461, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 150. Base: 2147501474, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 151. Base: 2147501487, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 152. Base: 2147501500, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 153. Base: 2147501513, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 154. Base: 2147501526, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 155. Base: 2147501539, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 156. Base: 2147501552, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 157. Base: 2147501565, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 158. Base: 2147501578, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 159. Base: 2147501591, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 160. Base: 2147501604, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 161. Base: 2147501617, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 162. Base: 2147501630, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 163. Base: 2147501643, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 164. Base: 2147501656, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 165. Base: 2147501669, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 166. Base: 2147501682, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 167. Base: 2147501695, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 168. Base: 2147501708, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 169. Base: 2147501721, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 170. Base: 2147501734, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 171. Base: 2147501747, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 172. Base: 2147501760, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 173. Base: 2147501773, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 174. Base: 2147501786, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 175. Base: 2147501799, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 176. Base: 2147501812, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 177. Base: 2147501825, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 178. Base: 2147501838, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 179. Base: 2147501851, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 180. Base: 2147501864, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 181. Base: 2147501877, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 182. Base: 2147501890, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 183. Base: 2147501903, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 184. Base: 2147501916, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 185. Base: 2147501929, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 186. Base: 2147501942, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 187. Base: 2147501955, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 188. Base: 2147501968, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 189. Base: 2147501981, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 190. Base: 2147501994, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 191. Base: 2147502007, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 192. Base: 2147502020, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 193. Base: 2147502033, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 194. Base: 2147502046, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 195. Base: 2147502059, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 196. Base: 2147502072, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 197. Base: 2147502085, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 198. Base: 2147502098, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 199. Base: 2147502111, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 200. Base: 2147502124, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 201. Base: 2147502137, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 202. Base: 2147502150, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 203. Base: 2147502163, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 204. Base: 2147502176, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 205. Base: 2147502189, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 206. Base: 2147502202, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 207. Base: 2147502215, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 208. Base: 2147502228, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 209. Base: 2147502241, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 210. Base: 2147502254, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 211. Base: 2147502267, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 212. Base: 2147502280, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 213. Base: 2147502293, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 214. Base: 2147502306, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 215. Base: 2147502319, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 216. Base: 2147502332, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 217. Base: 2147502345, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 218. Base: 2147502358, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 219. Base: 2147502371, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 220. Base: 2147502384, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 221. Base: 2147502397, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 222. Base: 2147502410, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 223. Base: 2147502423, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 224. Base: 2147502436, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 225. Base: 2147502449, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 226. Base: 2147502462, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 227. Base: 2147502475, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 228. Base: 2147502488, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 229. Base: 2147502501, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 230. Base: 2147502514, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 231. Base: 2147502527, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 232. Base: 2147502540, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 233. Base: 2147502553, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 234. Base: 2147502566, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 235. Base: 2147502579, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 236. Base: 2147502592, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 237. Base: 2147502605, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 238. Base: 2147502618, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 239. Base: 2147502631, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 240. Base: 2147502644, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 241. Base: 2147502657, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 242. Base: 2147502670, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 243. Base: 2147502683, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 244. Base: 2147502696, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 245. Base: 2147502709, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 246. Base: 2147502722, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 247. Base: 2147502735, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 248. Base: 2147502748, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 249. Base: 2147502761, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 250. Base: 2147502774, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 251. Base: 2147502787, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 252. Base: 2147502800, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 253. Base: 2147502813, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 254. Base: 2147502826, Sel: 40, Flags: 142
+[IDT] Setting IDT gate for interrupt 255. Base: 2147502839, Sel: 40, Flags: 142
+[IDT] IDT Initialization complete
+[System] Initialized IDT
+[PIC] Configuring PIC with offsets 32 and 40, AutoEOI: false
+[PIC] Set mask to 0xffff
+[PIC] Set mask to 0xffff
+[System] Initialized PIC
+[PIT] Set count to 0
+[PIT] Set divisor to 1193
+[System] Initialized PIT
+
+[System] Loaded modules, file count: 4
+[Modules] Loaded /kfont.psf (10741)!
+[Modules] Loaded /boot_logo.kif (1695330)!
+[Modules] Loaded /build_info.txt (69)!
+[Modules] Loaded /bsod.kif (1065621)!
+[Screen] Width: 1024, Height: 768
+
+[System] Starting display...
+[System] Found font!
+[System] Initializing Nighterm with font!
+[System] Initialized Nighterm with code: NIGHTERM_SUCCESS
+[KIF] Success: Successfully drew the image
+[IDT] Handling exception with vector 14
+[IDT] Exception: page fault
+[KIF] Success: Successfully drew the image
+[KERNEL PANIC] rax: 0x0000000000000000, rbx: 0x0000000000000000, rcx: 0x0000000000000ffc, rdx: 0x0000000000000000
+[KERNEL PANIC] rsp: 0xffff800007f62f60, rbp: 0xffff800007f62f70, rsi: 0x00000000ff000000, rdi: 0x00000000000003ff
+[KERNEL PANIC] r8:  0x0000000000000000, r9:  0x0000000000000002, r10: 0xffff800007f62e17, r11: 0x000000000000000a
+[KERNEL PANIC] r12: 0x0000000000000000, r13: 0x0000000000000000, r14: 0x0000000000000000, r15: 0x0000000000000000
+[KERNEL PANIC] rfl: 0x0000000000000286, rip: 0xffffffff800033ec, cs:  0x0000000000000028, ss:  0x0000000000000030
+[PIT] Sleeping for 10000 milliseconds
