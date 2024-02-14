@@ -60,17 +60,17 @@ void i8259_SetMask(uint16_t newMask) {
     iowait();
     outb8(PIC2_DATA, g_PicMask >> 8);
     iowait();
-    dprintf("[PIC] Set mask to 0x%04x\n", g_PicMask);
+    dprintf("[PIC] Set mask to 0x%08llX\n", g_PicMask);
 }
 
 uint16_t i8259_GetMask() {
     uint16_t mask = inb8(PIC1_DATA) | (inb8(PIC2_DATA) << 8);
-    dprintf("[PIC] Get mask: 0x%04x\n", mask);
+    dprintf("[PIC] Get mask: 0x%08llX\n", mask);
     return mask;
 }
 
 void i8259_Configure(uint8_t offsetPic1, uint8_t offsetPic2, bool autoEoi) {
-    dprintf("[PIC] Configuring PIC with offsets %d and %d, AutoEOI: %s\n", offsetPic1, offsetPic2, autoEoi ? "true" : "false");
+    dprintf("[PIC] Configuring PIC with offsets 0x%04llX and 0x%04llX, AutoEOI: %s\n", offsetPic1, offsetPic2, autoEoi ? "true" : "false");
     // Mask everything
     i8259_SetMask(0xFFFF);
 

@@ -8,14 +8,11 @@
 #define MAX_PROCESSES 100 
 
 struct Process {
-    bool initialized;
     uint16_t id;
     int_frame_t *context;
-    uint8_t killsignal;
 };
 
 extern struct Process processes[MAX_PROCESSES];
-extern int_frame_t *cur_ctx; // Declaration of cur_ctx variable
 
 void switch_context(uint16_t pid);
 

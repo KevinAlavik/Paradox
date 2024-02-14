@@ -34,13 +34,13 @@ void init_pmm()
             if (top_address > higher_address)
                 higher_address = top_address;
 
-            dprintf("[Physical Memory Manager] Usable entry at 0x%016llx, Top Address: 0x%016llx, Higher Address: 0x%016llx\n", entry->base, top_address, higher_address);
+            dprintf("[Physical Memory Manager] Usable entry at 0x%016llX, Top Address: 0x%016llX, Higher Address: 0x%016llX\n", entry->base, top_address, higher_address);
         }
     }
     bitmap_pages = higher_address / PAGE_SIZE;
-    dprintf("[Physical Memory Manager] - Bitmap Pages: 0x%016llx\n", bitmap_pages);
+    dprintf("[Physical Memory Manager] - Bitmap Pages: 0x%016llX\n", bitmap_pages);
     bitmap_size = ALIGN_UP(bitmap_pages / 8, PAGE_SIZE);
-    dprintf("[Physical Memory Manager] - Bitmap Size: 0x%016llx\n", bitmap_size);
+    dprintf("[Physical Memory Manager] - Bitmap Size: 0x%016llX\n", bitmap_size);
 
     update_memory();
 
@@ -52,14 +52,14 @@ void init_pmm()
         {
             if (entry->length >= bitmap_size)
             {
-                dprintf("[Physical Memory Manager] Setting bitmap pointer to 0x%016llx\n", entry->base);
+                dprintf("[Physical Memory Manager] Setting bitmap pointer to 0x%016llX\n", entry->base);
                 bitmap = entry->base + hhdm_offset;
-                dprintf("[Physical Memory Manager] Set bitmap pointer to 0x%016llx\n", bitmap);
+                dprintf("[Physical Memory Manager] Set bitmap pointer to 0x%016llX\n", bitmap);
                 memset(bitmap, 0xFF, bitmap_size);
                 entry->base += bitmap_size;
-                dprintf("[Physical Memory Manager] Encreased entry->base by bitmap_size (0x%016llx)\n", entry->base);
+                dprintf("[Physical Memory Manager] Encreased entry->base by bitmap_size (0x%016llX)\n", entry->base);
                 entry->length -= bitmap_size;
-                dprintf("[Physical Memory Manager] Decreased entry->length by bitmap_size (0x%016llx)\n", entry->length);
+                dprintf("[Physical Memory Manager] Decreased entry->length by bitmap_size (0x%016llX)\n", entry->length);
                 break;
             }
         }
@@ -79,7 +79,8 @@ void init_pmm()
     }
 }
 
-void update_memory() {
+void update_memory()
+{
     free_memory = 0;
     for (int entryCount = 0; entryCount < memmap->entry_count; entryCount++)
     {
@@ -124,31 +125,36 @@ void pmm_free(void *ptr)
     bitmap_clear(bitmap, bit_idx);
 }
 
-void visualize_pmm(int startY, int endY) {
+void visualize_pmm(int startY, int endY)
+{
     update_memory();
-    if (bitmap == NULL || framebuffer == NULL) {
+    if (bitmap == NULL || framebuffer == NULL)
+    {
         return;
     }
 
-    for (int i = 0; i < bitmap_size * 8; i++) {
+    for (int i = 0; i < bitmap_size * 8; i++)
+    {
         int y = startY + (i / framebuffer->width); // Adjust y-coordinate to start at startY
-        if (y > endY) {
+        if (y > endY)
+        {
             break;
         }
 
         int x = i % framebuffer->width;
         uint8_t value = (bitmap[i / 8] >> (i % 8)) & 1;
-        if (value) {
+        if (value)
+        {
             // Allocated memory - Red
             nighterm_putpixel(x, y, 255, 0, 0);
-        } else {
+        }
+        else
+        {
             // Free memory - Green
             nighterm_putpixel(x, y, 0, 255, 0);
         }
     }
 }
-
-
 
 // MEMORY FUNCTIONS
 

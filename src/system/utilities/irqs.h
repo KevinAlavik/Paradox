@@ -12,18 +12,6 @@
 #include <printf.h>
 
 void pit_handler(int_frame_t* frame) {
-    cur_ctx = frame;
-
-    for(uint16_t pid = 0; pid < MAX_PROCESSES; pid++) {
-        struct Process* proc = &processes[pid];
-
-        if(!proc->initialized && proc->context != NULL) {
-            int_frame_t *ctx = proc->context;
-            memcpy(frame, ctx, sizeof(int_frame_t));
-            dprintf("[Process Manager] Loaded process %u\n", pid);
-            proc->initialized = true;
-        }
-    }
 	pit_int();
 }
 

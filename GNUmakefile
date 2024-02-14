@@ -57,7 +57,6 @@ override CFLAGS += \
     -mabi=sysv \
     -mcmodel=kernel \
     -mno-80387 \
-    -mno-mmx \
     -mno-red-zone \
     -DPRINTF_DISABLE_SUPPORT_FLOAT \
     -DHEAP_ACCESSABLE \

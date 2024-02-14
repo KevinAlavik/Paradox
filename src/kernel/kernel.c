@@ -15,18 +15,17 @@ Kernel Entry - Paradox OS
 #include <nighterm/nighterm.h>
 #include <system/memory/pmm.h>
 #include <system/utilities/utilities.h>
+#include <system/drivers/speaker.h>
+#include <filesystem/tar.h>
 #include <stdint.h>
 
 #include <kif.h>
 #include <printf.h>
 #include <transform.h>
 
-void test_proc1() {
-    printf("Hello, from proccess 1!\n");
-}
-
-void test_proc2() {
-    printf("Hello, from proccess 2!\n");
+void test_proc()
+{
+    printf("Hello, from proccess!\n");
 }
 
 int main()
@@ -44,8 +43,32 @@ int main()
 
     pit_sleep(1500);
     nighterm_clear();
-    
-    spawn_process(0, test_proc1);
-    spawn_process(1, test_proc2);
+    draw_image((char *)mod_request.response->modules[6]->address, framebuffer->width / 2, framebuffer->height / 2, 1);
+    files_t files = parse_tar((char *)mod_request.response->modules[5]->address);
+    for (size_t i = 0; i < files.count; ++i)
+    {
+        printf("File Name: %s\n", files.files[i].name);
+        printf("File Size: %u bytes\n", files.files[i].size);
+        printf("Is Directory: %s\n", files.files[i].isDirectory ? "Yes" : "No");
+
+        if (files.files[i].isDirectory)
+        {
+            printf("Content: [Directory]\n\n");
+        }
+        else if (files.files[i].content != NULL)
+        {
+            printf("Content: %.*s\n\n", files.files[i].size, files.files[i].content);
+        }
+        else
+        {
+            printf("Content: [Content Not Retrieved]\n\n");
+        }
+    }
+
+    for (size_t i = 0; i < files.count; ++i)
+    {
+        pmm_free((uintptr_t)files.files[i].content);
+    }
+    pmm_free((uintptr_t)files.files);
     hlt();
 }

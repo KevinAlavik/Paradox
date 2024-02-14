@@ -2,7 +2,7 @@
 #include <system/pit/pit.h>
 #include <serial/serial.h>
 
-static void play_sound(uint32_t nFrequence)
+void play_sound(uint32_t nFrequence)
 {
     uint32_t Div;
     uint8_t tmp;
@@ -19,7 +19,7 @@ static void play_sound(uint32_t nFrequence)
     }
 }
 
-static void nosound()
+void nosound()
 {
     uint8_t tmp = inb8(0x61) & 0xFC;
 

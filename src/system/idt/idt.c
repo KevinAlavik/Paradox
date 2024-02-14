@@ -54,7 +54,7 @@ static const char *exception_strings[32] = {
 extern void load_idt(uint64_t);
 
 void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags) {
-    dprintf("[IDT] Setting IDT gate for interrupt %d. Base: %u, Sel: %u, Flags: %u\n", num, base, sel, flags);
+    dprintf("[IDT] Setting IDT gate for interrupt %d. Base: 0x%016llX, Sel: 0x%08llX, Flags: 0x%04llX\n", num, base, sel, flags);
     idt[num].offset_low = (base & 0xFFFF);
     idt[num].offset_middle = (base >> 16) & 0xFFFF;
     idt[num].offset_high = (base >> 32) & 0xFFFFFFFF;
