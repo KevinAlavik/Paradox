@@ -35,11 +35,9 @@ void init_boot(int debug_info)
 
     dprintf("[System] Initialized kmsg stream.\n");
     init_idt();
-    dprintf("[System] Initialized IDT\n");
+    dprintf("[System] Initialized IDT (And IRQ)\n");
     init_pmm();
     dprintf("[System] Initialized PMM\n");
-    i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, false);
-    dprintf("[System] Initialized PIC\n");
     pit_init();
     dprintf("[System] Initialized PIT\n");
     register_irqs();

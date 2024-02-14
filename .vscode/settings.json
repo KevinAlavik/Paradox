@@ -50,7 +50,8 @@
     "transform.h": "c",
     "serial.h": "c",
     "compare": "c",
-    "cstdint": "c"
+    "cstdint": "c",
+    "stdbool.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

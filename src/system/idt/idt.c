@@ -6,7 +6,7 @@
 #include <stddef.h>
 #include <printf.h>
 
-#define NULL (0)
+#define NULL (void*)0
 
 #define IDT_ENTRIES 256
 
@@ -74,6 +74,7 @@ void init_idt() {
     }
 
     // Remap the PIC
+    asm("sti");
     i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, true);
 
     for (int i = 0; i < IDT_ENTRIES; ++i) {
@@ -84,18 +85,19 @@ void init_idt() {
     i8259_Disable(); // Mask all interrupts during initialization
     load_idt((uint64_t)&idt_p);
     i8259_Enable(); // Unmask interrupts after IDT is loaded
+    asm("cli");
     dprintf("[IDT] IDT Initialization complete\n");
 }
 
 void excp_handler(int_frame_t frame) {
-    dprintf("[IDT] Handling exception with vector %d\n", frame.vector);
+    //dprintf("[IDT] Handling exception with vector %d\n", frame.vector);
 
     if (frame.vector < 0x20) {
         dprintf("[IDT] Exception: %s\n", exception_strings[frame.vector]);
         panic(exception_strings[frame.vector], frame);
         hcf();
     } else if (frame.vector >= 0x20 && frame.vector <= 0x2f) {
-        dprintf("[IDT] Handling IRQ: %d\n", frame.vector - 0x20);
+        // dprintf("[IDT] Handling IRQ: %d\n", frame.vector - 0x20);
 
         int irq = frame.vector - 0x20;
         typedef void (*handler_func_t)(int_frame_t*);
@@ -103,8 +105,8 @@ void excp_handler(int_frame_t frame) {
         handler_func_t handler = irq_handlers[irq];
 
         if (handler != NULL) {
-            dprintf("[IDT] Found handler for IRQ %d\n", irq);
-            // handler(&frame);
+            //dprintf("[IDT] Found handler for IRQ %d\n", irq);
+            handler(&frame);
         }
 
 
