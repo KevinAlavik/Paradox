@@ -45,11 +45,11 @@ typedef struct {
 	uint64_t ss;
 } __attribute__((packed)) int_frame_t;
 
-typedef void (*interrupt_handler)();
-
 void load_idt(uint64_t);
 void trigger_interupt(uint64_t a);
 void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags);
 void init_idt();
+void irq_register(uint8_t irq, void* handler);
+void irq_deregister(uint8_t irq);
 
 #endif /* IDT_H */

@@ -3,8 +3,8 @@
 
 struct Process processes[MAX_PROCESSES];
 
-void switch_context(proc_ctx_t context) {
-    
+void switch_context(int_frame_t context) {
+
 }
 
 void spawn_process(uint16_t pid, void *entry)
@@ -14,7 +14,7 @@ void spawn_process(uint16_t pid, void *entry)
         return;
     }
 
-    proc_ctx_t context;
+    int_frame_t context;
 
     context.rip = (uint64_t*)entry;
     context.rsp = (char*)pmm_request_page() + hhdm_offset;

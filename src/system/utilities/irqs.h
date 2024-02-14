@@ -5,14 +5,12 @@
 #include <system/pic/pic.h>
 #include <system/idt/idt.h>
 
-__attribute__((interrupt)) void pit_handler(void *) {
-	pit_int();
-	i8259_SendEndOfInterrupt(0x20);
-}	
+void pit_handler(int_frame_t* frame) {
+	
+}
 
 void register_irqs() {
-	set_idt_gate(0x20, (uint64_t)&pit_handler, 0x28, 0x8E);
-	i8259_Unmask(0);
+    irq_register(0, pit_handler);
 }
 
 #endif // __IRQS_H_

@@ -19,6 +19,7 @@ Kernel Entry - Paradox OS
 #include <printf.h>
 #include <transform.h>
 
+
 int main()
 {   
 
@@ -32,9 +33,10 @@ int main()
     printf("Paradox is licensed under the GPL-v3 license.\n");
     draw_image((char*)mod_request.response->modules[4]->address, 0, term.font_header.height * term.cy, 0);
 
-    pit_sleep(5000);
+    pit_sleep(1000);
     nighterm_clear();
 
     printf("Hello, World!\n");
+
     hlt();
 }

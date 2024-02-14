@@ -1,3 +1,4 @@
+#include "pic.h"
 #include <serial/serial.h>
 #include <stdbool.h>
 #include <printf.h>
@@ -118,6 +119,42 @@ void i8259_SendEndOfInterrupt(int irq) {
 void i8259_Disable() {
     dprintf("[PIC] Disabling PIC\n");
     i8259_SetMask(0xFFFF);
+}
+
+void i8259_Enable() {
+    dprintf("[PIC] Enabling PIC\n");
+    // Send initialization command to both PICs
+    outb8(PIC1_COMMAND, PIC_ICW1_ICW4 | PIC_ICW1_INITIALIZE);
+    iowait();
+    outb8(PIC2_COMMAND, PIC_ICW1_ICW4 | PIC_ICW1_INITIALIZE);
+    iowait();
+
+    // Send ICW2: Remap IRQs 0-7 to IDT vector offset 0x20
+    outb8(PIC1_DATA, PIC_REMAP_OFFSET);
+    iowait();
+    outb8(PIC2_DATA, PIC_REMAP_OFFSET + 8); // ICW2 for the slave PIC
+    iowait();
+
+    // Send ICW3: Tell PIC1 that there is a slave PIC at IRQ2 (binary: 0000 0100)
+    outb8(PIC1_DATA, 4);
+    iowait();
+    // Tell PIC2 its cascade identity (IRQ2)
+    outb8(PIC2_DATA, 2);
+    iowait();
+
+    // Send ICW4: Set x86 mode
+    outb8(PIC1_DATA, PIC_ICW4_8086);
+    iowait();
+    outb8(PIC2_DATA, PIC_ICW4_8086);
+    iowait();
+
+    // Enable IRQs
+    uint8_t mask1 = inb8(PIC1_DATA) & ~(1 << 2); // Unmask IRQ2 (cascade identity)
+    outb8(PIC1_DATA, mask1);
+    iowait();
+    uint8_t mask2 = inb8(PIC2_DATA) & ~0x80; // Unmask all IRQs
+    outb8(PIC2_DATA, mask2);
+    iowait();
 }
 
 void i8259_Mask(int irq) {

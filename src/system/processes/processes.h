@@ -3,27 +3,21 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <system/idt/idt.h>
 
 #define MAX_PROCESSES 100 
 
-typedef struct {
-  uint64_t rip;
-  uint64_t rsp;
-  uint64_t cs;
-  uint64_t ss;
-  uint64_t rflags;
-} proc_ctx_t;
 
-struct Process {
+struct Process {  
   bool initialized;
   uint16_t id;
-  proc_ctx_t *context;
+  int_frame_t *context;
   uint8_t killsignal;
 };
 
 extern struct Process processes[MAX_PROCESSES]; 
 
-proc_ctx_t get_process_context();
+void switch_context(int_frame_t context);
 
 void spawn_process(uint16_t pid, void *entry);
 void kill_process(struct Process* process);

@@ -1,6 +1,7 @@
 #include "idt.h"
 #include <system/cpu/panic.h>
 #include <system/cpu/cpu.h>
+#include <system/pic/pic.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <printf.h>
@@ -11,7 +12,7 @@
 
 idt_entry_t idt[IDT_ENTRIES];
 idt_pointer_t idt_p;
-interrupt_handler irq_handlers[16];
+void* irq_handlers[16];
 
 extern uint64_t isr_tbl[];
 
@@ -72,13 +73,17 @@ void init_idt() {
         irq_handlers[i] = NULL;
     }
 
+    // Remap the PIC
+    i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, true);
+
     for (int i = 0; i < IDT_ENTRIES; ++i) {
         set_idt_gate(i, isr_tbl[i], 0x28, 0x8E);
     }
 
-    // TODO: Remap and enable PIC
-
+    // Enable interrupts on the PIC
+    i8259_Disable(); // Mask all interrupts during initialization
     load_idt((uint64_t)&idt_p);
+    i8259_Enable(); // Unmask interrupts after IDT is loaded
     dprintf("[IDT] IDT Initialization complete\n");
 }
 
@@ -93,6 +98,15 @@ void excp_handler(int_frame_t frame) {
         dprintf("[IDT] Handling IRQ: %d\n", frame.vector - 0x20);
 
         int irq = frame.vector - 0x20;
+        typedef void (*handler_func_t)(int_frame_t*);
+
+        handler_func_t handler = irq_handlers[irq];
+
+        if (handler != NULL) {
+            dprintf("[IDT] Found handler for IRQ %d\n", irq);
+            // handler(&frame);
+        }
+
 
         i8259_SendEndOfInterrupt(irq);
     } else if (frame.vector == 0x80) {
@@ -100,7 +114,7 @@ void excp_handler(int_frame_t frame) {
     }
 }
 
-void irq_register(uint8_t irq, interrupt_handler handler)
+void irq_register(uint8_t irq, void* handler)
 {
     dprintf("[IDT] Registering IRQ handler for IRQ %d\n", irq);
     irq_handlers[irq] = handler;
