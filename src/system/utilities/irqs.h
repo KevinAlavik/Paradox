@@ -7,25 +7,24 @@
 #include <system/cpu/panic.h>
 #include <system/cpu/cpu.h>
 #include <system/processes/processes.h>
-#include <system/memory/pmm.h>
 #include <stdbool.h>
+
 #include <printf.h>
 
 void pit_handler(int_frame_t* frame) {
-    int_frame_t *cur_ctx = frame;
+    cur_ctx = frame;
 
     for(uint16_t pid = 0; pid < MAX_PROCESSES; pid++) {
         struct Process* proc = &processes[pid];
 
-        if(!proc->initialized) {
-            if (proc->context != NULL) {
-                memcpy(frame, &proc->context, sizeof(int_frame_t));
-                dprintf("[Process Manager] Loaded process %u\n", pid);
-                proc->initialized = true;
-            }
+        if(!proc->initialized && proc->context != NULL) {
+            int_frame_t *ctx = proc->context;
+            memcpy(frame, ctx, sizeof(int_frame_t));
+            dprintf("[Process Manager] Loaded process %u\n", pid);
+            proc->initialized = true;
         }
     }
-    pit_int();
+	pit_int();
 }
 
 void register_irqs() {

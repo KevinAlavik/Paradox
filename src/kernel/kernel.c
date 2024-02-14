@@ -21,8 +21,12 @@ Kernel Entry - Paradox OS
 #include <printf.h>
 #include <transform.h>
 
-void test_proc() {
+void test_proc1() {
     printf("Hello, from proccess 1!\n");
+}
+
+void test_proc2() {
+    printf("Hello, from proccess 2!\n");
 }
 
 int main()
@@ -41,7 +45,7 @@ int main()
     pit_sleep(1500);
     nighterm_clear();
     
-    printf("Hello, World!\n");
-    spawn_process(0, &test_proc);
+    spawn_process(0, test_proc1);
+    spawn_process(1, test_proc2);
     hlt();
 }
