@@ -108,7 +108,8 @@ void i8259_Configure(uint8_t offsetPic1, uint8_t offsetPic2, bool autoEoi) {
 }
 
 void i8259_SendEndOfInterrupt(int irq) {
-    dprintf("[PIC] Sending End of Interrupt for IRQ %d\n", irq);
+    // Uncomment this to make kmesg shitty
+    // dprintf("[PIC] Sending End of Interrupt for IRQ %d\n", irq);
     if (irq >= 8)
         outb8(PIC2_COMMAND, PIC_CMD_END_OF_INTERRUPT);
     outb8(PIC1_COMMAND, PIC_CMD_END_OF_INTERRUPT);

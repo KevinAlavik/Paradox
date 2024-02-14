@@ -1,18 +1,22 @@
-#include "pit.h"
+#include "PIT.h"
 #include <system/pic/pic.h>
 #include <serial/serial.h>
 #include <printf.h>
+#include <system/cpu/cpu.h>
+#include <system/idt/idt.h>
 
 uint64_t uptime_secs;
 uint16_t uptime_milis;
 uint64_t countdown;
+
 void pit_set_divisor(uint16_t divisor) {
     if (divisor < 100)
         divisor = 100;
     outb8(PIT_DATA, (uint8_t)(divisor & 0x00ff));
     iowait();
     outb8(PIT_DATA, (uint8_t)((divisor & 0xff00) >> 8));
-    dprintf("[PIT] Set divisor to %u\n", divisor);
+    dprintf("[PIT] Set divisor, Low byte: 0x%08llx, High byte: 0x%08llx\n", (uint8_t)(divisor & 0x00ff),  (uint8_t)((divisor & 0xff00) >> 8));
+    dprintf("[PIT] - 0x%08llx\n", divisor);
 }
 
 uint16_t pit_read_count() {
@@ -26,9 +30,12 @@ uint16_t pit_read_count() {
     count = inb8(PIT_DATA);       // Low byte
     count |= inb8(PIT_DATA) << 8; // High byte
 
+
+    dprintf("[PIT] Read count, Low byte: 0x%08llx, High byte: 0x%08llx\n", inb8(PIT_DATA), inb8(PIT_DATA) << 8);
+    dprintf("[PIT] - 0x%08llx\n", count);
+
     __asm__ volatile("sti");
 
-    dprintf("[PIT] Read count: %u\n", count);
     return count;
 }
 
@@ -39,12 +46,14 @@ void pit_set_count(uint16_t count) {
     outb8(PIT_DATA, count & 0xFF);          // Low byte
     outb8(PIT_DATA, (count & 0xFF00) >> 8); // High byte
 
+    dprintf("[PIT] Set count, Low byte: 0x%08llx, High byte: 0x%08llx\n", count & 0xFF, (count & 0xFF00) >> 8);
+    dprintf("[PIT] - 0x%08llx\n", count);
+
     __asm__ volatile("sti");
-    dprintf("[PIT] Set count to %u\n", count);
+    return;
 }
 
-
-void init_pit() {
+void pit_init() {
     pit_set_count(0);
     pit_set_divisor(1193182 / 1000);
     countdown = 0;
@@ -65,16 +74,12 @@ void pit_int() {
     if (countdown != 0) {
         countdown--;
     }
-    dprintf("[PIT] Timer Interrupt - Uptime: %lu seconds, %u milliseconds\n", uptime_secs, uptime_milis);
 }
 
 void pit_sleep(uint64_t millis) {
     countdown = millis;
-    dprintf("[PIT] Sleeping for %lu milliseconds\n", millis);
 
     while (countdown != 0) {
         __asm__ volatile("hlt");
     }
-
-    dprintf("[PIT] Sleep completed\n");
 }

@@ -6,4 +6,5 @@ void nighterm_clear();
 int endsWith(const char *str, const char *suffix);
 char* get_nighterm_return_string(int return_code); 
 int tolower(int c);
+
 #endif // UTILITIES_H

@@ -21,18 +21,20 @@ Kernel Entry - Paradox OS
 
 int main()
 {   
-    uint64_t hhdm_offset = hhdm_request.response->offset;
 
     draw_image((char*)mod_request.response->modules[1]->address, framebuffer->width/2, framebuffer->height/2, 1);
     char* boot_info = (char*)mod_request.response->modules[2]->address;
-    printf("%s, Mode: pre-boot (parked)\n", boot_info);
+    printf("%s, Mode: pre-boot (normal)\n", boot_info);
     printf("Nighterm Info: %s, %dx%d\n", term.title, framebuffer->width / term.font_header.width, framebuffer->height / term.font_header.height);
     printf("Free Memory: %dMB\n", bytes_to_megabytes(free_memory));   
     printf("\n");
+    printf("Copyright - 2024, Kevin Alavik, All rights reserved\n");
+    printf("Paradox is licensed under the GPL-v3 license.\n");
+    draw_image((char*)mod_request.response->modules[4]->address, 0, term.font_header.height * term.cy, 0);
 
-    visualize_pmm(term.font_header.height * term.cy, PAGE_SIZE);
-    
-    printf("åäö");
+    pit_sleep(5000);
+    nighterm_clear();
 
+    printf("Hello, World!\n");
     hlt();
 }

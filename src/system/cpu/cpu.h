@@ -3,5 +3,6 @@
 
 void hcf();
 void hlt();
+void cli();
 
 #endif // CPU_H_

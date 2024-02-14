@@ -12,3 +12,7 @@ void hlt() {
         asm ("hlt");
     }
 }
+
+void cli() {
+    asm ("cli");
+}

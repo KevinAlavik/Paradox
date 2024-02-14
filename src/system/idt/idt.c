@@ -16,38 +16,39 @@ interrupt_handler irq_handlers[16];
 extern uint64_t isr_tbl[];
 
 static const char *exception_strings[32] = {
-    "division by zero",
-    "debug",
-    "nonmaskable interrupt",
-    "breakpoint",
-    "overflow",
-    "bound range exceeded",
-    "invalid opcode",
-    "device not available",
-    "double fault",
-    "coprocessor segment overrun",
-    "invalid tss",
-    "segment not present",
-    "stack segment fault",
-    "general protection fault",
-    "page fault",
-    "reserved",
-    "x87 fpu error"
-    "alignment check",
-    "machine check",
-    "simd exception",
-    "virtualization exception",
-    "control protection exception",
-    "reserved",
-    "reserved",
-    "reserved",
-    "reserved",
-    "reserved",
-    "reserved",
-    "hypervisor injection exception",
-    "vmm communication exception",
-    "security exception",
-    "reserved" };
+    "Division By Zero",
+    "Debug",
+    "Nonmaskable Interrupt",
+    "Breakpoint",
+    "Overflow",
+    "Bound Range Exceeded",
+    "Invalid Opcode",
+    "Device Not Available",
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Invalid TSS",
+    "Segment Not Present",
+    "Stack Segment Fault",
+    "General Protection Fault",
+    "Page Fault",
+    "Reserved",
+    "x87 FPU Error"
+    "Alignment Check",
+    "Machine Check",
+    "Simd Exception",
+    "Virtualization Exception",
+    "Control Protection Exception",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Hypervisor Injection Exception",
+    "VMM Communication Exception",
+    "Security Exception",
+    "Reserved" 
+};
 
 extern void load_idt(uint64_t);
 
@@ -91,18 +92,11 @@ void excp_handler(int_frame_t frame) {
     } else if (frame.vector >= 0x20 && frame.vector <= 0x2f) {
         dprintf("[IDT] Handling IRQ: %d\n", frame.vector - 0x20);
 
-        // NOTE: This is intentionally left commented out because PIC is not initialized yet.
         int irq = frame.vector - 0x20;
 
-        //if (irq_handlers[irq] != NULL) {
-        //    irq_handlers[irq]();
-        //}
-
-        //pic_send_eoi();
-        //apic_send_eoi();
+        i8259_SendEndOfInterrupt(irq);
     } else if (frame.vector == 0x80) {
         dprintf("[IDT] Handling system call\n");
-        // handle syscalls here
     }
 }
 

@@ -9,6 +9,7 @@
 #include <system/pit/pit.h>
 #include <system/pic/pic.h>
 #include <system/memory/pmm.h>
+#include <system/utilities/irqs.h>
 
 volatile struct limine_module_request mod_request = {
     .id = LIMINE_MODULE_REQUEST, .revision = 0};
@@ -23,11 +24,15 @@ volatile struct limine_hhdm_request hhdm_request = {
 
 
 struct limine_framebuffer *framebuffer;
+uint64_t hhdm_offset;
 
 void init_boot(int debug_info)
 {
     int nstatus;
+
+    hhdm_offset = hhdm_request.response->offset;
     framebuffer = framebuffer_request.response->framebuffers[0];
+
     dprintf("[System] Initialized kmsg stream.\n");
     init_idt();
     dprintf("[System] Initialized IDT\n");
@@ -35,8 +40,10 @@ void init_boot(int debug_info)
     dprintf("[System] Initialized PMM\n");
     i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, false);
     dprintf("[System] Initialized PIC\n");
-    init_pit();
+    pit_init();
     dprintf("[System] Initialized PIT\n");
+    register_irqs();
+    dprintf("[System] Registered IRQs\n");
     dprintf("\n");
 
     dprintf("[System] Loaded modules, file count: %d\n", mod_request.response->module_count);
