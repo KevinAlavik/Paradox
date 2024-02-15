@@ -47,5 +47,4 @@ void panic(const char *reason, int_frame_t frame)
     // visualize_pmm(0, 0, framebuffer->width, (bitmap_size * PAGE_SIZE) / framebuffer->width);
 
     beep();
-    hcf();
 }

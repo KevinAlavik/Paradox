@@ -24,6 +24,7 @@ volatile struct limine_hhdm_request hhdm_request = {
 
 struct limine_framebuffer *framebuffer;
 uint64_t hhdm_offset;
+int_frame_t *cur_frame;
 
 void init_boot(int debug_info)
 {
@@ -81,42 +82,32 @@ void init_boot(int debug_info)
         dprintf("[System] Initialized Nighterm with code: %s\n", get_nighterm_return_string(nstatus));
     }
 
-    int maxRetries = 5;
-    int retryCount = 0;
-    int kstatus;
+    int kstatus = main(); // Launch the kernel
 
-    do
+    if (kstatus == 0)
     {
-        kstatus = main(); // Launch the kernel
-        if (kstatus == 0)
-        {
-            dprintf("[Kernel Success] Kernel quit successfully, shutting down!\n");
-            hcf(); // Replace with shutdown later on
-        }
-        else if (kstatus == 1)
-        {
-            dprintf("[Kernel Warning] Kernel quit unexpectedly (%d)! Trying to relaunch (%d/%d)\n", kstatus, retryCount + 1, maxRetries);
-            if (retryCount + 1 == 5)
-            {
-                kstatus = main();
-            }
-        }
-        else if (kstatus == 2)
-        {
-            printf("[Kernel Panic] Kernel panicked and quit, please see kmsg for extra info.\n");
-            dprintf("[Kernel Panic] Kernel panicked and quit, the kernel process returned with a 2 that means something went really wrong, and we are shutting down your computer!\n");
-            hcf(); // Replace with shutdown later on
-        }
-
-        retryCount++;
-
-    } while (retryCount < maxRetries && kstatus == 1);
-
-    if (kstatus == 1)
+        dprintf("[Kernel Success] Kernel quit successfully, shutting down in 10 seconds!\n");
+        pit_sleep(10000);
+        shutdown();
+    }
+    else if (kstatus == 1)
     {
-        dprintf("[Kernel Warning] Kernel quit unexpectedly (We tried to rescue it but failed), shutting down...\n", retryCount);
-        hcf(); // Replace with shutdown later on
+        dprintf("[Kernel Error] A kernel error occured, check kmesg for rason! Rebooting...\n");
+        reboot();
+    }
+    else if (kstatus == 2)
+    {
+        panic("[Kernel Panic] Kernel quit with a critical error code, please see kmsg for extra info.\n", *cur_frame);
+        dprintf("[Kernel Panic] Kernel quit with a critical error code, the kernel process returned with a 2 that means something went really wrong, and we are shutting down your computer in 10 seconds!\n");
+        pit_sleep(10000);
+        shutdown();
+    }
+    else
+    {
+        dprintf("[Kernel Warning] Kernel returned %d\n", kstatus);
     }
 
-    hlt(); // This is needed, if you remove this it exits the boot function and continues to a hcf(); and that breaks things
+    // If we reach this point, something unexpected happened
+    dprintf("[Error] Unexpected behavior occurred, shutting down...\n");
+    shutdown();
 }

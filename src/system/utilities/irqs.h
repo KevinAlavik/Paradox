@@ -11,11 +11,14 @@
 
 #include <printf.h>
 
-void pit_handler(int_frame_t* frame) {
-	pit_int();
+void pit_handler(int_frame_t *frame)
+{
+    cur_frame = frame;
+    pit_int();
 }
 
-void register_irqs() {
+void register_irqs()
+{
     irq_register(0, pit_handler);
 }
 

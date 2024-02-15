@@ -43,9 +43,15 @@ int main()
     draw_image((char *)mod_request.response->modules[4]->address, 0, term.font_header.height * term.cy, 0);
 
     nighterm_clear();
-    init_wm((char *)mod_request.response->modules[6]->address);
+    // init_wm((char *)mod_request.response->modules[6]->address); // Skip this for now. TODO: impelement a real WM
 
     files_t parsedFiles = parse_tar((char *)mod_request.response->modules[5]->address);
+
+    if (parsedFiles.count <= 0)
+    {
+        dprintf("[Kernel Error] REASON: No files were found in the parsed files? Got count %d\n", parsedFiles.count);
+        return KERNEL_QUIT_ERROR;
+    }
 
     if (parsedFiles.files != NULL)
     {
@@ -58,7 +64,7 @@ int main()
             // Check if content is NULL before printing
             if (parsedFiles.files[i].content != NULL)
             {
-                printf("Content: %s\n\n", parsedFiles.files[i].content);
+                printf("Content: \n\n%s\n\n", parsedFiles.files[i].content);
             }
             else
             {
@@ -71,5 +77,5 @@ int main()
         printf("Failed to parse TAR archive.\n");
     }
 
-    hlt();
+    return KERNEL_QUIT_SUCCESS; // Just shutdown after 10 seconds.
 }

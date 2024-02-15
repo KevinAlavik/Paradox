@@ -6,13 +6,13 @@
 #include <stddef.h>
 #include <printf.h>
 
-#define NULL (void*)0
+#define NULL (void *)0
 
 #define IDT_ENTRIES 256
 
 idt_entry_t idt[IDT_ENTRIES];
 idt_pointer_t idt_p;
-void* irq_handlers[16];
+void *irq_handlers[16];
 
 extern uint64_t isr_tbl[];
 
@@ -48,12 +48,12 @@ static const char *exception_strings[32] = {
     "Hypervisor Injection Exception",
     "VMM Communication Exception",
     "Security Exception",
-    "Reserved" 
-};
+    "Reserved"};
 
 extern void load_idt(uint64_t);
 
-void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags) {
+void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags)
+{
     dprintf("[IDT] Setting IDT gate for interrupt %d. Base: 0x%016llX, Sel: 0x%08llX, Flags: 0x%04llX\n", num, base, sel, flags);
     idt[num].offset_low = (base & 0xFFFF);
     idt[num].offset_middle = (base >> 16) & 0xFFFF;
@@ -64,12 +64,14 @@ void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags) {
     idt[num].zero = 0;
 }
 
-void init_idt() {
+void init_idt()
+{
     dprintf("[IDT] Initializing IDT\n");
     idt_p.limit = sizeof(idt_entry_t) * IDT_ENTRIES - 1;
     idt_p.base = (uint64_t)&idt;
 
-    for (size_t i = 0; i < 16; i++) {
+    for (size_t i = 0; i < 16; i++)
+    {
         irq_handlers[i] = NULL;
     }
 
@@ -77,7 +79,8 @@ void init_idt() {
     asm("sti");
     i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, true);
 
-    for (int i = 0; i < IDT_ENTRIES; ++i) {
+    for (int i = 0; i < IDT_ENTRIES; ++i)
+    {
         set_idt_gate(i, isr_tbl[i], 0x28, 0x8E);
     }
 
@@ -89,34 +92,40 @@ void init_idt() {
     dprintf("[IDT] IDT Initialization complete\n");
 }
 
-void excp_handler(int_frame_t frame) {
-    //dprintf("[IDT] Handling exception with vector %d\n", frame.vector);
+void excp_handler(int_frame_t frame)
+{
+    // dprintf("[IDT] Handling exception with vector %d\n", frame.vector);
 
-    if (frame.vector < 0x20) {
+    if (frame.vector < 0x20)
+    {
         dprintf("[IDT] Exception: %s\n", exception_strings[frame.vector]);
         panic(exception_strings[frame.vector], frame);
         hcf();
-    } else if (frame.vector >= 0x20 && frame.vector <= 0x2f) {
+    }
+    else if (frame.vector >= 0x20 && frame.vector <= 0x2f)
+    {
         // dprintf("[IDT] Handling IRQ: %d\n", frame.vector - 0x20);
 
         int irq = frame.vector - 0x20;
-        typedef void (*handler_func_t)(int_frame_t*);
+        typedef void (*handler_func_t)(int_frame_t *);
 
         handler_func_t handler = irq_handlers[irq];
 
-        if (handler != NULL) {
-            //dprintf("[IDT] Found handler for IRQ %d\n", irq);
+        if (handler != NULL)
+        {
+            // dprintf("[IDT] Found handler for IRQ %d\n", irq);
             handler(&frame);
         }
 
-
         i8259_SendEndOfInterrupt(irq);
-    } else if (frame.vector == 0x80) {
+    }
+    else if (frame.vector == 0x80)
+    {
         dprintf("[IDT] Handling system call\n");
     }
 }
 
-void irq_register(uint8_t irq, void* handler)
+void irq_register(uint8_t irq, void *handler)
 {
     dprintf("[IDT] Registering IRQ handler for IRQ %d\n", irq);
     irq_handlers[irq] = handler;
