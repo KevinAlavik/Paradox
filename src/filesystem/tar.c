@@ -2,18 +2,19 @@
 #include <strings.h>
 #include <system/memory/pmm.h>
 #include <printf.h>
-
-#define MAX_FILES 100
+#include <system/cpu/cpu.h>
 
 files_t parse_tar(char *rawData)
 {
     files_t result;
-    result.files = NULL;
+    file_t files[MAX_FILES];                          // Pre-allocated array to hold file_t structures
+    char file_contents[MAX_FILES][FILE_CONTENT_SIZE]; // Pre-allocated buffer pool for file contents
+    result.files = files;
     result.count = 0;
 
     size_t offset = 0;
-    size_t fileIndex = 0;
-    file_t files[MAX_FILES];
+
+    dprintf("\n---------- Parsing files ----------\n");
 
     while (rawData[offset] != '\0' && result.count < MAX_FILES)
     {
@@ -27,59 +28,49 @@ files_t parse_tar(char *rawData)
             break;
         }
 
-        file_t file;
-        file.name = header->filename;
-        file.size = strtol(header->size, NULL, 8);
-        file.isDirectory = (header->typeflag[0] == '5');
+        file_t *file = &files[result.count];
+        file->name = header->filename;
+        file->size = strtol(header->size, NULL, 8);
+        file->isDirectory = (header->typeflag[0] == '5');
 
-        dprintf("[Tar] File name: %s\n", file.name);
-        dprintf("[Tar] File size: %llu bytes\n", file.size);
-        dprintf("[Tar] Is directory: %s\n", file.isDirectory ? "Yes" : "No");
+        dprintf("[Tar] File name: %s\n", file->name);
+        dprintf("[Tar] File size: %llu bytes\n", file->size);
+        dprintf("[Tar] Is directory: %s\n", file->isDirectory ? "Yes" : "No");
 
-        file.content = (char *)pmm_request_page();
-        if (file.content == NULL)
+        if (file->size > FILE_CONTENT_SIZE)
         {
-            dprintf("[Tar] Memory allocation failed.\n");
+            dprintf("[Tar] File size exceeds maximum content size.\n");
             return result;
         }
 
-        // Copy file content from rawData to file.content
-        memcpy(file.content, &rawData[offset + TAR_BLOCK_SIZE], file.size);
-        file.content[file.size] = '\0'; // Ensure null-termination
+        // Copy file content from rawData to pre-allocated buffer
+        memcpy(file_contents[result.count], &rawData[offset + TAR_BLOCK_SIZE], file->size);
+        file_contents[result.count][file->size] = '\0'; // Ensure null-termination
+        dprintf("[Tar] File content: %s\n\n", file_contents[result.count]);
 
-        dprintf("[Tar] File content: %s\n\n", file.content);
+        // Point file content to the pre-allocated buffer
+        file->content = file_contents[result.count];
 
-        files[fileIndex++] = file;
         result.count++;
 
         // Move offset to the next tar block
-        offset += (file.size + TAR_BLOCK_SIZE - 1) / TAR_BLOCK_SIZE * TAR_BLOCK_SIZE + TAR_BLOCK_SIZE;
-    }
-
-    result.files = (file_t *)pmm_request_page();
-    if (result.files == NULL)
-    {
-        dprintf("[Tar] Memory allocation failed.\n");
-        return result;
-    }
-
-    for (size_t i = 0; i < result.count; ++i)
-    {
-        result.files[i].name = files[i].name;
-        result.files[i].size = files[i].size;
-        result.files[i].isDirectory = files[i].isDirectory;
-
-        result.files[i].content = (char *)pmm_request_page();
-        if (result.files[i].content == NULL)
-        {
-            dprintf("[Tar] Memory allocation failed.\n");
-            return result;
-        }
-
-        memcpy(result.files[i].content, files[i].content, files[i].size + 1);
+        offset += (file->size + TAR_BLOCK_SIZE - 1) / TAR_BLOCK_SIZE * TAR_BLOCK_SIZE + TAR_BLOCK_SIZE;
     }
 
     dprintf("[Tar] Parsing complete. Total files: %llu\n", result.count);
+    dprintf("-----------------------------------\n\n");
 
     return result;
+}
+
+file_t *find_file(files_t *filesList, const char *filename)
+{
+    for (size_t i = 0; i < filesList->count; ++i)
+    {
+        if (strcmp(filesList->files[i].name, filename) == 0)
+        {
+            return &(filesList->files[i]);
+        }
+    }
+    return NULL; // File not found
 }

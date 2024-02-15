@@ -119,6 +119,58 @@ void *pmm_request_page()
     }
 }
 
+void *pmm_request_pages(size_t numPages)
+{
+    uint64_t last_allocated_index = 0;
+
+    // Loop until we find consecutive free pages
+    while (1)
+    {
+        // Check if the current page is free
+        if (!bitmap_get(bitmap, last_allocated_index))
+        {
+            size_t consecutive_free_pages = 1;
+
+            // Check if consecutive pages are free
+            for (size_t i = 1; i < numPages; ++i)
+            {
+                if (!bitmap_get(bitmap, last_allocated_index + i))
+                {
+                    ++consecutive_free_pages;
+                }
+                else
+                {
+                    // If any page in the sequence is not free, reset the counter
+                    consecutive_free_pages = 0;
+                    break;
+                }
+            }
+
+            // If we found enough consecutive free pages, allocate them
+            if (consecutive_free_pages == numPages)
+            {
+                // Mark the pages as allocated in the bitmap
+                for (size_t i = 0; i < numPages; ++i)
+                {
+                    bitmap_set(bitmap, last_allocated_index + i);
+                }
+
+                // Return a pointer to the first page
+                return (void *)(last_allocated_index * PAGE_SIZE);
+            }
+        }
+
+        // Move to the next page
+        ++last_allocated_index;
+
+        // Check if we have reached the end of the bitmap
+        if (last_allocated_index >= bitmap_pages)
+        {
+            return NULL; // No consecutive free pages found
+        }
+    }
+}
+
 void pmm_free(void *ptr)
 {
     uint64_t bit_idx = ((uint64_t)ptr / PAGE_SIZE);

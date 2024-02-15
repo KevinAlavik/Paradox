@@ -7,6 +7,8 @@
 #define TAR_BLOCK_SIZE 512
 #define TAR_NAME_SIZE 100
 #define TAR_PREFIX_SIZE 155
+#define MAX_FILES 100
+#define FILE_CONTENT_SIZE 4096
 
 typedef struct
 {
@@ -44,5 +46,6 @@ typedef struct
 } files_t;
 
 files_t parse_tar(char *rawData);
+file_t *find_file(files_t *filesList, const char *filename);
 
 #endif // __TAR_H__

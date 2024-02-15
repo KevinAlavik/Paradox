@@ -15,27 +15,23 @@ void init_wm(char *wallpaperData)
     keyboard.out = 0;
 
     draw_image(wallpaperData, framebuffer->width / 2, framebuffer->height / 2, 1);
-    draw_tab();
-    term.cy = (framebuffer->height / term.font_header.height) - 1;
-
-    printf("Paradox v0.1.1 - %dMB", bytes_to_megabytes(free_memory));
 }
 
-void draw_tab()
-{
-    int tab_height = 30;
-    int shadow_offset_x = 2;
-    int shadow_offset_y = 4;
+// void draw_tab()
+// {
+//     int tab_height = 30;
+//     int shadow_offset_x = 2;
+//     int shadow_offset_y = 4;
 
-    int tab_color_r = 193;
-    int tab_color_g = 193;
-    int tab_color_b = 193;
+//     int tab_color_r = 193;
+//     int tab_color_g = 193;
+//     int tab_color_b = 193;
 
-    nighterm_set_char_bg(tab_color_r, tab_color_g, tab_color_b);
-    nighterm_set_char_fg(0, 0, 0);
+//     nighterm_set_char_bg(tab_color_r, tab_color_g, tab_color_b);
+//     nighterm_set_char_fg(0, 0, 0);
 
-    draw_rect(0, framebuffer->height - tab_height, framebuffer->width, tab_height, tab_color_r, tab_color_g, tab_color_b, true, true, shadow_offset_x, shadow_offset_y);
-}
+//     draw_rect(0, framebuffer->height - tab_height, framebuffer->width, tab_height, tab_color_r, tab_color_g, tab_color_b, true, true, shadow_offset_x, shadow_offset_y);
+// }
 
 void putpixel(uint64_t x, uint64_t y, uint8_t r, uint8_t g, uint8_t b)
 {

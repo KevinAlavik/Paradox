@@ -19,6 +19,7 @@ extern uint64_t free_memory;
 void init_pmm();
 void update_memory(); // Declaration of update_memory function
 void *pmm_request_page();
+void *pmm_request_pages(size_t numPages);
 void pmm_free(void *ptr);
 void visualize_pmm(int startX, int startY, int width, int height);
 

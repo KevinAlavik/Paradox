@@ -5,6 +5,7 @@
 #include <nighterm/nighterm.h>
 #include <system/drivers/speaker.h>
 #include <system/memory/pmm.h>
+#include <filesystem/tar.h>
 
 #include <printf.h>
 #include <kif.h>
@@ -17,6 +18,7 @@ void panic(const char *reason, int_frame_t frame)
 
     nighterm_flush(70, 105, 255);
     nighterm_set_char_bg(70, 105, 255);
+
     draw_image((char *)mod_request.response->modules[3]->address, 0, 0, 0);
 
     printf("Computer no workie :( \n\n");
