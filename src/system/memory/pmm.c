@@ -125,7 +125,7 @@ void pmm_free(void *ptr)
     bitmap_clear(bitmap, bit_idx);
 }
 
-void visualize_pmm(int startY, int endY)
+void visualize_pmm(int startX, int startY, int width, int height)
 {
     update_memory();
     if (bitmap == NULL || framebuffer == NULL)
@@ -133,25 +133,34 @@ void visualize_pmm(int startY, int endY)
         return;
     }
 
-    for (int i = 0; i < bitmap_size * 8; i++)
-    {
-        int y = startY + (i / framebuffer->width); // Adjust y-coordinate to start at startY
-        if (y > endY)
-        {
-            break;
-        }
+    // Ensure the startY and startX values are within bounds
+    if (startY < 0)
+        startY = 0;
+    if (startX < 0)
+        startX = 0;
 
-        int x = i % framebuffer->width;
-        uint8_t value = (bitmap[i / 8] >> (i % 8)) & 1;
-        if (value)
+    // Ensure the height and width don't exceed the framebuffer dimensions
+    if (startY + height > framebuffer->height)
+        height = framebuffer->height - startY;
+    if (startX + width > framebuffer->width)
+        width = framebuffer->width - startX;
+
+    for (int y = startY; y < startY + height; y++)
+    {
+        for (int x = startX; x < startX + width; x++)
         {
-            // Allocated memory - Red
-            nighterm_putpixel(x, y, 255, 0, 0);
-        }
-        else
-        {
-            // Free memory - Green
-            nighterm_putpixel(x, y, 0, 255, 0);
+            int i = y * framebuffer->width + x;
+            uint8_t value = (bitmap[i / 8] >> (i % 8)) & 1;
+            if (value)
+            {
+                // Allocated memory - Red
+                nighterm_putpixel(x, y, 255, 0, 0);
+            }
+            else
+            {
+                // Free memory - Green
+                nighterm_putpixel(x, y, 0, 255, 0);
+            }
         }
     }
 }

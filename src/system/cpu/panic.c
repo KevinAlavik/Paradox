@@ -42,7 +42,7 @@ void panic(const char *reason, int_frame_t frame)
     dprintf("[KERNEL PANIC] r12: 0x%.16llX, r13: 0x%.16llX, r14: 0x%.16llX, r15: 0x%.16llX\n", frame.r12, frame.r13, frame.r14, frame.r15);
     dprintf("[KERNEL PANIC] rfl: 0x%.16llX, rip: 0x%.16llX, cs:  0x%.16llX, ss:  0x%.16llX\n", frame.rflags, frame.rip, frame.cs, frame.ss);
 
-    visualize_pmm(0, PAGE_SIZE);
+    // visualize_pmm(0, 0, framebuffer->width, (bitmap_size * PAGE_SIZE) / framebuffer->width);
 
     beep();
     hcf();

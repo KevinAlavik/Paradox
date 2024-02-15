@@ -10,6 +10,7 @@
 #include <system/pic/pic.h>
 #include <system/memory/pmm.h>
 #include <system/utilities/irqs.h>
+#include <system/drivers/keyboard.h>
 
 volatile struct limine_module_request mod_request = {
     .id = LIMINE_MODULE_REQUEST, .revision = 0};
@@ -19,9 +20,7 @@ volatile struct limine_framebuffer_request framebuffer_request = {
 
 volatile struct limine_hhdm_request hhdm_request = {
     .id = LIMINE_HHDM_REQUEST,
-    .revision = 0
-};
-
+    .revision = 0};
 
 struct limine_framebuffer *framebuffer;
 uint64_t hhdm_offset;
@@ -40,18 +39,20 @@ void init_boot(int debug_info)
     dprintf("[System] Initialized PMM\n");
     pit_init();
     dprintf("[System] Initialized PIT\n");
+    init_keyboard();
+    dprintf("[System] Initialized Keyboard\n");
     register_irqs();
     dprintf("[System] Registered IRQs\n");
     dprintf("\n");
-
     dprintf("[System] Loaded modules, file count: %d\n", mod_request.response->module_count);
 
     if (debug_info)
     {
-        for(int files = 0; files < (int)mod_request.response->module_count; files++) {
-            struct limine_file* curFile = mod_request.response->modules[files];
+        for (int files = 0; files < (int)mod_request.response->module_count; files++)
+        {
+            struct limine_file *curFile = mod_request.response->modules[files];
             int size = curFile->size;
-            char* path = curFile->path;
+            char *path = curFile->path;
             dprintf("[Modules] Loaded %s (%d)!\n", path, size);
         }
 
@@ -59,12 +60,14 @@ void init_boot(int debug_info)
         dprintf("\n");
     }
     dprintf("[System] Starting display...\n");
-    if(mod_request.response->modules[0]->size == 10741)
+    if (mod_request.response->modules[0]->size == 10741)
     {
         dprintf("[System] Found font!\n");
         dprintf("[System] Initializing Nighterm with font!\n");
-        nstatus = nighterm_initialize((char*)mod_request.response->modules[0]->address, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, NULL);
-    } else {
+        nstatus = nighterm_initialize((char *)mod_request.response->modules[0]->address, framebuffer->address, framebuffer->width, framebuffer->height, framebuffer->pitch, framebuffer->bpp, NULL);
+    }
+    else
+    {
         dprintf("[Font Error] Failed to get font, no kfont.psf? (Got size: %d)", mod_request.response->modules[0]->size);
     }
 
@@ -98,7 +101,7 @@ void init_boot(int debug_info)
                 kstatus = main();
             }
         }
-        else if (kstatus == 2)  
+        else if (kstatus == 2)
         {
             printf("[Kernel Panic] Kernel panicked and quit, please see kmsg for extra info.\n");
             dprintf("[Kernel Panic] Kernel panicked and quit, the kernel process returned with a 2 that means something went really wrong, and we are shutting down your computer!\n");
