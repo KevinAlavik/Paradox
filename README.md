@@ -33,3 +33,9 @@ You could also use our custom boot script to build and boot using QEMU:
 
 - [schkwve](https://github.com/schkwve)
   - Made [**nighterm-extended**](https://github.com/schkwve/nighterm-extended)
+
+## License
+Paradox is licensed under the [GPL v3](https://www.gnu.org/licenses/gpl-3.0.html) license. 
+
+![image](https://github.com/KevinAlavik/Paradox/assets/95900603/eff41817-8071-407a-9b8b-942928756c33)
+
