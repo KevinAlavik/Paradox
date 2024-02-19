@@ -35,4 +35,4 @@ xorriso -as mkisofs -b limine-bios-cd.bin \
 ./limine/limine bios-install image.iso
 rm -rf iso_root
 # Execute qemu-system-x86_64 with passed arguments
-qemu-system-x86_64 -vga std -debugcon stdio -audiodev coreaudio,id=audio0 -machine pcspk-audiodev=audio0 -hda image.iso "${@}"  
+qemu-system-x86_64 -vga std -debugcon stdio -audio driver=sdl -hda image.iso "${@}"  
