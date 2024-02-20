@@ -84,7 +84,7 @@ void init_boot(int debug_info)
 
     int kstatus = main(); // Launch the kernel
 
-    if (kstatus == 0)
+    if (kstatus == KERNEL_QUIT_SUCCESS)
     {
         dprintf("[Kernel Success] Kernel quit successfully, shutting down in 10 seconds!\n");
         pit_sleep(10000);
