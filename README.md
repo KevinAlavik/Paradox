@@ -3,6 +3,10 @@ A x86_64 operating system built ontop of the limine bootloader.
 
 Project board: https://github.com/users/KevinAlavik/projects/5
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/KevinAlavik/Paradox/main.yml?branch=main&label=Daily%20ISO%20Build)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/kevinalavik/paradox/main?label=Last%20Commit)
+
+
 ## Contributing
 We always want people to contribute, but make sure to follow these things:
 - No confusing names (like make function names be called something easy to understand).
