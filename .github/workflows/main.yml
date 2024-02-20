@@ -24,24 +24,27 @@ jobs:
           name: image.iso
           path: ./image.iso
 
+  daily_build:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run build script
+        run: |
+          chmod +x ./tools/build.sh
+          ./tools/build.sh
+
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: image.iso
+          path: ./image.iso
+
   schedule:
-    - cron: '0 0 * * *'
-
-    jobs:
-      build:
-        runs-on: ubuntu-latest
-
-        steps:
-          - name: Checkout repository
-            uses: actions/checkout@v2
-
-          - name: Run build script
-            run: |
-              chmod +x ./tools/build.sh
-              ./tools/build.sh
-
-          - name: Upload ISO artifact
-            uses: actions/upload-artifact@v2
-            with:
-              name: image.iso
-              path: ./image.iso
+    - cron: '0 0 * * *' # Runs at midnight every day
+      name: Daily Build Trigger
+      job-name: daily_build
