@@ -90,17 +90,21 @@ void init_boot(int debug_info)
         pit_sleep(10000);
         shutdown();
     }
-    else if (kstatus == 1)
+    else if (kstatus == KERNEL_QUIT_ERROR)
     {
         dprintf("[Kernel Error] A kernel error occured, check kmesg for rason! Rebooting...\n");
         reboot();
     }
-    else if (kstatus == 2)
+    else if (kstatus == KERNEL_QUIT_CRITICAL)
     {
         panic("[Kernel Panic] Kernel quit with a critical error code, please see kmsg for extra info.\n", *cur_frame);
         dprintf("[Kernel Panic] Kernel quit with a critical error code, the kernel process returned with a 2 that means something went really wrong, and we are shutting down your computer in 10 seconds!\n");
         pit_sleep(10000);
         shutdown();
+    }
+    else if (kstatus == KERNEL_QUIT_HANG) 
+    {
+        hlt();
     }
     else
     {
