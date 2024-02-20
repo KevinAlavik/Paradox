@@ -10,18 +10,17 @@
 
 #define PAGE_SIZE 4096
 
-extern uint64_t free_memory; // Declaration of global variable
+extern uint64_t free_memory; 
 extern uint8_t *bitmap;
 extern uint64_t bitmap_pages;
 extern uint64_t bitmap_size;
 extern uint64_t free_memory;
 
 void init_pmm();
-void update_memory(); // Declaration of update_memory function
+void update_memory();
 void *pmm_request_page();
 void *pmm_request_pages(size_t numPages);
 void pmm_free(void *ptr);
-void visualize_pmm(int startX, int startY, int width, int height);
 
 // MEMORY FUNCTIONS
 void *memcpy(void *dest, const void *src, size_t n);
