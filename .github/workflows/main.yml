@@ -45,6 +45,6 @@ jobs:
           path: ./image.iso
 
   schedule:
-    - cron: '0 0 * * *' # Runs at midnight every day
+    - cron: '0 0 * * *'
       name: Daily Build Trigger
       job-name: daily_build
