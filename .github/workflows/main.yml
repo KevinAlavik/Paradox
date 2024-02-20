@@ -11,10 +11,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      iso_date: ${{ format(github.event.created_at, '%Y%m%d') }}
-
     steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=iso_date::$(date +'%Y%m%d')"
+
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
@@ -34,5 +35,5 @@ jobs:
       - name: Archive ISO
         uses: actions/upload-artifact@v2
         with:
-          name: Paradox-Public-${{ env.iso_date }}.iso
+          name: Paradox-Public-${{ steps.date.outputs.iso_date }}.iso
           path: image.iso
