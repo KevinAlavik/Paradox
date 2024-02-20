@@ -1,5 +1,5 @@
 /image.iso
-/.vscode/
+.vscode/
 /bin/
-/.swo/
-/.swp/
+.swo/
+.swp/
