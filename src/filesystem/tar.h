@@ -1,51 +1,45 @@
 #ifndef __TAR_H__
 #define __TAR_H__
 
-#include <stdint.h>
-#include <stddef.h>
+#include <strings.h>
+#include <system/memory/heap.h>
+#include <system/memory/pmm.h>
 
-#define TAR_BLOCK_SIZE 512
-#define TAR_NAME_SIZE 100
-#define TAR_PREFIX_SIZE 155
-#define MAX_FILES 100
-#define FILE_CONTENT_SIZE 4096
+#define FILENAME_SIZE 100
+#define MODE_SIZE 8
+#define UID_SIZE 8
+#define GID_SIZE 8
+#define SIZE_SIZE 12
+#define MTIME_SIZE 12
+#define CHKSUM_SIZE 8
+#define TYPEFLAG_SIZE 1
 
-typedef struct
-{
-  char filename[TAR_NAME_SIZE];
-  char mode[8];
-  char uid[8];
-  char gid[8];
-  char size[12];
-  char mtime[12];
-  char chksum[8];
-  char typeflag[1];
-  char linkname[TAR_NAME_SIZE];
-  char magic[6];
-  char version[2];
-  char uname[32];
-  char gname[32];
-  char devmajor[8];
-  char devminor[8];
-  char prefix[TAR_PREFIX_SIZE];
-  char padding[12];
-} tar_header_t;
+struct TarHeader {
+  char filename[FILENAME_SIZE];
+  char mode[MODE_SIZE];
+  char uid[UID_SIZE];
+  char gid[GID_SIZE];
+  char size[SIZE_SIZE];
+  char mtime[MTIME_SIZE];
+  char chksum[CHKSUM_SIZE];
+  char typeflag[TYPEFLAG_SIZE];
+};
 
-typedef struct
-{
+struct File {
   char *name;
   char *content;
-  uint32_t size;
+  unsigned int size;
   int isDirectory;
-} file_t;
+};
 
-typedef struct
-{
-  file_t *files;
-  size_t count;
-} files_t;
+struct Tar {
+  struct File *files;
+  unsigned int fileCount;
+};
 
-files_t parse_tar(char *rawData);
-file_t *find_file(files_t *filesList, const char *filename);
+unsigned int getsize(const char *in);
+void extractTarData(const char *rawData, unsigned int dataSize,
+                    struct Tar *tar);
+void freeTar(struct Tar *tar);
 
-#endif // __TAR_H__
+#endif /* __TAR_H__ */

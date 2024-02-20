@@ -1,76 +1,84 @@
 #include "tar.h"
-#include <strings.h>
-#include <system/memory/pmm.h>
 #include <printf.h>
-#include <system/cpu/cpu.h>
 
-files_t parse_tar(char *rawData)
-{
-    files_t result;
-    file_t files[MAX_FILES];                          // Pre-allocated array to hold file_t structures
-    char file_contents[MAX_FILES][FILE_CONTENT_SIZE]; // Pre-allocated buffer pool for file contents
-    result.files = files;
-    result.count = 0;
+#define TAR_DEBUG(fmt, ...)                                                    \
+  dprintf("[TAR Debug] running func: %s(" fmt ")\n", __func__, ##__VA_ARGS__)
 
-    size_t offset = 0;
+unsigned int getsize(const char *in) {
+  TAR_DEBUG("in=%s", in);
 
-    dprintf("\n---------- Parsing files ----------\n");
+  unsigned int size = 0;
+  unsigned int count = 1;
 
-    while (rawData[offset] != '\0' && result.count < MAX_FILES)
-    {
-        dprintf("[Tar] Processing file entry at offset 0x%016llX\n", offset);
+  for (int j = 11; j > 0; j--, count *= 8)
+    size += ((in[j - 1] - '0') * count);
 
-        tar_header_t *header = (tar_header_t *)&rawData[offset];
-
-        if (memcmp(header->filename, "", TAR_NAME_SIZE) == 0)
-        {
-            dprintf("[Tar] End of archive reached.\n");
-            break;
-        }
-
-        file_t *file = &files[result.count];
-        file->name = header->filename;
-        file->size = strtol(header->size, NULL, 8);
-        file->isDirectory = (header->typeflag[0] == '5');
-
-        dprintf("[Tar] File name: %s\n", file->name);
-        dprintf("[Tar] File size: %llu bytes\n", file->size);
-        dprintf("[Tar] Is directory: %s\n", file->isDirectory ? "Yes" : "No");
-
-        if (file->size > FILE_CONTENT_SIZE)
-        {
-            dprintf("[Tar] File size exceeds maximum content size.\n");
-            return result;
-        }
-
-        // Copy file content from rawData to pre-allocated buffer
-        memcpy(file_contents[result.count], &rawData[offset + TAR_BLOCK_SIZE], file->size);
-        file_contents[result.count][file->size] = '\0'; // Ensure null-termination
-        dprintf("[Tar] File content: %s\n\n", file_contents[result.count]);
-
-        // Point file content to the pre-allocated buffer
-        file->content = file_contents[result.count];
-
-        result.count++;
-
-        // Move offset to the next tar block
-        offset += (file->size + TAR_BLOCK_SIZE - 1) / TAR_BLOCK_SIZE * TAR_BLOCK_SIZE + TAR_BLOCK_SIZE;
-    }
-
-    dprintf("[Tar] Parsing complete. Total files: %llu\n", result.count);
-    dprintf("-----------------------------------\n\n");
-
-    return result;
+  return size;
 }
 
-file_t *find_file(files_t *filesList, const char *filename)
-{
-    for (size_t i = 0; i < filesList->count; ++i)
-    {
-        if (strcmp(filesList->files[i].name, filename) == 0)
-        {
-            return &(filesList->files[i]);
-        }
+void extractTarData(const char *rawData, unsigned int dataSize,
+                    struct Tar *tar) {
+  TAR_DEBUG("rawData=0x%p, dataSize=%u, tar=0x%p", rawData, dataSize, tar);
+
+  tar->files = NULL;
+  tar->fileCount = 0;
+
+  for (unsigned int offset = 0; offset < dataSize;) {
+    TAR_DEBUG("offset=%u", offset);
+
+    struct TarHeader *header = (struct TarHeader *)(rawData + offset);
+
+    if (header->filename[0] == '\0') {
+      dprintf("[TAR] End of TAR archive detected\n");
+      break;
     }
-    return NULL; // File not found
+
+    dprintf("[TAR] Header found at offset 0x%016llX\n", (uint64_t)offset);
+
+    struct File file;
+    file.size = getsize(header->size);
+    file.name = strdup(header->filename);
+    file.isDirectory = header->typeflag[0] == '5';
+
+    if (!file.isDirectory) {
+      file.content = (char *)malloc(file.size + 1);
+      memcpy(file.content, rawData + offset + 512, file.size);
+      file.content[file.size] = '\0';
+      dprintf("[TAR] File \"%s\" extracted. Size: %u bytes\n", file.name,
+              file.size);
+    } else {
+      file.content = NULL;
+      dprintf("[TAR] Directory \"%s\" extracted\n", file.name);
+    }
+
+    struct File *temp_files =
+        realloc(tar->files, (tar->fileCount + 1) * sizeof(struct File));
+    if (temp_files == NULL) {
+      dprintf("[TAR] Failed to allocate memory for temp file\n");
+      return;
+    }
+    tar->files = temp_files;
+    TAR_DEBUG("tar->files=0x%p, tar->fileCount=%u", tar->files, tar->fileCount);
+
+    tar->files[tar->fileCount] = file;
+    TAR_DEBUG("tar->files[%u] = file", tar->fileCount);
+
+    tar->fileCount++;
+    TAR_DEBUG("tar->fileCount=%u", tar->fileCount);
+
+    offset += ((file.size + 511) / 512 + 1) * 512;
+    TAR_DEBUG("offset=%u", offset);
+  }
+  TAR_DEBUG("Function execution finished");
+}
+
+void freeTar(struct Tar *tar) {
+  TAR_DEBUG("tar=0x%p", tar);
+
+  for (unsigned int i = 0; i < tar->fileCount; ++i) {
+    free(tar->files[i].name);
+    free(tar->files[i].content);
+  }
+  free(tar->files);
+  TAR_DEBUG("Function execution finished");
 }

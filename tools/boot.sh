@@ -15,8 +15,8 @@ mkdir -p iso_root
 
 tar -cvf modules/ramdisk.tar ramdisk/*
 
-PARADOX_VER=0.1.1
-echo -n "Build Version: Paradox v$(echo $PARADOX_VER), Build Date: $(date "+%A (%m/%d/%Y) %H:%M")" > modules/build_info.txt
+# PARADOX_VER=0.1.1
+# echo -n "Build Version: Paradox v$(echo $PARADOX_VER), Build Date: $(date "+%A (%m/%d/%Y) %H:%M")" > modules/build_info.txt
 
 cp -v bin/"$OS_NAME" modules/* limine.cfg limine/limine-bios.sys \
     limine/limine-bios-cd.bin limine/limine-uefi-cd.bin iso_root/

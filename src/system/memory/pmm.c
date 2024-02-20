@@ -155,6 +155,15 @@ void pmm_free(void *ptr) {
   bitmap_clear(bitmap, bit_idx);
 }
 
+void pmm_free_pages(void *ptr, size_t numPages) {
+  uint64_t start_bit_idx = ((uint64_t)ptr / PAGE_SIZE);
+
+  // Mark the pages as free in the bitmap
+  for (size_t i = 0; i < numPages; ++i) {
+    bitmap_clear(bitmap, start_bit_idx + i);
+  }
+}
+
 // MEMORY FUNCTIONS
 
 void *memcpy(void *dest, const void *src, size_t n) {

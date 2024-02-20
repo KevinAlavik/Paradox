@@ -3,6 +3,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <system/memory/heap.h>
+#include <system/memory/pmm.h>
 
 size_t strlen(const char *str);
 
@@ -30,4 +32,4 @@ int isspace(int c);
 
 int islower(int c);
 
-#endif  // STRINGS_H
+#endif // STRINGS_H
