@@ -5,6 +5,7 @@ Project board: https://github.com/users/KevinAlavik/projects/5
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/KevinAlavik/Paradox/main.yml?branch=main&label=Daily%20ISO%20Build)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/kevinalavik/paradox/main?label=Last%20Commit)
+![GitHub watchers](https://img.shields.io/github/watchers/KevinAlavik/Paradox)
 
 ## Project ideas or Questions?
 Got any ideas or got qeuestions for Paradox post them [here](https://github.com/KevinAlavik/Paradox/discussions)
