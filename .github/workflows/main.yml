@@ -49,8 +49,6 @@ jobs:
     name: Daily Build Trigger
     steps:
       - name: Trigger Daily Build
-        uses: ./.github/workflows/main.yml  # Adjust this to the actual workflow file if necessary
-        with:
-          job: daily_build
+        run: echo "Triggering daily build"
     schedule:
       cron: '0 0 * * *'
