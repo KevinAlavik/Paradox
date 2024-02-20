@@ -46,5 +46,5 @@ int main() {
 
   freeTar(&tar);
 
-  return KERNEL_QUIT_SUCCESS;
+  return KERNEL_QUIT_HANG;
 }
