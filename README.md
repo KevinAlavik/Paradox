@@ -1,6 +1,8 @@
 # Paradox
 A x86_64 operating system built ontop of the limine bootloader.
 
+Project board: https://github.com/users/KevinAlavik/projects/5
+
 ## Contributing
 We always want people to contribute, but make sure to follow these things:
 - No confusing names (like make function names be called something easy to understand).
