@@ -155,38 +155,6 @@ void pmm_free(void *ptr) {
   bitmap_clear(bitmap, bit_idx);
 }
 
-void visualize_pmm(int startX, int startY, int width, int height) {
-  update_memory();
-  if (bitmap == NULL || framebuffer == NULL) {
-    return;
-  }
-
-  // Ensure the startY and startX values are within bounds
-  if (startY < 0)
-    startY = 0;
-  if (startX < 0)
-    startX = 0;
-
-  // Ensure the height and width don't exceed the framebuffer dimensions
-  if (startY + height > framebuffer->height)
-    height = framebuffer->height - startY;
-  if (startX + width > framebuffer->width)
-    width = framebuffer->width - startX;
-
-  for (int y = startY; y < startY + height; y++) {
-    for (int x = startX; x < startX + width; x++) {
-      int i = y * framebuffer->width + x;
-      uint8_t value = (bitmap[i / 8] >> (i % 8)) & 1;
-      if (value) {
-        // Allocated memory - Red
-        put_pixel_rgb(x, y, 255, 0, 0);
-      } else {
-        put_pixel_rgb(x, y, 0, 255, 0);
-      }
-    }
-  }
-}
-
 // MEMORY FUNCTIONS
 
 void *memcpy(void *dest, const void *src, size_t n) {
