@@ -11,6 +11,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      iso_date: ${{ format(github.event.created_at, '%Y%m%d') }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -23,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y make tar xorriso binutils
+          sudo apt-get install -y make tar xorriso binutils nasm
 
       - name: Run build script
         run: ./tools/build.sh
@@ -31,5 +34,5 @@ jobs:
       - name: Archive ISO
         uses: actions/upload-artifact@v2
         with:
-          name: Paradox-Public-$(date +'%Y%m%d').iso
+          name: Paradox-Public-${{ env.iso_date }}.iso
           path: image.iso
