@@ -42,8 +42,15 @@ int main() {
     return KERNEL_QUIT_ERROR;
   }
 
-  printf("%s\n", motd->content);
-
+  printf("%s\n\n", motd->content);
+  
+  for(int i == 0; i < rd->files; i++) {
+    struct File curFile = rq->content->files[i];
+    
+    printf("%s\n", curFile.name);
+    printf("\t%s\n\n", curFile.content);
+  }
+  
   free(rd->content);
   free(rd);
 
