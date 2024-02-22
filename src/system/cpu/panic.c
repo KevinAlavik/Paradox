@@ -20,7 +20,7 @@ void panic(const char *reason, int_frame_t frame) {
 
   struct File *img = rd_get_file(rd, "ramdisk/etc/images/bsod.kif");
   if (img == NULL) {
-    dprintf("[System] Failed to load panic image! Didnt "
+    dprintf("[\e[0;32mSystem\e[0m] Failed to load panic image! Didnt "
             "find: /etc/images/bsod.kif\n");
     return;
   }
@@ -48,19 +48,24 @@ void panic(const char *reason, int_frame_t frame) {
          frame.rflags, frame.rip, frame.cs, frame.ss);
   term.cx = 4;
 
-  dprintf("[KERNEL PANIC] rax: 0x%.16llX, rbx: 0x%.16llX, rcx: 0x%.16llX, rdx: "
+  dprintf("[\e[0;31mKernel Panic\e[0m] rax: 0x%.16llX, rbx: 0x%.16llX, rcx: "
+          "0x%.16llX, rdx: "
           "0x%.16llX\n",
           frame.rax, frame.rbx, frame.rcx, frame.rdx);
-  dprintf("[KERNEL PANIC] rsp: 0x%.16llX, rbp: 0x%.16llX, rsi: 0x%.16llX, rdi: "
+  dprintf("[\e[0;31mKernel Panic\e[0m] rsp: 0x%.16llX, rbp: 0x%.16llX, rsi: "
+          "0x%.16llX, rdi: "
           "0x%.16llX\n",
           frame.rsp, frame.rbp, frame.rsi, frame.rdi);
-  dprintf("[KERNEL PANIC] r8:  0x%.16llX, r9:  0x%.16llX, r10: 0x%.16llX, r11: "
+  dprintf("[\e[0;31mKernel Panic\e[0m] r8:  0x%.16llX, r9:  0x%.16llX, r10: "
+          "0x%.16llX, r11: "
           "0x%.16llX\n",
           frame.r8, frame.r9, frame.r10, frame.r11);
-  dprintf("[KERNEL PANIC] r12: 0x%.16llX, r13: 0x%.16llX, r14: 0x%.16llX, r15: "
+  dprintf("[\e[0;31mKernel Panic\e[0m] r12: 0x%.16llX, r13: 0x%.16llX, r14: "
+          "0x%.16llX, r15: "
           "0x%.16llX\n",
           frame.r12, frame.r13, frame.r14, frame.r15);
-  dprintf("[KERNEL PANIC] rfl: 0x%.16llX, rip: 0x%.16llX, cs:  0x%.16llX, ss:  "
+  dprintf("[\e[0;31mKernel Panic\e[0m] rfl: 0x%.16llX, rip: 0x%.16llX, cs:  "
+          "0x%.16llX, ss:  "
           "0x%.16llX\n",
           frame.rflags, frame.rip, frame.cs, frame.ss);
 

@@ -31,14 +31,14 @@ return codes)
 
 int main() {
   if (rd == NULL) {
-    dprintf("[Ramdisk] Failed to initialize ramdisk\n");
+    dprintf("[\e[0;32mRamdisk\e[0m] Failed to initialize ramdisk\n");
     return 1;
   }
 
   struct File *motd = rd_get_file(rd, "ramdisk/etc/motd");
 
   if (motd == NULL) {
-    dprintf("[Kernel] Failed to find motd file\n");
+    dprintf("[\e[0;32mKernel\e[0m] Failed to find motd file\n");
     return KERNEL_QUIT_ERROR;
   }
 

@@ -8,7 +8,7 @@ void draw_image(char *rawData, uint64_t x, uint64_t y, int mode) {
   // Extract width
   while (rawData[i] != ' ') {
     if (rawData[i] == '\0') {
-      dprintf("[KIF] Error: Invalid image data - Missing width\n");
+      dprintf("[\e[0;32mKIF\e[0m] Error: Invalid image data - Missing width\n");
       return;
     }
     width = width * 10 + (rawData[i] - '0');
@@ -19,7 +19,8 @@ void draw_image(char *rawData, uint64_t x, uint64_t y, int mode) {
   // Extract height
   while (rawData[i] != '\n') {
     if (rawData[i] == '\0') {
-      dprintf("[KIF] Error: Invalid image data - Missing height\n");
+      dprintf(
+          "[\e[0;32mKIF\e[0m] Error: Invalid image data - Missing height\n");
       return;
     }
     height = height * 10 + (rawData[i] - '0');
@@ -50,7 +51,8 @@ void draw_image(char *rawData, uint64_t x, uint64_t y, int mode) {
     // Extract red component
     while (rawData[i] != ' ') {
       if (rawData[i] == '\0') {
-        dprintf("[KIF] Error: Invalid image data - Missing red component\n");
+        dprintf("[\e[0;32mKIF\e[0m] Error: Invalid image data - Missing red "
+                "component\n");
         return;
       }
       r = r * 10 + (rawData[i] - '0');
@@ -61,7 +63,8 @@ void draw_image(char *rawData, uint64_t x, uint64_t y, int mode) {
     // Extract green component
     while (rawData[i] != ' ') {
       if (rawData[i] == '\0') {
-        dprintf("[KIF] Error: Invalid image data - Missing green component\n");
+        dprintf("[\e[0;32mKIF\e[0m] Error: Invalid image data - Missing green "
+                "component\n");
         return;
       }
       g = g * 10 + (rawData[i] - '0');
@@ -72,7 +75,8 @@ void draw_image(char *rawData, uint64_t x, uint64_t y, int mode) {
     // Extract blue component
     while (rawData[i] != '\n') {
       if (rawData[i] == '\0') {
-        dprintf("[KIF] Error: Invalid image data - Missing blue component\n");
+        dprintf("[\e[0;32mKIF\e[0m] Error: Invalid image data - Missing blue "
+                "component\n");
         return;
       }
       b = b * 10 + (rawData[i] - '0');
@@ -85,7 +89,8 @@ void draw_image(char *rawData, uint64_t x, uint64_t y, int mode) {
       put_pixel_rgb(currentX, currentY, r, g, b);
       currentX++;
     } else {
-      dprintf("[KIF] Error: Image data exceeds specified dimensions\n");
+      dprintf("[\e[0;32mKIF\e[0m] Error: Image data exceeds specified "
+              "dimensions\n");
       return;
     }
 
@@ -98,5 +103,5 @@ void draw_image(char *rawData, uint64_t x, uint64_t y, int mode) {
       }
     }
   }
-  dprintf("[KIF] Success: Successfully drew the image\n");
+  dprintf("[\e[0;32mKIF\e[0m] Success: Successfully drew the image\n");
 }

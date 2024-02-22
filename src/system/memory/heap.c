@@ -8,7 +8,7 @@
 void *malloc(size_t size) {
   char *PP = (char *)pmm_request_pages((size / PAGE_SIZE) + 1);
   if (PP == NULL) {
-    dprintf("[Heap Error] Failed to allocate memory\n");
+    dprintf("[\e[0;31mHeap Error\e[0m] Failed to allocate memory\n");
     return NULL; // Memory allocation failed
   }
   *((size_t *)PP) = size;
@@ -53,7 +53,8 @@ void *realloc(void *old, size_t size) {
     // Request additional pages from the physical memory manager
     void *new_mem = pmm_request_pages(new_num_pages - old_num_pages);
     if (new_mem == NULL) {
-      dprintf("[Heap Error] Failed to allocate additional memory pages\n");
+      dprintf("[\e[0;31mHeap Error\e[0m] Failed to allocate additional memory "
+              "pages\n");
       return NULL; // Memory allocation failed
     }
 

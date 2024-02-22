@@ -15,9 +15,10 @@ void pit_set_divisor(uint16_t divisor) {
   outb8(PIT_DATA, (uint8_t)(divisor & 0x00ff));
   iowait();
   outb8(PIT_DATA, (uint8_t)((divisor & 0xff00) >> 8));
-  dprintf("[PIT] Set divisor, Low byte: 0x%08llx, High byte: 0x%08llx\n",
+  dprintf("[\e[0;32mPIT\e[0m] Set divisor, Low byte: 0x%08llx, High byte: "
+          "0x%08llx\n",
           (uint8_t)(divisor & 0x00ff), (uint8_t)((divisor & 0xff00) >> 8));
-  dprintf("[PIT] - 0x%08llx\n", divisor);
+  dprintf("[\e[0;32mPIT\e[0m] - 0x%08llx\n", divisor);
 }
 
 uint16_t pit_read_count() {
@@ -31,9 +32,10 @@ uint16_t pit_read_count() {
   count = inb8(PIT_DATA);       // Low byte
   count |= inb8(PIT_DATA) << 8; // High byte
 
-  dprintf("[PIT] Read count, Low byte: 0x%08llx, High byte: 0x%08llx\n",
+  dprintf("[\e[0;32mPIT\e[0m] Read count, Low byte: 0x%08llx, High byte: "
+          "0x%08llx\n",
           inb8(PIT_DATA), inb8(PIT_DATA) << 8);
-  dprintf("[PIT] - 0x%08llx\n", count);
+  dprintf("[\e[0;32mPIT\e[0m] - 0x%08llx\n", count);
 
   __asm__ volatile("sti");
 
@@ -47,9 +49,10 @@ void pit_set_count(uint16_t count) {
   outb8(PIT_DATA, count & 0xFF);          // Low byte
   outb8(PIT_DATA, (count & 0xFF00) >> 8); // High byte
 
-  dprintf("[PIT] Set count, Low byte: 0x%08llx, High byte: 0x%08llx\n",
-          count & 0xFF, (count & 0xFF00) >> 8);
-  dprintf("[PIT] - 0x%08llx\n", count);
+  dprintf(
+      "[\e[0;32mPIT\e[0m] Set count, Low byte: 0x%08llx, High byte: 0x%08llx\n",
+      count & 0xFF, (count & 0xFF00) >> 8);
+  dprintf("[\e[0;32mPIT\e[0m] - 0x%08llx\n", count);
 
   __asm__ volatile("sti");
   return;

@@ -7,7 +7,7 @@
 ramdisk_t *init_rd(void) {
   ramdisk_t *rd = (ramdisk_t *)malloc(sizeof(ramdisk_t));
   if (rd == NULL) {
-    dprintf("[Ramdisk] Failed to allocate memory for ramdisk_t");
+    dprintf("[\e[0;31mRamdisk\e[0m] Failed to allocate memory for ramdisk_t");
     return NULL;
   }
 
@@ -16,7 +16,7 @@ ramdisk_t *init_rd(void) {
 
   struct Tar *tar = (struct Tar *)malloc(sizeof(struct Tar));
   if (tar == NULL) {
-    dprintf("[Ramdisk] Failed to allocate memory for Tar");
+    dprintf("[\e[0;31mRamdisk\e[0m] Failed to allocate memory for Tar");
     free(rd);
     return NULL;
   }
@@ -35,7 +35,8 @@ ramdisk_t *init_rd(void) {
   rd->files = rd->content->fileCount;
   rd->actual_size = sizeof(ramdisk_t);
 
-  dprintf("[Ramdisk] Ramdisk located at 0x%016llX is now initialized!\n",
+  dprintf("[\e[0;32mRamdisk\e[0m] Ramdisk located at 0x%016llX is now "
+          "initialized!\n",
           rd->location);
 
   return rd;

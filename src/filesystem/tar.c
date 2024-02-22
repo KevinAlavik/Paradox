@@ -2,7 +2,8 @@
 #include <printf.h>
 
 #define TAR_DEBUG(fmt, ...)                                                    \
-  dprintf("[TAR Debug] running func: %s(" fmt ")\n", __func__, ##__VA_ARGS__)
+  dprintf("[\e[0;32mTAR Debug\e[0m] running func: %s(" fmt ")\n", __func__,    \
+          ##__VA_ARGS__)
 
 unsigned int getsize(const char *in) {
   TAR_DEBUG("in=%s", in);
@@ -29,11 +30,12 @@ void extractTarData(const char *rawData, unsigned int dataSize,
     struct TarHeader *header = (struct TarHeader *)(rawData + offset);
 
     if (header->filename[0] == '\0') {
-      dprintf("[TAR] End of TAR archive detected\n");
+      dprintf("[\e[0;32mTAR\e[0m] End of TAR archive detected\n");
       break;
     }
 
-    dprintf("[TAR] Header found at offset 0x%016llX\n", (uint64_t)offset);
+    dprintf("[\e[0;32mTAR\e[0m] Header found at offset 0x%016llX\n",
+            (uint64_t)offset);
 
     struct File file;
     file.size = getsize(header->size);
@@ -44,17 +46,17 @@ void extractTarData(const char *rawData, unsigned int dataSize,
       file.content = (char *)malloc(file.size + 1);
       memcpy(file.content, rawData + offset + 512, file.size);
       file.content[file.size] = '\0';
-      dprintf("[TAR] File \"%s\" extracted. Size: %u bytes\n", file.name,
-              file.size);
+      dprintf("[\e[0;32mTAR\e[0m] File \"%s\" extracted. Size: %u bytes\n",
+              file.name, file.size);
     } else {
       file.content = NULL;
-      dprintf("[TAR] Directory \"%s\" extracted\n", file.name);
+      dprintf("[\e[0;32mTAR\e[0m] Directory \"%s\" extracted\n", file.name);
     }
 
     struct File *temp_files =
         realloc(tar->files, (tar->fileCount + 1) * sizeof(struct File));
     if (temp_files == NULL) {
-      dprintf("[TAR] Failed to allocate memory for temp file\n");
+      dprintf("[\e[0;32mTAR\e[0m] Failed to allocate memory for temp file\n");
       return;
     }
     tar->files = temp_files;

@@ -32,45 +32,46 @@ void init_boot(int debug_info) {
   hhdm_offset = hhdm_request.response->offset;
   framebuffer = framebuffer_request.response->framebuffers[0];
 
-  dprintf("[System] Initialized kmsg stream.\n");
+  dprintf("[\e[0;32mSystem\e[0m] Initialized kmsg stream.\n");
   init_idt();
-  dprintf("[System] Initialized IDT (And IRQ)\n");
+  dprintf("[\e[0;32mSystem\e[0m] Initialized IDT (And IRQ)\n");
   init_pmm();
-  dprintf("[System] Initialized PMM\n");
+  dprintf("[\e[0;32mSystem\e[0m] Initialized PMM\n");
   pit_init();
-  dprintf("[System] Initialized PIT\n");
+  dprintf("[\e[0;32mSystem\e[0m] Initialized PIT\n");
   init_keyboard();
-  dprintf("[System] Initialized Keyboard\n");
+  dprintf("[\e[0;32mSystem\e[0m] Initialized Keyboard\n");
   register_irqs();
-  dprintf("[System] Registered IRQs\n");
+  dprintf("[\e[0;32mSystem\e[0m] Registered IRQs\n");
   rd = init_rd();
   dprintf("\n");
-  dprintf("[System] Loaded ramdisk, file count: %d\n", rd->files);
-  dprintf("[System] Loaded modules, file count: %d\n",
+  dprintf("[\e[0;32mSystem\e[0m] Loaded ramdisk, file count: %d\n", rd->files);
+  dprintf("[\e[0;32mSystem\e[0m] Loaded modules, file count: %d\n",
           mod_request.response->module_count);
 
-  dprintf("[Screen] Width: %d, Height: %d\n", framebuffer->width,
+  dprintf("[\e[0;32mScreen\e[0m] Width: %d, Height: %d\n", framebuffer->width,
           framebuffer->height);
   dprintf("\n");
-  dprintf("[System] Starting display...\n");
+  dprintf("[\e[0;32mSystem\e[0m] Starting display...\n");
 
   struct File *font_file = rd_get_file(rd, "ramdisk/etc/fonts/nighterm.psf");
   if (font_file == NULL) {
-    dprintf("[System] Failed to load font! Didnt find: "
+    dprintf("[\e[0;32mSystem\e[0m] Failed to load font! Didnt find: "
             "/etc/fonts/nighterm.psf\n");
     return KERNEL_QUIT_ERROR;
   }
 
   if (font_file != NULL) {
-    dprintf("[System] Found font!\n");
-    dprintf("[System] Initializing Nighterm with font!\n");
+    dprintf("[\e[0;32mSystem\e[0m] Found font!\n");
+    dprintf("[\e[0;32mSystem\e[0m] Initializing Nighterm with font!\n");
 
     nstatus = nighterm_initialize(font_file->content, framebuffer->address,
                                   framebuffer->width, framebuffer->height,
                                   framebuffer->pitch, framebuffer->bpp, NULL);
   } else {
-    dprintf("[System] Found no font!\n");
-    dprintf("[System] Initializing Nighterm with built in font!\n");
+    dprintf("[\e[0;32mSystem\e[0m] Found no font!\n");
+    dprintf(
+        "[\e[0;32mSystem\e[0m] Initializing Nighterm with built in font!\n");
 
     nstatus = nighterm_initialize(NULL, framebuffer->address,
                                   framebuffer->width, framebuffer->height,
@@ -78,41 +79,47 @@ void init_boot(int debug_info) {
   }
 
   if (nstatus) {
-    dprintf("[System] Nightem failed to initialize, got code: %s\n",
-            get_nighterm_return_string(nstatus));
+    dprintf(
+        "[\e[0;32mSystem\e[0m] Nightem failed to initialize, got code: %s\n",
+        get_nighterm_return_string(nstatus));
     hcf();
   } else {
-    dprintf("[System] Initialized Nighterm with code: %s\n",
+    dprintf("[\e[0;32mSystem\e[0m] Initialized Nighterm with code: %s\n",
             get_nighterm_return_string(nstatus));
   }
 
   int kstatus = main(); // Launch the kernel
 
   if (kstatus == KERNEL_QUIT_SUCCESS) {
-    dprintf("[Kernel Success] Kernel quit successfully, shutting down in 10 "
-            "seconds!\n");
+    dprintf(
+        "[\e[0;32mKernel\e[0m Success] Kernel quit successfully, shutting down "
+        "in 10 "
+        "seconds!\n");
     pit_sleep(10000);
     shutdown();
   } else if (kstatus == KERNEL_QUIT_ERROR) {
-    dprintf("[Kernel Error] A kernel error occured, check kmesg for rason! "
-            "Rebooting...\n");
+    dprintf(
+        "[\e[0;32mKernel Error] A kernel error occured, check kmesg for rason! "
+        "Rebooting...\n");
     reboot();
   } else if (kstatus == KERNEL_QUIT_PANIC) {
     panic("[Kernel Panic] Kernel quit with a critical error code, please see "
           "kmsg for extra info.\n",
           *cur_frame);
-    dprintf("[Kernel Panic] Kernel quit with a critical error code, the kernel "
-            "process returned with a 2 that means something went really wrong, "
-            "and we are shutting down your computer in 10 seconds!\n");
+    dprintf(
+        "[\e[0;32mKernel\e[0m Panic] Kernel quit with a critical error code, "
+        "the kernel "
+        "process returned with a 2 that means something went really wrong, "
+        "and we are shutting down your computer in 10 seconds!\n");
     pit_sleep(10000);
     shutdown();
   } else if (kstatus == KERNEL_QUIT_HANG) {
     hlt();
   } else {
-    dprintf("[Kernel Warning] Kernel returned %d\n", kstatus);
+    dprintf("[\e[0;32mKernel\e[0m Warning] Kernel returned %d\n", kstatus);
   }
 
   // If we reach this point, something unexpected happened
-  dprintf("[Error] Unexpected behavior occurred, shutting down...\n");
+  dprintf("[\e[0;32mError] Unexpected behavior occurred, shutting down...\n");
   shutdown();
 }

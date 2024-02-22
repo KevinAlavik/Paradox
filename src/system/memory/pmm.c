@@ -30,16 +30,18 @@ void init_pmm() {
       if (top_address > higher_address)
         higher_address = top_address;
 
-      dprintf("[Physical Memory Manager] Usable entry at 0x%016llX, Top "
+      dprintf("[\e[0;32mPhysical Memory Manager\e[0m] Usable entry at "
+              "0x%016llX, Top "
               "Address: 0x%016llX, Higher Address: 0x%016llX\n",
               entry->base, top_address, higher_address);
     }
   }
   bitmap_pages = higher_address / PAGE_SIZE;
-  dprintf("[Physical Memory Manager] - Bitmap Pages: 0x%016llX\n",
+  dprintf("[\e[0;32mPhysical Memory Manager\e[0m] - Bitmap Pages: 0x%016llX\n",
           bitmap_pages);
   bitmap_size = ALIGN_UP(bitmap_pages / 8, PAGE_SIZE);
-  dprintf("[Physical Memory Manager] - Bitmap Size: 0x%016llX\n", bitmap_size);
+  dprintf("[\e[0;32mPhysical Memory Manager\e[0m] - Bitmap Size: 0x%016llX\n",
+          bitmap_size);
 
   update_memory();
 
@@ -49,20 +51,24 @@ void init_pmm() {
     if (entry->type == LIMINE_MEMMAP_USABLE) {
       if (entry->length >= bitmap_size) {
         dprintf(
-            "[Physical Memory Manager] Setting bitmap pointer to 0x%016llX\n",
+            "[\e[0;32mPhysical Memory Manager\e[0m] Setting bitmap pointer to "
+            "0x%016llX\n",
             entry->base);
         bitmap = entry->base + hhdm_offset;
-        dprintf("[Physical Memory Manager] Set bitmap pointer to 0x%016llX\n",
+        dprintf("[\e[0;32mPhysical Memory Manager\e[0m] Set bitmap pointer to "
+                "0x%016llX\n",
                 bitmap);
         memset(bitmap, 0xFF, bitmap_size);
         entry->base += bitmap_size;
-        dprintf("[Physical Memory Manager] Encreased entry->base by "
-                "bitmap_size (0x%016llX)\n",
-                entry->base);
+        dprintf(
+            "[\e[0;32mPhysical Memory Manager\e[0m] Encreased entry->base by "
+            "bitmap_size (0x%016llX)\n",
+            entry->base);
         entry->length -= bitmap_size;
-        dprintf("[Physical Memory Manager] Decreased entry->length by "
-                "bitmap_size (0x%016llX)\n",
-                entry->length);
+        dprintf(
+            "[\e[0;32mPhysical Memory Manager\e[0m] Decreased entry->length by "
+            "bitmap_size (0x%016llX)\n",
+            entry->length);
         break;
       }
     }
