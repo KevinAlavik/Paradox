@@ -44,8 +44,6 @@ int main() {
 
   printf("%s\n", motd->content);
 
-  asm("int $2");
-
   free(rd->content);
   free(rd);
 
