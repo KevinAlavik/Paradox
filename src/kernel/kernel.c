@@ -52,9 +52,7 @@ int main() {
   printf("----------------------------\n\n");
   for (int curFile = 0; curFile < rd->files; curFile++) {
     struct File file = rd->content->files[curFile];
-    printf("File name: %s\n", file.name);
-    printf("File size: %d\n", file.size);
-    printf("Is Directory: %s\n", file.isDirectory ? "Yes" : "No");
+    printf("%s (%d): d? %s\n", file.name, file.size, file.isDirectory ? "Yes" : "No");
   }
   
   free(rd->content);
