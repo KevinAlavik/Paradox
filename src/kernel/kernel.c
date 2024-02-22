@@ -8,6 +8,7 @@ return codes)
 */
 
 // Kernel includes
+#include <filesystem/ramdisk.h>
 #include <filesystem/tar.h>
 #include <kernel/boot.h>
 #include <kernel/kernel.h>
@@ -29,22 +30,24 @@ return codes)
 #include <transform.h>
 
 int main() {
-
-  const char *rawData = (char *)mod_request.response->modules[2]->address;
-  unsigned int dataSize = mod_request.response->modules[2]->size;
-
-  struct Tar tar;
-  extractTarData(rawData, dataSize, &tar);
-
-  for (unsigned int i = 0; i < tar.fileCount; ++i) {
-    printf("%s\n", tar.files[i].name);
-    if (!tar.files[i].isDirectory) {
-      printf("\t%s\n", tar.files[i].content);
-    }
-    printf(" * Is Directory: %s\n\n", tar.files[i].isDirectory ? "Yes" : "No");
+  if (rd == NULL) {
+    dprintf("[Ramdisk] Failed to initialize ramdisk\n");
+    return 1;
   }
 
-  freeTar(&tar);
+  struct File *motd = rd_get_file(rd, "ramdisk/etc/motd");
+
+  if (motd == NULL) {
+    dprintf("[Kernel] Failed to find motd file\n");
+    return KERNEL_QUIT_ERROR;
+  }
+
+  printf("%s\n", motd->content);
+
+  asm("int $2");
+
+  free(rd->content);
+  free(rd);
 
   return KERNEL_QUIT_HANG;
 }

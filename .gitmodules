@@ -5,6 +5,3 @@
 [submodule "src/nighterm"]
 	path = src/nighterm
 	url = https://github.com/schkwve/nighterm-extended.git
-[submodule "src/corelib/stb"]
-	path = src/corelib/stb
-	url = https://github.com/nothings/stb

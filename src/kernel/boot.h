@@ -1,8 +1,9 @@
 #ifndef __BOOT_H__
 #define __BOOT_H__
 
-#include <system/idt/idt.h>
+#include <filesystem/ramdisk.h>
 #include <limine.h>
+#include <system/idt/idt.h>
 
 extern volatile struct limine_module_request mod_request;
 extern volatile struct limine_framebuffer_request framebuffer_request;
@@ -10,6 +11,7 @@ extern volatile struct limine_hhdm_request hhdm_request;
 extern struct limine_framebuffer *framebuffer;
 extern uint64_t hhdm_offset;
 extern int_frame_t *cur_frame;
+extern ramdisk_t *rd;
 
 void init_boot(int debug_info);
 

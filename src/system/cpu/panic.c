@@ -18,7 +18,13 @@ void panic(const char *reason, int_frame_t frame) {
   nighterm_flush(70, 105, 255);
   nighterm_set_char_bg(70, 105, 255);
 
-  draw_image((char *)mod_request.response->modules[1]->address, 0, 0, 0);
+  struct File *img = rd_get_file(rd, "ramdisk/etc/images/bsod.kif");
+  if (img == NULL) {
+    dprintf("[System] Failed to load panic image! Didnt "
+            "find: /etc/images/bsod.kif\n");
+    return;
+  }
+  draw_image(img->content, 0, 0, 0);
 
   printf("Computer no workie :( \n\n");
   term.cx = 4;
