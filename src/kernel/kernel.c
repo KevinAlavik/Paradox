@@ -44,11 +44,17 @@ int main() {
 
   printf("%s\n\n", motd->content);
   
-  for(int i = 0; i < rd->files; i++) {
-    struct File curFile = rd->content->files[i];
-    
-    printf("%s\n", curFile.name);
-    printf("\t%s\n\n", curFile.content);
+  printf("----------------------------\n");
+  printf("Ramdisk Location: 0x%016llX\n", rd->location);
+  printf("Ramdisk Size: 0x%08X\n", rd->size);
+  printf("Ramdisk File Count: %d\n", rd->files);
+  printf("Ramdisk Actual Size: 0x%08X\n", rd->actual_size);
+  printf("----------------------------\n\n");
+  for (int curFile = 0; curFile < rd->files; curFile++) {
+    struct File file = rd->content->files[curFile];
+    printf("File name: %s\n", file.name);
+    printf("File size: %d\n", file.size);
+    printf("Is Directory: %s\n", file.isDirectory ? "Yes" : "No");
   }
   
   free(rd->content);
