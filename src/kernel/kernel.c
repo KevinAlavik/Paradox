@@ -44,7 +44,7 @@ int main() {
 
   printf("%s\n\n", motd->content);
   
-  for(int i == 0; i < rd->files; i++) {
+  for(int i = 0; i < rd->files; i++) {
     struct File curFile = rd->content->files[i];
     
     printf("%s\n", curFile.name);
