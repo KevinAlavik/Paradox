@@ -29,10 +29,10 @@ typedef struct {
 
 VFS_t* init_vfs();
 
-int mount_drive(drive_t drive);
-int unmount_drive(uint64_t id);
+int mount_drive(VSF_t* disk, drive_t drive);
+int unmount_drive(VSF_t* disk, uint64_t id);
 
-void* read_disk(uint64_t id);
-void write_disk(uint64_t id, void* data);
+void* read_drive(VSF_t* disk, uint64_t id);
+void write_drive(VSF_t* disk, uint64_t id, void* data);
 
 #endif // __VFS_H_
