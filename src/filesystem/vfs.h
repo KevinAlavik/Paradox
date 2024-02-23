@@ -23,7 +23,6 @@ typedef struct {
   drive_t* drives;
 
   uint64_t address;
-  uint64_t id;
   uint64_t size;
   uint64_t actual_size;
 } VFS_t;
