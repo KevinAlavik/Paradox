@@ -6,33 +6,35 @@
 #include <stdint.h>
 
 typedef struct {
-  VFS_t* disk;
-  char* label;
+  struct VFS_t *disk;
+  char *label;
 } mount_point_t;
 
 typedef struct {
   uint64_t address;
   uint64_t id;
   mount_point_t mount_point;
-  
+
   uint64_t size;
   uint64_t actual_size;
 } drive_t;
 
-typedef struct {
-  drive_t* drives;
+typedef struct VFS_t {
+  drive_t *drives;
 
   uint64_t address;
   uint64_t size;
   uint64_t actual_size;
 } VFS_t;
 
-VFS_t* init_vfs();
+VFS_t *init_vfs();
 
-int mount_drive(VSF_t* disk, drive_t drive);
-int unmount_drive(VSF_t* disk, uint64_t id);
+int mount_drive(VFS_t *vfs, uint64_t address, char *label);
+int unmount_drive(VFS_t *disk, uint64_t id);
 
-void* read_drive(VSF_t* disk, uint64_t id);
-void write_drive(VSF_t* disk, uint64_t id, void* data);
+void *read_drive(VFS_t *disk, uint64_t id);
+void write_drive(VFS_t *disk, uint64_t id, void *data);
 
-#endif // __VFS_H_
+uint64_t get_drive_id_by_label(VFS_t *vfs, const char *label);
+
+#endif // __VFS_H__

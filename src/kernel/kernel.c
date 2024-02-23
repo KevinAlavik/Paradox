@@ -10,12 +10,12 @@ return codes)
 // Kernel includes
 #include <filesystem/ramdisk.h>
 #include <filesystem/tar.h>
+#include <filesystem/vfs.h>
 #include <kernel/boot.h>
 #include <kernel/kernel.h>
 #include <nighterm/nighterm.h>
 #include <stdint.h>
 #include <system/drivers/speaker.h>
-#include <system/logger/sys_log.h>
 #include <system/memory/heap.h>
 #include <system/memory/pmm.h>
 #include <system/pic/pic.h>
@@ -30,32 +30,37 @@ return codes)
 #include <transform.h>
 
 int main() {
-  if (rd == NULL) {
-    dprintf("[\e[0;32mRamdisk\e[0m] Failed to initialize ramdisk\n");
-    return 1;
-  }
+  VFS_t *vfs = init_vfs();
 
-  struct File *motd = rd_get_file(rd, "ramdisk/etc/motd");
-
-  if (motd == NULL) {
-    dprintf("[\e[0;32mKernel\e[0m] Failed to find motd file\n");
+  if (vfs == NULL) {
+    dprintf("[\e[0;31mKernel\e[0m] Failed to initialize VFS\n");
     return KERNEL_QUIT_ERROR;
   }
 
+  mount_drive(vfs, (uint64_t)rd, "/");
+
+  uint64_t ramdisk_id = get_drive_id_by_label(vfs, "/");
+  ramdisk_t *rd_vfs = (ramdisk_t *)read_drive(vfs, ramdisk_id);
+
+  struct File *motd = rd_get_file(rd_vfs, "ramdisk/etc/motd");
+
   printf("%s\n\n", motd->content);
-  
+
   printf("----------------------------\n");
-  printf("Ramdisk Location: 0x%016llX\n", rd->location);
-  printf("Ramdisk Size: 0x%08X\n", rd->size);
-  printf("Ramdisk File Count: %d\n", rd->files);
-  printf("Ramdisk Actual Size: 0x%08X\n", rd->actual_size);
+  printf("Ramdisk Location: 0x%016llX\n", rd_vfs->location);
+  printf("Ramdisk Size: 0x%08X\n", rd_vfs->size);
+  printf("Ramdisk File Count: %d\n", rd_vfs->files);
+  printf("Ramdisk Actual Size: 0x%08X\n", rd_vfs->actual_size);
   printf("----------------------------\n\n");
-  for (int curFile = 0; curFile < rd->files; curFile++) {
-    struct File file = rd->content->files[curFile];
-    printf("%s (%d): d? %s\n", file.name, file.size, file.isDirectory ? "Yes" : "No");
+  for (int curFile = 0; curFile < rd_vfs->files; curFile++) {
+    struct File file = rd_vfs->content->files[curFile];
+    printf("%s (%d): d? %s\n", file.name, file.size,
+           file.isDirectory ? "Yes" : "No");
   }
-  
-  free(rd->content);
+
+  unmount_drive(vfs, ramdisk_id);
+
+  free(rd_vfs->content);
   free(rd);
 
   return KERNEL_QUIT_HANG;

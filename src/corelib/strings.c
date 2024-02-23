@@ -153,3 +153,17 @@ int isspace(int c) {
 }
 
 int islower(int c) { return (c >= 'a' && c <= 'z'); }
+
+char *strrchr(const char *s, int c) {
+  const char *last_occurrence = NULL;
+  // Find the first occurrence of c in s
+  while (*s != '\0') {
+    if (*s == c) {
+      last_occurrence = s;
+    }
+    s++;
+  }
+  // If c was found, return a pointer to the last occurrence
+  // Otherwise, return NULL
+  return (char *)last_occurrence;
+}

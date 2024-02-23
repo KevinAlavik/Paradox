@@ -38,11 +38,10 @@ void put_pixel32(uint64_t x, uint64_t y, uint32_t color) {
                 y * framebuffer->pitch) = color;
 }
 
-void flush() {
+void flush(uint8_t r, uint8_t g, uint8_t b) {
   for (int x = 0; x < framebuffer->width; x++) {
     for (int y = 0; y < framebuffer->height; y++) {
-      put_pixel32(x, y, 0x000000); // use put_pixel32 instead of put_pixel_rgb/a
-                                   // since its faster
+      put_pixel_rgb(x, y, r, g, b);
     }
   }
 }

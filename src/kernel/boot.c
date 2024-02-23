@@ -5,7 +5,6 @@
 #include <system/cpu/cpu.h>
 #include <system/drivers/keyboard.h>
 #include <system/idt/idt.h>
-#include <system/logger/sys_log.h>
 #include <system/memory/pmm.h>
 #include <system/pic/pic.h>
 #include <system/pit/pit.h>
@@ -44,6 +43,12 @@ void init_boot(int debug_info) {
   register_irqs();
   dprintf("[\e[0;32mSystem\e[0m] Registered IRQs\n");
   rd = init_rd();
+
+  if (rd == NULL) {
+    dprintf("[\e[0;32mRamdisk\e[0m] Failed to initialize ramdisk\n");
+    return;
+  }
+
   dprintf("\n");
   dprintf("[\e[0;32mSystem\e[0m] Loaded ramdisk, file count: %d\n", rd->files);
   dprintf("[\e[0;32mSystem\e[0m] Loaded modules, file count: %d\n",
@@ -58,7 +63,7 @@ void init_boot(int debug_info) {
   if (font_file == NULL) {
     dprintf("[\e[0;32mSystem\e[0m] Failed to load font! Didnt find: "
             "/etc/fonts/nighterm.psf\n");
-    return KERNEL_QUIT_ERROR;
+    return;
   }
 
   if (font_file != NULL) {

@@ -13,5 +13,5 @@
 
 void init_wm() {
   keyboard.out = 1;
-  flush();
+  flush(0, 0, 0);
 }
