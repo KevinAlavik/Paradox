@@ -7,7 +7,7 @@ extern "C" {
 
 unsigned int *tga_parse(unsigned char *ptr, int size);
 
-void draw_targa_image(char *image, int x, int y);
+void draw_targa_image(char *image, int size, int x, int y);
 
 #ifdef __cplusplus
 }
