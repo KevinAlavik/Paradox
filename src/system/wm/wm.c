@@ -34,12 +34,9 @@ void init_wm() {
     printf("%s\n", buf);
   }
   
-  char *img;
   
-  vfs_op_status ss = driver_read(vfs, 0x00000000, "/root/IMG_3930.tga", &img);
   
-  if (ss == STATUS_OK) {
-    draw_targa_image(img, 2000000, 0, 0);
-  }
-  
+  vfs_op_status ss = driver_read(vfs, 0x00000000, "", &img);
+  struct File *img_file = rd_get_file(rd, "/etc/fonts/nighterm.psf");
+  draw_targa_image(img, 2000000, 0, 0);
 }
