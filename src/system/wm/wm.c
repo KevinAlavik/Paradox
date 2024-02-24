@@ -34,6 +34,6 @@ void init_wm() {
     printf("%s\n", buf);
   }
   
-  struct File *img_file = rd_get_file(rd, "/root/test/theme.tga");
+  struct File *img_file = rd_get_file(rd, "/root/test/test.tga");
   draw_targa_image(img_file->content, img_file->size, 0, 0);
 }
