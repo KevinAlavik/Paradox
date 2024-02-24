@@ -10,6 +10,7 @@
 #include <system/drivers/keyboard.h>
 #include <system/memory/pmm.h>
 #include <vga.h>
+#include <tga.h>
 
 #define DHEIGHT 25
 
@@ -32,4 +33,13 @@ void init_wm() {
   if (s == STATUS_OK) {
     printf("%s\n", buf);
   }
+  
+  char *img;
+  
+  vfs_op_status ss = driver_read(vfs, 0x00000000, "/root/IMG_3930.tga", &img);
+  
+  if (ss == STATUS_OK) {
+    draw_targa_image(img, 4096, 0, 0);
+  }
+  
 }
