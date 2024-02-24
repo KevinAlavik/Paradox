@@ -4,4 +4,4 @@
 	branch = v6.x-branch-binary
 [submodule "src/nighterm"]
 	path = src/nighterm
-	url = https://github.com/schkwve/nighterm-extended.git
+	url = https://github.com/schkwve/nighterm-extended

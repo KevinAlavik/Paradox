@@ -24,6 +24,7 @@ struct limine_framebuffer *framebuffer;
 uint64_t hhdm_offset;
 int_frame_t *cur_frame;
 ramdisk_t *rd;
+VFS_t *vfs;
 
 void init_boot(int debug_info) {
   int nstatus;
@@ -49,28 +50,36 @@ void init_boot(int debug_info) {
     return;
   }
 
-  dprintf("\n");
-  dprintf("[\e[0;32mSystem\e[0m] Loaded ramdisk, file count: %d\n", rd->files);
-  dprintf("[\e[0;32mSystem\e[0m] Loaded modules, file count: %d\n",
-          mod_request.response->module_count);
-
-  dprintf("[\e[0;32mScreen\e[0m] Width: %d, Height: %d\n", framebuffer->width,
-          framebuffer->height);
-  dprintf("\n");
-  dprintf("[\e[0;32mSystem\e[0m] Starting display...\n");
-
-  struct File *font_file = rd_get_file(rd, "/etc/fonts/nighterm.psf");
-  if (font_file == NULL) {
-    dprintf("[\e[0;32mSystem\e[0m] Failed to load font! Didnt find: "
-            "/etc/fonts/nighterm.psf\n");
+  vfs = init_vfs();
+  if (vfs == NULL) {
+    dprintf("[\e[0;31mVFS\e[0m] Failed to initialize VFS\n");
     return;
   }
 
-  if (font_file != NULL) {
+  mount_drive(vfs, 0x00000000, (uint64_t)rd, "/", DISK_TYPE_RAMDISK);
+
+  dprintf("[\e[0;32mVFS\e[0m] Mounted ramdisk\n");
+
+  char *font_buff;
+
+  vfs_op_status status =
+      driver_read(vfs, 0x00000000, "/etc/fonts/nighterm.psf", &font_buff);
+
+  bool s;
+
+  s = true;
+  if (status != STATUS_OK) {
+    dprintf("[\e[0;31mKernel\e[0m] Error reading file from disk\n");
+    unmount_drive(vfs, 0x00000000);
+    free(font_buff);
+    s = false;
+  }
+
+  if (s) {
     dprintf("[\e[0;32mSystem\e[0m] Found font!\n");
     dprintf("[\e[0;32mSystem\e[0m] Initializing Nighterm with font!\n");
 
-    nstatus = nighterm_initialize(font_file->content, framebuffer->address,
+    nstatus = nighterm_initialize(&font_buff, framebuffer->address,
                                   framebuffer->width, framebuffer->height,
                                   framebuffer->pitch, framebuffer->bpp, NULL);
   } else {

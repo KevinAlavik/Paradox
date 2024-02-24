@@ -29,36 +29,4 @@ return codes)
 #include <printf.h>
 #include <transform.h>
 
-int main() {
-  VFS_t *vfs = init_vfs();
-
-  if (vfs == NULL) {
-    dprintf("[\e[0;31mKernel\e[0m] Failed to initialize VFS\n");
-    return KERNEL_QUIT_ERROR;
-  }
-
-  mount_drive(vfs, 0x00000000, (uint64_t)rd, "/", DISK_TYPE_RAMDISK);
-
-  uint64_t ramdisk_id = get_drive_id_by_label(vfs, "/");
-
-  char *buf;
-
-  vfs_op_status status = driver_read(vfs, ramdisk_id, "/etc/motd", &buf);
-
-  if (status != STATUS_OK) {
-    dprintf("[\e[0;31mKernel\e[0m] Error reading file from disk\n");
-    unmount_drive(vfs, ramdisk_id);
-    free(buf);
-    return KERNEL_QUIT_ERROR;
-  }
-
-  printf("%s\n", buf);
-
-  free(buf);
-
-  unmount_drive(vfs, ramdisk_id);
-  free(vfs->drives);
-  free(vfs);
-
-  return KERNEL_QUIT_HANG;
-}
+int main() { return KERNEL_QUIT_HANG; }

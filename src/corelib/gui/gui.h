@@ -1,6 +1,7 @@
 #ifndef __GUI_H__
 #define __GUI_H__
 
+#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <vector.h>
@@ -20,6 +21,7 @@ typedef struct {
   rgba_t rgba;
   Vec2 pos;
   Vec2 size;
+  Vec2 *points;
 
   void (*present_element)(const struct gui_element_struct *element);
 } gui_element_t;
