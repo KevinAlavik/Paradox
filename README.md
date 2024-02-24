@@ -36,6 +36,8 @@ You could also use our custom boot script to build and boot using QEMU:
 
 - [schkwve](https://github.com/schkwve)
   - Made [**nighterm-extended**](https://github.com/schkwve/nighterm-extended)
+ 
+Some authors have been credited on the first line in some files!
 
 ## License
 Paradox is licensed under the [GPL v3](https://www.gnu.org/licenses/gpl-3.0.html) license. 
