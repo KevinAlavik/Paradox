@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-unsigned int *tga_parse(unsigned char *ptr, int size);
+unsigned int *tga_parse(char *ptr, int size);
 
 void draw_targa_image(char *image, int size, int x, int y);
 
