@@ -39,7 +39,7 @@ void init_wm() {
   vfs_op_status ss = driver_read(vfs, 0x00000000, "/root/IMG_3930.tga", &img);
   
   if (ss == STATUS_OK) {
-    draw_targa_image(img, 4096, 0, 0);
+    draw_targa_image(img, 2000000, 0, 0);
   }
   
 }
