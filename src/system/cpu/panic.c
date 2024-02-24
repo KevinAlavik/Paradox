@@ -13,7 +13,7 @@ void panic(const char *reason, int_frame_t frame) {
   flush(70, 105, 255);
   nighterm_set_bg_color(70, 105, 255);
 
-  struct File *img = rd_get_file(rd, "ramdisk/etc/images/bsod.kif");
+  struct File *img = rd_get_file(rd, "/etc/images/bsod.kif");
   if (img == NULL) {
     dprintf("[\e[0;32mSystem\e[0m] Failed to load panic image! Didnt "
             "find: /etc/images/bsod.kif\n");

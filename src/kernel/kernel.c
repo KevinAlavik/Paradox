@@ -37,31 +37,28 @@ int main() {
     return KERNEL_QUIT_ERROR;
   }
 
-  mount_drive(vfs, (uint64_t)rd, "/");
+  mount_drive(vfs, 0x00000000, (uint64_t)rd, "/", DISK_TYPE_RAMDISK);
 
   uint64_t ramdisk_id = get_drive_id_by_label(vfs, "/");
-  ramdisk_t *rd_vfs = (ramdisk_t *)read_drive(vfs, ramdisk_id);
 
-  struct File *motd = rd_get_file(rd_vfs, "ramdisk/etc/motd");
+  char *buf;
 
-  printf("%s\n\n", motd->content);
+  vfs_op_status status = driver_read(vfs, ramdisk_id, "/etc/motd", &buf);
 
-  printf("----------------------------\n");
-  printf("Ramdisk Location: 0x%016llX\n", rd_vfs->location);
-  printf("Ramdisk Size: 0x%08X\n", rd_vfs->size);
-  printf("Ramdisk File Count: %d\n", rd_vfs->files);
-  printf("Ramdisk Actual Size: 0x%08X\n", rd_vfs->actual_size);
-  printf("----------------------------\n\n");
-  for (int curFile = 0; curFile < rd_vfs->files; curFile++) {
-    struct File file = rd_vfs->content->files[curFile];
-    printf("%s (%d): d? %s\n", file.name, file.size,
-           file.isDirectory ? "Yes" : "No");
+  if (status != STATUS_OK) {
+    dprintf("[\e[0;31mKernel\e[0m] Error reading file from disk\n");
+    unmount_drive(vfs, ramdisk_id);
+    free(buf);
+    return KERNEL_QUIT_ERROR;
   }
 
-  unmount_drive(vfs, ramdisk_id);
+  printf("%s\n", buf);
 
-  free(rd_vfs->content);
-  free(rd);
+  free(buf);
+
+  unmount_drive(vfs, ramdisk_id);
+  free(vfs->drives);
+  free(vfs);
 
   return KERNEL_QUIT_HANG;
 }

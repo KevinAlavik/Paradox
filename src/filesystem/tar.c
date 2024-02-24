@@ -1,5 +1,5 @@
 #include "tar.h"
-#include <printf.h>
+#include <string.h>
 
 #define TAR_DEBUG(fmt, ...)                                                    \
   dprintf("[\e[0;32mTAR Debug\e[0m] running func: %s(" fmt ")\n", __func__,    \
@@ -15,6 +15,14 @@ unsigned int getsize(const char *in) {
     size += ((in[j - 1] - '0') * count);
 
   return size;
+}
+
+char *removePrefix(const char *str, const char *prefix) {
+  size_t prefix_len = strlen(prefix);
+  if (strncmp(str, prefix, prefix_len) == 0) {
+    return strdup(str + prefix_len);
+  }
+  return strdup(str);
 }
 
 void extractTarData(const char *rawData, unsigned int dataSize,
@@ -39,7 +47,7 @@ void extractTarData(const char *rawData, unsigned int dataSize,
 
     struct File file;
     file.size = getsize(header->size);
-    file.name = strdup(header->filename);
+    file.name = removePrefix(header->filename, "ramdisk");
     file.isDirectory = header->typeflag[0] == '5';
 
     if (!file.isDirectory) {

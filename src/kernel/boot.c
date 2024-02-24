@@ -59,7 +59,7 @@ void init_boot(int debug_info) {
   dprintf("\n");
   dprintf("[\e[0;32mSystem\e[0m] Starting display...\n");
 
-  struct File *font_file = rd_get_file(rd, "ramdisk/etc/fonts/nighterm.psf");
+  struct File *font_file = rd_get_file(rd, "/etc/fonts/nighterm.psf");
   if (font_file == NULL) {
     dprintf("[\e[0;32mSystem\e[0m] Failed to load font! Didnt find: "
             "/etc/fonts/nighterm.psf\n");
