@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <printf.h>
+#include <vga.h>
 #include "tga.h"
 
 unsigned int *tga_parse(unsigned char *ptr, int size) {
@@ -84,8 +86,28 @@ unsigned int *tga_parse(unsigned char *ptr, int size) {
     return data;
 }
 
-void draw_targa_image(char *image, int x, int y) {
-    // Implementation of drawing Targa image at position (x, y)
-    // This function should handle drawing the image using the provided image data at the specified position
-    // Implementation goes here
+void draw_targa_image(char *image, int size, int x, int y) {
+    unsigned int *data = tga_parse(image, size);
+    if (data == NULL) {
+        dprintf("[\e[0;31mTGA\e[0m] Failed to parse Targa image.\n");
+        return;
+    }
+
+    int width = data[0];
+    int height = data[1];
+
+    dprintf("[\e[0;32mTGA\e[0m] Drawing Targa image at position (%d, %d):\n", x, y);
+    for (int j = 0; j < height; j++) {
+        for (int i = 0; i < width; i++) {
+            unsigned int pixel = data[2 + j * width + i];
+            unsigned char red = (pixel >> 16) & 0xFF;
+            unsigned char green = (pixel >> 8) & 0xFF;
+            unsigned char blue = pixel & 0xFF;
+            unsigned char alpha = (pixel >> 24) & 0xFF;
+
+            put_pixel_rgba(x + i, y + j, red, green, blue, alpha)(
+        }
+    }
+
+    free(data);
 }
