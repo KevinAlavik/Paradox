@@ -28,5 +28,9 @@ return codes)
 #include <kif.h>
 #include <printf.h>
 #include <transform.h>
+#include <vector.h>
 
-int main() { return KERNEL_QUIT_HANG; }
+int main() {
+  init_wm();
+  return KERNEL_QUIT_HANG;
+}

@@ -184,3 +184,41 @@ uint64_t get_drive_id_by_label(VFS_t *vfs, const char *label) {
   dprintf("[\e[0;31mVFS\e[0m] Drive with label \"%s\" not found!\n", label);
   return -1;
 }
+
+size_t vfs_get_file_size(VFS_t *vfs, uint64_t id, const char *filepath) {
+  if (vfs == NULL || filepath == NULL) {
+    dprintf("[\e[0;31mVFS\e[0m] Invalid arguments: vfs or filepath is NULL\n");
+    return 0;
+  }
+
+  drive_t *drive = &vfs->drives[id];
+  if (drive == NULL) {
+    dprintf("[\e[0;31mVFS\e[0m] Invalid drive: id %llu\n", id);
+    return 0;
+  }
+
+  switch (drive->type) {
+  case DISK_TYPE_RAMDISK: {
+    ramdisk_t *rd = (ramdisk_t *)(uintptr_t)(drive->address);
+    if (rd == NULL) {
+      dprintf("[\e[0;31mVFS\e[0m] RAM disk not initialized\n");
+      return 0;
+    }
+
+    for (unsigned int i = 0; i < rd->files; i++) {
+      if (strcmp(rd->content->files[i].name, filepath) == 0) {
+        dprintf("[\e[0;32mVFS\e[0m] File found: %s, Size: %u bytes\n", filepath,
+                rd->content->files[i].size);
+        return rd->content->files[i].size;
+      }
+    }
+    dprintf("[\e[0;31mVFS\e[0m] File not found: %s\n", filepath);
+    break;
+  }
+  default:
+    dprintf("[\e[0;31mVFS\e[0m] Unsupported drive type: %d\n", drive->type);
+    return 0;
+  }
+
+  return 0;
+}

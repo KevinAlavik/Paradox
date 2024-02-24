@@ -54,5 +54,6 @@ vfs_op_status driver_write(VFS_t *disk, uint64_t id, const char *filepath,
                            const char *buf);
 
 uint64_t get_drive_id_by_label(VFS_t *vfs, const char *label);
+size_t vfs_get_file_size(VFS_t *vfs, uint64_t id, const char *filepath);
 
 #endif // __VFS_H__
