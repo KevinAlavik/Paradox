@@ -34,9 +34,6 @@ void init_wm() {
     printf("%s\n", buf);
   }
   
-  
-  
-  vfs_op_status ss = driver_read(vfs, 0x00000000, "", &img);
-  struct File *img_file = rd_get_file(rd, "/etc/fonts/nighterm.psf");
-  draw_targa_image(img, 2000000, 0, 0);
+  struct File *img_file = rd_get_file(rd, "/root/IMG_3930.tga");
+  draw_targa_image(img_file->content, img_file->size, 0, 0);
 }
