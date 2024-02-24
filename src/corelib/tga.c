@@ -3,7 +3,7 @@
 #include <vga.h>
 #include "tga.h"
 
-unsigned int *tga_parse(unsigned char *ptr, int size) {
+unsigned int *tga_parse(char *ptr, int size) {
     unsigned int *data;
     int i, j, k, x, y, w = (ptr[13] << 8) + ptr[12], h = (ptr[15] << 8) + ptr[14], o = (ptr[11] << 8) + ptr[10];
     int m = ((ptr[1]? (ptr[7]>>3)*ptr[5] : 0) + 18);
@@ -105,7 +105,7 @@ void draw_targa_image(char *image, int size, int x, int y) {
             unsigned char blue = pixel & 0xFF;
             unsigned char alpha = (pixel >> 24) & 0xFF;
 
-            put_pixel_rgba(x + i, y + j, red, green, blue, alpha)(
+            put_pixel_rgba(x + i, y + j, red, green, blue, alpha);
         }
     }
 
