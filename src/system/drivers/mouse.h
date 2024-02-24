@@ -1,3 +1,4 @@
+// Credits to https://github.com/asterd-og/BlazarOS
 #ifndef __MOUSE_H__
 #define __MOUSE_H__
 
