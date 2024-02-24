@@ -107,7 +107,7 @@ void draw_targa_image(char *image, int size, int x, int y) {
 
             alpha = (alpha == 0) ? 255 : alpha;
 
-            put_pixel_rgba(x + i, y + j, red, green, blue, alpha);
+            put_pixel_rgba(x + i, y + j, red, green, blue, 255);
         }
     }
 
