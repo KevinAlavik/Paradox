@@ -8,7 +8,6 @@
 #include <system/memory/pmm.h>
 #include <system/pic/pic.h>
 #include <system/pit/pit.h>
-#include <system/utilities/irqs.h>
 #include <system/utilities/utilities.h>
 
 volatile struct limine_module_request mod_request = {
@@ -43,8 +42,6 @@ void init_boot(int debug_info) {
   dprintf("[\e[0;32mSystem\e[0m] Initialized Mouse\n");
   init_keyboard();
   dprintf("[\e[0;32mSystem\e[0m] Initialized Keyboard\n");
-  register_irqs();
-  dprintf("[\e[0;32mSystem\e[0m] Registered IRQs\n");
   rd = init_rd();
 
   if (rd == NULL) {

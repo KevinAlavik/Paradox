@@ -1,4 +1,3 @@
-// Credits to https://github.com/asterd-og/BlazarOS
 #include "mouse.h"
 
 uint8_t mouse_state = 0;
@@ -7,6 +6,10 @@ uint8_t mouse_bytes[3] = {0, 0, 0};
 uint32_t mouse_x = 0;
 uint32_t mouse_y = 0;
 
+uint32_t old_pixels[50][50];
+uint32_t old_mouse_x = 0;
+uint32_t old_mouse_y = 0;
+
 int32_t mouse_wrap_x = 0;
 int32_t mouse_wrap_y = 0;
 
@@ -14,6 +17,9 @@ bool mouse_left_pressed = false;
 bool mouse_right_pressed = false;
 
 bool mouse_moved = false;
+
+char *mouse_img = NULL;
+uint32_t mouse_img_size = 0;
 
 void mouse_wait_write() {
   while ((inb8(0x64) & 2) != 0) {
@@ -37,6 +43,52 @@ void mouse_write(uint8_t value) {
 uint8_t mouse_read() {
   mouse_wait_read();
   return inb8(0x60);
+}
+
+void draw_mouse(int x, int y) {
+  if (mouse_img == NULL || mouse_img_size == 0) {
+    vfs_op_status status = driver_read(
+        vfs, 0x00000000, "/etc/graphics/cursor_normal.tga", &mouse_img);
+    if (status == STATUS_OK) {
+      mouse_img_size =
+          vfs_get_file_size(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga");
+    } else {
+      return;
+    }
+  }
+
+  for (int i = 0; i < 50; i++) {
+    for (int j = 0; j < 50; j++) {
+      int pixel_x = x + i;
+      int pixel_y = y + j;
+
+      old_pixels[i][j] = *(uint32_t *)(framebuffer->address +
+                                       pixel_x * (framebuffer->bpp >> 3) +
+                                       pixel_y * framebuffer->pitch);
+    }
+  }
+
+  draw_tga_from_raw(x, y, mouse_img, mouse_img_size);
+}
+
+void remove_mouse(int x, int y) {
+  for (int i = 0; i < 50; i++) {
+    for (int j = 0; j < 50; j++) {
+      int pixel_x = x + i;
+      int pixel_y = y + j;
+
+      uint32_t old_pixel = old_pixels[i][j];
+
+      if (old_pixel != 0) {
+        uint32_t *framebuffer_address =
+            (uint32_t *)(framebuffer->address +
+                         pixel_x * (framebuffer->bpp >> 3) +
+                         pixel_y * framebuffer->pitch);
+
+        *framebuffer_address = old_pixel;
+      }
+    }
+  }
 }
 
 void mouse_update(int8_t accel_x, int8_t accel_y) {
@@ -64,18 +116,11 @@ void mouse_update(int8_t accel_x, int8_t accel_y) {
   mouse_y = (uint32_t)mouse_wrap_y;
 
   if (should_draw_cursor) {
-    char *img;
-    uint32_t size;
-
-    vfs_op_status status;
-
-    status =
-        driver_read(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga", &img);
-
-    if (status == STATUS_OK) {
-      size =
-          vfs_get_file_size(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga");
-      draw_tga_from_raw(mouse_x, mouse_y, img, size);
+    if (old_mouse_x != mouse_x || old_mouse_y != mouse_y) {
+      remove_mouse(old_mouse_x, old_mouse_y);
+      draw_mouse(mouse_x, mouse_y);
+      old_mouse_x = mouse_x;
+      old_mouse_y = mouse_y;
     }
   }
 }
@@ -96,7 +141,6 @@ void mouse_handler(int_frame_t *frame) {
     return;
   }
   switch (mouse_state) {
-  // Packet state
   case 0:
     mouse_wait_read();
     mouse_bytes[0] = mouse_read();
