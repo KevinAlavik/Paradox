@@ -45,5 +45,4 @@ void init_wm() {
   }
 
   should_draw_cursor = true;
-  mouse_init();
 }
