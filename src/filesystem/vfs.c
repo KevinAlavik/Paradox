@@ -110,10 +110,14 @@ vfs_op_status driver_read(VFS_t *disk, uint64_t id, const char *filepath,
       return STATUS_ERROR_FILE_NOT_FOUND;
     }
 
-    *buf = strdup(temp_file->content);
+    *buf = (char *)malloc(temp_file->size);
     if (*buf == NULL) {
       dprintf("[\e[0;31mVFS\e[0m] Failed to allocate memory for buffer\n");
       return STATUS_MALLOC_FAILURE;
+    }
+
+    for (uint32_t i = 0; i < temp_file->size; ++i) {
+      (*buf)[i] = temp_file->content[i];
     }
 
     dprintf("[\e[0;32mVFS\e[0m] Successfully read from drive!\n");

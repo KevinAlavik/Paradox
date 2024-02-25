@@ -60,19 +60,17 @@ void init_boot(int debug_info) {
 
   dprintf("[\e[0;32mVFS\e[0m] Mounted ramdisk\n");
 
-  struct File *font_file = rd_get_file(rd, "/etc/fonts/nighterm.psf");
+  char *font_data;
 
-  if (font_file == NULL) {
-    dprintf("[\e[0;32mSystem\e[0m] Failed to load font! Didnt find: "
-            "/etc/fonts/nighterm.psf\n");
-    return;
-  }
+  vfs_op_status status;
 
-  if (font_file != NULL) {
+  status = driver_read(vfs, 0x00000000, "/etc/fonts/nighterm.psf", &font_data);
+
+  if (status == STATUS_OK) {
     dprintf("[\e[0;32mSystem\e[0m] Found font!\n");
     dprintf("[\e[0;32mSystem\e[0m] Initializing Nighterm with font!\n");
 
-    nstatus = nighterm_initialize(font_file->content, framebuffer->address,
+    nstatus = nighterm_initialize(font_data, framebuffer->address,
                                   framebuffer->width, framebuffer->height,
                                   framebuffer->pitch, framebuffer->bpp, malloc);
   } else {

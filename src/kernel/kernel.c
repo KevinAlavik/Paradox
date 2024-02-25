@@ -15,6 +15,7 @@ return codes)
 #include <kernel/kernel.h>
 #include <nighterm/nighterm.h>
 #include <stdint.h>
+#include <system/drivers/mouse.h>
 #include <system/drivers/speaker.h>
 #include <system/memory/heap.h>
 #include <system/memory/pmm.h>

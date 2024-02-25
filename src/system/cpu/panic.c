@@ -13,13 +13,17 @@ void panic(const char *reason, int_frame_t frame) {
   flush(70, 105, 255);
   nighterm_set_bg_color(70, 105, 255);
 
-  struct File *img = rd_get_file(rd, "/etc/images/bsod.kif");
-  if (img == NULL) {
-    dprintf("[\e[0;32mSystem\e[0m] Failed to load panic image! Didnt "
-            "find: /etc/images/bsod.kif\n");
-    return;
+  char *img;
+
+  vfs_op_status status;
+
+  status = driver_read(vfs, 0x00000000, "/etc/images/bsod.kif", &img);
+
+  if (status == STATUS_OK) {
+    draw_image(img, 0, 0, 0);
   }
-  draw_image(img->content, 0, 0, 0);
+
+  nighterm_set_cursor_position(0, 20);
 
   printf("\tComputer no workie :( \n\n");
 
