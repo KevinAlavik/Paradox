@@ -28,7 +28,6 @@ void init_taskbar() {
 }
 
 void init_wm() {
-  keyboard.out = 0;
   init_wallpaper();
   init_taskbar();
 
@@ -45,4 +44,5 @@ void init_wm() {
   }
 
   should_draw_cursor = true;
+  keyboard.out = true;
 }

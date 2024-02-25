@@ -39,10 +39,10 @@ void init_boot(int debug_info) {
   dprintf("[\e[0;32mSystem\e[0m] Initialized PMM\n");
   pit_init();
   dprintf("[\e[0;32mSystem\e[0m] Initialized PIT\n");
-  init_keyboard();
-  dprintf("[\e[0;32mSystem\e[0m] Initialized Keyboard\n");
   mouse_init();
   dprintf("[\e[0;32mSystem\e[0m] Initialized Mouse\n");
+  init_keyboard();
+  dprintf("[\e[0;32mSystem\e[0m] Initialized Keyboard\n");
   register_irqs();
   dprintf("[\e[0;32mSystem\e[0m] Registered IRQs\n");
   rd = init_rd();
