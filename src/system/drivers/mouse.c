@@ -46,6 +46,7 @@ uint8_t mouse_read() {
   return inb8(0x60);
 }
 
+// TODO: Make this read from a config later!
 void set_mouse_style(const char* s) {
   if (strcmp(s, "normal") == 0) {
     vfs_op_status status = driver_read(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga", &mouse_img);
