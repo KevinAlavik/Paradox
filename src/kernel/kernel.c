@@ -24,6 +24,7 @@ return codes)
 #include <system/processes/processes.h>
 #include <system/utilities/utilities.h>
 #include <system/wm/wm.h>
+#include <system/pci/pci.h>
 
 // Corelib includes
 #include <kif.h>
@@ -32,6 +33,7 @@ return codes)
 #include <vector.h>
 
 int main() {
-  init_wm();
+  register_pci();
+  // init_wm();
   return KERNEL_QUIT_HANG;
 }
