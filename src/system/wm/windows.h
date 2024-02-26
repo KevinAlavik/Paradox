@@ -24,7 +24,7 @@
 #define GREEN_SHIFT 8
 #define BLUE_SHIFT 0
 
-#define DEFAULT_WIN_DEC "/etc/graphics/window.tga"
+#define DEFAULT_WIN_DEC "/etc/theme/window/full.tga"
 
 typedef struct {
   char *title;

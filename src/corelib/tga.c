@@ -155,8 +155,6 @@ tga_info *tga_parse(uint8_t *ptr, uint32_t size) {
 
   free(data);
 
-  dprintf("[\e[0;32mTGA\e[0m] TGA data parsed successfully!\n");
-
   return tga;
 }
 
@@ -178,13 +176,11 @@ void draw_tga(uint32_t x, uint32_t y, tga_info *tga) {
 
 void draw_tga_from_raw(uint32_t x, uint32_t y, char *raw_data,
                        uint32_t data_size) {
-  dprintf("[\e[0;32mTGA\e[0m] Parsing TGA data...\n");
   tga_info *tga = tga_parse((uint8_t *)raw_data, data_size);
   if (tga != NULL) {
     draw_tga(x, y, tga);
     free(tga->data);
     free(tga);
-    dprintf("[\e[0;32mTGA\e[0m] TGA drawn successfully!\n");
   } else {
     dprintf("[\e[0;31mTGA\e[0m] Failed to parse TGA data!\n");
   }

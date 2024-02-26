@@ -1,6 +1,7 @@
 #ifndef __GUI_H__
 #define __GUI_H__
 
+#include <filesystem/vfs.h>
 #include <kernel/boot.h>
 #include <kif.h>
 #include <math.h>

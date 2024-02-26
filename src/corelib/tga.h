@@ -13,6 +13,7 @@ typedef struct {
 } tga_info;
 
 tga_info *tga_parse(uint8_t *ptr, uint32_t size);
+void draw_tga(uint32_t x, uint32_t y, tga_info *tga);
 void draw_tga_from_raw(uint32_t x, uint32_t y, char *raw_data,
                        uint32_t data_size);
 

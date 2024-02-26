@@ -1,11 +1,10 @@
 #ifndef LAYOUTS_H
 #define LAYOUTS_H
 
-struct KeyState
-{
-    char *normal;
-    char *shifted;
-    char *caps;
+struct KeyState {
+  char *normal;
+  char *shifted;
+  char *caps;
 };
 
 extern struct KeyState sv_layout[0xFF + 1];

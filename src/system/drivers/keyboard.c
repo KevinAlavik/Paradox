@@ -2,6 +2,7 @@
 #include "layouts.h"
 #include <printf.h>
 #include <serial/serial.h>
+#include <system/drivers/mouse.h>
 #include <system/idt/idt.h>
 #include <system/pic/pic.h>
 
@@ -35,22 +36,20 @@ void keyboard_handler(int_frame_t *frame) {
     keyboard.state = KEYBOARD_NORMAL;
   }
 
-  // UNCOMMENTED SINCE NEX DONT HAVE A MOVE CURSOR
-  // if (keyboard.data == 0x48)
-  // {
-  //     nighterm_move_cursor(term.curY - 1, term.curX - 1);
+  // Uncommented since nighterm doesn't allow us to read the current x and
+  // current y values
+  //
+  // if (keyboard.data == 0x48) {
+  //   nighterm_set_cursor_position(term.curY - 1, term.curX - 1);
   // }
-  // if (keyboard.data == 0x50)
-  // {
-  //     nighterm_move_cursor(term.curY + 1, term.curX - 1);
+  // if (keyboard.data == 0x50) {
+  //   nighterm_set_cursor_position(term.curY + 1, term.curX - 1);
   // }
-  // if (keyboard.data == 0x4B)
-  // {
-  //     nighterm_move_cursor(term.curY, term.curX - 1);
+  // if (keyboard.data == 0x4B) {
+  //   nighterm_set_cursor_position(term.curY, term.curX - 1);
   // }
-  // if (keyboard.data == 0x4D)
-  // {
-  //     nighterm_move_cursor(term.curY, term.curX + 1);
+  // if (keyboard.data == 0x4D) {
+  //   nighterm_set_cursor_position(term.curY, term.curX + 1);
   // }
 
   if (keyboard.state == KEYBOARD_NORMAL) {

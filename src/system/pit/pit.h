@@ -1,13 +1,15 @@
 #ifndef __PIT_H__
 #define __PIT_H__
 
-#include <stdint.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <limits.h>
+#include <stdint.h>
+#include <system/drivers/keyboard.h>
+#include <system/drivers/mouse.h>
 
-#define PIT_COMMAND     0x43
-#define PIT_DATA        0x40
+#define PIT_COMMAND 0x43
+#define PIT_DATA 0x40
 
 void pit_set_count(uint16_t count);
 uint16_t pit_read_count();
@@ -18,6 +20,5 @@ void pit_sleep(uint64_t millis);
 
 uint64_t pit_get_uptime_milis();
 uint64_t pit_get_uptime_secs();
-
 
 #endif // __PIT_H__

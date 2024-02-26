@@ -19,12 +19,12 @@ return codes)
 #include <system/drivers/speaker.h>
 #include <system/memory/heap.h>
 #include <system/memory/pmm.h>
+#include <system/pci/pci.h>
 #include <system/pic/pic.h>
 #include <system/pit/pit.h>
 #include <system/processes/processes.h>
 #include <system/utilities/utilities.h>
 #include <system/wm/wm.h>
-#include <system/pci/pci.h>
 
 // Corelib includes
 #include <kif.h>
@@ -34,6 +34,6 @@ return codes)
 
 int main() {
   register_pci();
-  // init_wm();
+  init_wm();
   return KERNEL_QUIT_HANG;
 }

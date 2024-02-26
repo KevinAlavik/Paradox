@@ -46,7 +46,8 @@ struct VFS_t {
 
 VFS_t *init_vfs();
 
-int mount_drive(VFS_t *vfs, int64_t id, uint64_t address, const char *label, uint8_t type);
+int mount_drive(VFS_t *vfs, int64_t id, uint64_t address, const char *label,
+                uint8_t type);
 int unmount_drive(VFS_t *vfs, int64_t id);
 
 vfs_op_status driver_read(VFS_t *disk, uint64_t id, const char *filepath,
