@@ -21,5 +21,6 @@ extern bool mouse_right_pressed;
 extern bool mouse_moved;
 
 void mouse_init();
+void set_mouse_style(char* s);
 
 #endif // __MOUSE_H__
