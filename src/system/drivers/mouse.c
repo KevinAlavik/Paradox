@@ -46,22 +46,19 @@ uint8_t mouse_read() {
   return inb8(0x60);
 }
 
-void set_mouse_style(char* s) {
-  switch(s) {
-    case "normal":
-      vfs_op_status status = driver_read(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga", &mouse_img);
-      if (status == STATUS_OK) {
-        mouse_img_size =
-            vfs_get_file_size(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga");
-      } else {
-        return;
-      }
-
+void set_mouse_style(const char* s) {
+  if (strcmp(s, "normal") == 0) {
+    vfs_op_status status = driver_read(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga", &mouse_img);
+    if (status == STATUS_OK) {
+      mouse_img_size = vfs_get_file_size(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga");
       current_mouse_style = "normal";
-      break;
-    deafult;
-      dprintf("[\e[0;31mMouse Handler\e[0m] Invalid cursor style (%s)!\n", s);
-      current_mouse_style = "normal";
+    } else {
+      return;
+    }
+  } else {
+    printf("[\e[0;31mMouse Handler\e[0m] Invalid cursor style (%s)! Setting the cursor to default!\n", s);
+    current_mouse_style = "normal";
+    set_mouse_style(current_mouse_style);
   }
 }
 
