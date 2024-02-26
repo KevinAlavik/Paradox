@@ -47,7 +47,7 @@ void extractTarData(const char *rawData, unsigned int dataSize,
 
     struct File file;
     file.size = getsize(header->size);
-    file.name = removePrefix(header->filename, "ramdisk");
+    file.name = removePrefix(header->filename, RAMDISK_PATH_PREFIX);
     file.isDirectory = header->typeflag[0] == '5';
 
     if (!file.isDirectory) {
