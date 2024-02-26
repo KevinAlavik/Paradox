@@ -18,7 +18,8 @@ bool mouse_right_pressed = false;
 
 bool mouse_moved = false;
 
-char *mouse_img = NULL;
+char* current_mouse_style = "normal";
+char* mouse_img = NULL;
 uint32_t mouse_img_size = 0;
 
 void mouse_wait_write() {
@@ -45,16 +46,28 @@ uint8_t mouse_read() {
   return inb8(0x60);
 }
 
+void set_mouse_style(char* s) {
+  switch(s) {
+    case "normal":
+      vfs_op_status status = driver_read(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga", &mouse_img);
+      if (status == STATUS_OK) {
+        mouse_img_size =
+            vfs_get_file_size(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga");
+      } else {
+        return;
+      }
+
+      current_mouse_style = "normal";
+      break;
+    deafult;
+      dprintf("[\e[0;31mMouse Handler\e[0m] Invalid cursor style (%s)!\n", s);
+      current_mouse_style = "normal";
+  }
+}
+
 void draw_mouse(int x, int y) {
   if (mouse_img == NULL || mouse_img_size == 0) {
-    vfs_op_status status = driver_read(
-        vfs, 0x00000000, "/etc/graphics/cursor_normal.tga", &mouse_img);
-    if (status == STATUS_OK) {
-      mouse_img_size =
-          vfs_get_file_size(vfs, 0x00000000, "/etc/graphics/cursor_normal.tga");
-    } else {
-      return;
-    }
+    set_mouse_style(current_mouse_style);
   }
 
   for (int i = 0; i < 50; i++) {
