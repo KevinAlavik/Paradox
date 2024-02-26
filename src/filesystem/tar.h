@@ -5,6 +5,8 @@
 #include <system/memory/heap.h>
 #include <system/memory/pmm.h>
 
+#define RAMDISK_PATH_PREFIX "ramdisk"
+
 #define FILENAME_SIZE 100
 #define MODE_SIZE 8
 #define UID_SIZE 8
