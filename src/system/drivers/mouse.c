@@ -82,8 +82,8 @@ void draw_mouse(int x, int y) {
 }
 
 void remove_mouse(int x, int y) {
-  for (int i = 0; i < 50; i++) {
-    for (int j = 0; j < 50; j++) {
+  for (int i = 0; i < 32; i++) {
+    for (int j = 0; j < 32; j++) {
       int pixel_x = x + i;
       int pixel_y = y + j;
 
