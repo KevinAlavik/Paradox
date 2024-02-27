@@ -39,10 +39,12 @@ void spawn_window(window_t *window) {
 }
 
 void render_window_gui(window_t *window) {
+  int i, j;
+  uint32_t pixel;
   bool buffer_changed = false;
 
-  for (int i = 0; i < window->height; i++) {
-    for (int j = 0; j < window->width; j++) {
+  for (i = 0; i < window->height; i++) {
+    for (j = 0; j < window->width; j++) {
       if (window->buffer[i * window->width + j] !=
           window->old_buffer[i * window->width + j]) {
         buffer_changed = true;
@@ -55,9 +57,9 @@ void render_window_gui(window_t *window) {
   }
 
   if (!window->initialized || buffer_changed) {
-    for (int i = 0; i < window->height; i++) {
-      for (int j = 0; j < window->width; j++) {
-        uint32_t pixel = window->buffer[i * window->width + j];
+    for (i = 0; i < window->height; i++) {
+      for (j = 0; j < window->width; j++) {
+        pixel = window->buffer[i * window->width + j];
         uint8_t alpha = (pixel & ALPHA_MASK) >> ALPHA_SHIFT;
         uint8_t red = (pixel & RED_MASK) >> RED_SHIFT;
         uint8_t green = (pixel & GREEN_MASK) >> GREEN_SHIFT;
@@ -117,7 +119,6 @@ void update_window(window_t *window) {
     old_window_x[0] = window->x;
     old_window_y[0] = window->y;
   }
-  render_window_gui(window);
 }
 
 void update_all_windows() {
