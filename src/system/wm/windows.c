@@ -27,11 +27,11 @@ void spawn_window(window_t *window) {
     num_windows++;
 
     // // TODO: Make this not hardcoded to window id 0?
-    // old_window_x[0] = window->x;
-    // old_window_y[0] = window->y;
-    // Doing this causes the window to not render?
+    old_window_x[0] = window->x;
+    old_window_y[0] = window->y;
     window->initialized = false;
 
+    render_window_gui(window);
     update_window(window);
   } else {
     dprintf("Maximum number of windows reached\n");
