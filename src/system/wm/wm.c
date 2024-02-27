@@ -53,4 +53,7 @@ void init_wm() {
   printf("Hello, World!\n");
   printf("Hello, World!\n");
   printf("Hello, World!\n");
+  
+  pit_sleep(10000);
+  destroy_window(&test_window);
 }
