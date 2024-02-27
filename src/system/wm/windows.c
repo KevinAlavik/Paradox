@@ -29,6 +29,7 @@ void spawn_window(window_t *window) {
     // // TODO: Make this not hardcoded to window id 0?
     // old_window_x[0] = window->x;
     // old_window_y[0] = window->y;
+    // Doing this causes the window to not render?
     window->initialized = false;
 
     update_window(window);
