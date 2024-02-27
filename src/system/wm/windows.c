@@ -38,46 +38,6 @@ void spawn_window(window_t *window) {
   }
 }
 
-#include "windows.h"
-
-window_t windows[MAX_WINDOWS];
-int num_windows = 0;
-
-uint32_t w_old_pixels[MAX_WINDOWS][WIN_WIDTH][WIN_HEIGHT];
-int old_window_x[MAX_WINDOWS];
-int old_window_y[MAX_WINDOWS];
-int last_updated_window_index = -1;
-
-void spawn_window(window_t *window) {
-  if (num_windows < MAX_WINDOWS) {
-    window->buffer = malloc(window->width * window->height * sizeof(uint32_t));
-    window->old_buffer =
-        malloc(window->width * window->height * sizeof(uint32_t));
-    if (window->buffer == NULL || window->old_buffer == NULL) {
-      dprintf("Failed to allocate memory for window buffer\n");
-      return;
-    }
-
-    memset(window->buffer, 0xFFFFFFFF,
-           window->width * window->height * sizeof(uint32_t));
-    memcpy(window->old_buffer, window->buffer,
-           window->width * window->height * sizeof(uint32_t));
-
-    windows[num_windows] = *window;
-    num_windows++;
-
-    // // TODO: Make this not hardcoded to window id 0?
-    old_window_x[0] = window->x;
-    old_window_y[0] = window->y;
-    window->initialized = false;
-
-    render_window_gui(window);
-    update_window(window);
-  } else {
-    dprintf("Maximum number of windows reached\n");
-  }
-}
-
 void render_window_gui(window_t *window) {
   bool buffer_changed = false;
 
