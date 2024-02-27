@@ -1,9 +1,0 @@
-char *img;
-uint32_t size;
-vfs_op_status status;
-
-status = driver_read(vfs, 0x00000000, DEFAULT_WIN_DEC, &img);
-if (status == STATUS_OK) {
-  size = vfs_get_file_size(vfs, 0x00000000, DEFAULT_WIN_DEC);
-  draw_tga_from_raw(window->x, window->y, img, size);
-}
