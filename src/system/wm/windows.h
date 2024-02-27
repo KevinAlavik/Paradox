@@ -6,6 +6,7 @@
 #include <math.h>
 #include <printf.h>
 #include <stdlib.h>
+#include <system/drivers/mouse.h>
 #include <tga.h>
 #include <vga.h>
 
@@ -42,5 +43,9 @@ extern int num_windows;
 
 void spawn_window(window_t *window);
 void update_window(window_t *window);
+void destory_window(window_t *window);
+void remove_window_gui(window_t *window);
+void render_window_gui(window_t *window);
+
 void update_all_windows();
 #endif // __WINDOWS_H__

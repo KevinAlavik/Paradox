@@ -13,6 +13,7 @@
 #include <system/drivers/keyboard.h>
 #include <system/drivers/mouse.h>
 #include <system/memory/pmm.h>
+#include <system/utilities/utilities.h>
 #include <system/wm/windows.h>
 #include <tga.h>
 #include <transform.h>

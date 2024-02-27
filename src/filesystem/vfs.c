@@ -206,8 +206,6 @@ size_t vfs_get_file_size(VFS_t *vfs, uint64_t id, const char *filepath) {
 
     for (unsigned int i = 0; i < rd->files; i++) {
       if (strcmp(rd->content->files[i].name, filepath) == 0) {
-        dprintf("[\e[0;32mVFS\e[0m] File found: %s, Size: %u bytes\n", filepath,
-                rd->content->files[i].size);
         return rd->content->files[i].size;
       }
     }

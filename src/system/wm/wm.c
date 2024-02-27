@@ -33,4 +33,24 @@ void init_wm() {
   test_window.height = WIN_HEIGHT;
 
   spawn_window(&test_window);
+
+  int nstatus = nighterm_initialize(
+      NULL, (uint64_t)test_window.buffer, test_window.width, test_window.height,
+      test_window.width * 4, framebuffer->bpp, malloc);
+
+  if (nstatus) {
+    dprintf(
+        "[\e[0;32mSystem\e[0m] Nightem failed to initialize, got code: %s\n",
+        get_nighterm_return_string(nstatus));
+    hcf();
+  } else {
+    dprintf("[\e[0;32mSystem\e[0m] Initialized Nighterm with code: %s\n",
+            get_nighterm_return_string(nstatus));
+  }
+
+  nighterm_set_bg_color(255, 255, 255);
+  nighterm_set_fg_color(0, 0, 0);
+  printf("Hello, World!\n");
+  printf("Hello, World!\n");
+  printf("Hello, World!\n");
 }
