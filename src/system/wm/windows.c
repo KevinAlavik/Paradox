@@ -115,6 +115,7 @@ void update_window(window_t *window) {
 
   if (old_window_x[0] != window->x || old_window_y[0] != window->y) {
     remove_window_gui(window);
+    render_window_gui(window);
     old_window_x[0] = window->x;
     old_window_y[0] = window->y;
   }
