@@ -1,3 +1,4 @@
+// Credits to https://github.com/asterd-og/BlazarOS
 #include "mouse.h"
 
 uint8_t mouse_state = 0;
@@ -125,11 +126,10 @@ void remove_mouse(int x, int y) {
 
       uint32_t old_pixel = old_pixels[i][j];
 
-      if (old_pixel != 0) {
-        uint32_t *framebuffer_address =
-            (uint32_t *)(framebuffer->address +
-                         pixel_x * (framebuffer->bpp >> 3) +
-                         pixel_y * framebuffer->pitch);
+      uint32_t *framebuffer_address =
+          (uint32_t *)(framebuffer->address +
+                      pixel_x * (framebuffer->bpp >> 3) +
+                      pixel_y * framebuffer->pitch);
 
         *framebuffer_address = old_pixel;
       }
