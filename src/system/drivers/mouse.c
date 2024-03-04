@@ -126,12 +126,8 @@ void remove_mouse(int x, int y) {
 
       uint32_t old_pixel = old_pixels[i][j];
 
-      uint32_t *framebuffer_address =
-          (uint32_t *)(framebuffer->address +
-                      pixel_x * (framebuffer->bpp >> 3) +
-                      pixel_y * framebuffer->pitch);
-
-        *framebuffer_address = old_pixel;
+      uint32_t *framebuffer_address = (uint32_t *)(framebuffer->address + pixel_x * (framebuffer->bpp >> 3) + pixel_y * framebuffer->pitch);
+      *framebuffer_address = old_pixel;
       }
     }
   }
