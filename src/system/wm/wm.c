@@ -1,59 +1,98 @@
 #include "wm.h"
-
-#define DHEIGHT 40
+#include <stdlib.h>
 
 bool should_draw_cursor;
 
-void init_wallpaper() {
+void init_wallpaper()
+{
   flush(0, 128, 128);
   nighterm_set_bg_color(0, 128, 128);
+}
 
-  char *t;
+void update_wm()
+{
+  return;
+}
 
-  vfs_op_status status;
+void init_wm()
+{
+  should_draw_cursor = true;
+  keyboard.out = true;
+  init_wallpaper();
 
-  status = driver_read(vfs, 0x00000000, "/etc/motd", &t);
+  Window window;
+  window.x = 100;
+  window.y = 100;
+  window.width = 600;
+  window.height = 400;
 
-  if (status == STATUS_OK) {
-    printf("%s\n", t);
+  window_init(&window, window.x, window.y, window.width, window.height);
+
+  draw_window(&window);
+  pit_sleep(5000);
+  destroy_window(&window);
+}
+
+// Window Stuff
+void window_init(Window *win, int x, int y, int width, int height)
+{
+  win->x = x;
+  win->y = y;
+  win->width = width;
+  win->height = height;
+
+  win->old_pixels = (uint32_t **)malloc(win->width * sizeof(uint32_t *));
+  for (int i = 0; i < win->width; i++)
+  {
+    win->old_pixels[i] = (uint32_t *)malloc(win->height * sizeof(uint32_t));
   }
 }
 
-void init_wm() {
-  should_draw_cursor = true;
-  keyboard.out = false;
+void draw_window(Window *win)
+{
+  for (int i = 0; i < win->width; i++)
+  {
+    for (int j = 0; j < win->height; j++)
+    {
+      int pixel_x = win->x + i;
+      int pixel_y = win->y + j;
 
-  init_wallpaper();
-
-  window_t test_window;
-  test_window.title = "Test Window";
-  test_window.x = 100;
-  test_window.y = 100;
-  test_window.width = WIN_WIDTH;
-  test_window.height = WIN_HEIGHT;
-
-  spawn_window(&test_window);
-
-  int nstatus = nighterm_initialize(
-      NULL, (uint64_t)test_window.buffer, test_window.width, test_window.height,
-      test_window.width * 4, framebuffer->bpp, malloc);
-
-  if (nstatus) {
-    dprintf(
-        "[\e[0;32mSystem\e[0m] Nightem failed to initialize, got code: %s\n",
-        get_nighterm_return_string(nstatus));
-    hcf();
-  } else {
-    dprintf("[\e[0;32mSystem\e[0m] Initialized Nighterm with code: %s\n",
-            get_nighterm_return_string(nstatus));
+      win->old_pixels[i][j] = *(uint32_t *)(framebuffer->address +
+                                            pixel_x * (framebuffer->bpp >> 3) +
+                                            pixel_y * framebuffer->pitch);
+    }
   }
 
-  nighterm_set_bg_color(255, 255, 255);
-  nighterm_set_fg_color(0, 0, 0);
-  printf("Hello, World!\n");
-  printf("Hello, World!\n");
-  printf("Hello, World!\n");
-  
-  pit_sleep(10000);
-  destroy_window(&test_window);
+  draw_filled_rect(win->x, win->y, win->width, win->height, 0, 0, 0, 255);
+}
+
+void destroy_window(Window *win)
+{
+  if (win == NULL)
+  {
+    printf("Error: Attempting to destroy window with NULL pointer to window\n");
+    return;
+  }
+
+  should_draw_cursor = false;
+
+  for (int i = 0; i < win->width; i++)
+  {
+    for (int j = 0; j < win->height; j++)
+    {
+      int pixel_x = win->x + i;
+      int pixel_y = win->y + j;
+
+      uint32_t old_pixel_color = win->old_pixels[i][j];
+      put_pixel32(pixel_x, pixel_y, old_pixel_color);
+    }
+  }
+
+  for (int i = 0; i < win->width; i++)
+  {
+    free(win->old_pixels[i]);
+  }
+
+  win->old_pixels = NULL;
+  should_draw_cursor = true;
 }

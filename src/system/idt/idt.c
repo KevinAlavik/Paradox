@@ -6,8 +6,6 @@
 #include <system/cpu/panic.h>
 #include <system/pic/pic.h>
 
-#define NULL (void *)0
-
 #define IDT_ENTRIES 256
 
 idt_entry_t idt[IDT_ENTRIES];
@@ -51,7 +49,8 @@ static const char *exception_strings[32] = {"Division By Zero",
 
 extern void load_idt(uint64_t);
 
-void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags) {
+void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags)
+{
   dprintf("[\e[0;32mIDT\e[0m] Setting IDT gate for interrupt %d. Base: "
           "0x%016llX, Sel: 0x%08llX, Flags: 0x%04llX\n",
           num, base, sel, flags);
@@ -64,12 +63,14 @@ void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags) {
   idt[num].zero = 0;
 }
 
-void init_idt() {
+void init_idt()
+{
   dprintf("[\e[0;32mIDT\e[0m] Initializing IDT\n");
   idt_p.limit = sizeof(idt_entry_t) * IDT_ENTRIES - 1;
   idt_p.base = (uint64_t)&idt;
 
-  for (size_t i = 0; i < 16; i++) {
+  for (size_t i = 0; i < 16; i++)
+  {
     irq_handlers[i] = NULL;
   }
 
@@ -77,7 +78,8 @@ void init_idt() {
   asm("sti");
   i8259_Configure(PIC_REMAP_OFFSET, PIC_REMAP_OFFSET + 8, true);
 
-  for (int i = 0; i < IDT_ENTRIES; ++i) {
+  for (int i = 0; i < IDT_ENTRIES; ++i)
+  {
     set_idt_gate(i, isr_tbl[i], 0x28, 0x8E);
   }
 
@@ -89,16 +91,20 @@ void init_idt() {
   dprintf("[\e[0;32mIDT\e[0m] IDT Initialization complete\n");
 }
 
-void excp_handler(int_frame_t frame) {
+void excp_handler(int_frame_t frame)
+{
   // dprintf("[\e[0;32mIDT\e[0m] Handling exception with vector %d\n",
   // frame.vector);
 
-  if (frame.vector < 0x20) {
+  if (frame.vector < 0x20)
+  {
     dprintf("[\e[0;31mIDT\e[0m] Exception: %s\n",
             exception_strings[frame.vector]);
     panic(exception_strings[frame.vector], frame);
     hcf();
-  } else if (frame.vector >= 0x20 && frame.vector <= 0x2f) {
+  }
+  else if (frame.vector >= 0x20 && frame.vector <= 0x2f)
+  {
     // dprintf("[\e[0;32mIDT\e[0m] Handling IRQ: %d\n", frame.vector - 0x20);
 
     int irq = frame.vector - 0x20;
@@ -106,23 +112,28 @@ void excp_handler(int_frame_t frame) {
 
     handler_func_t handler = irq_handlers[irq];
 
-    if (handler != NULL) {
+    if (handler != NULL)
+    {
       // dprintf("[\e[0;32mIDT\e[0m] Found handler for IRQ %d\n", irq);
       handler(&frame);
     }
 
     i8259_SendEndOfInterrupt(irq);
-  } else if (frame.vector == 0x80) {
+  }
+  else if (frame.vector == 0x80)
+  {
     dprintf("[\e[0;32mIDT\e[0m] Handling system call\n");
   }
 }
 
-void irq_register(uint8_t irq, void *handler) {
+void irq_register(uint8_t irq, void *handler)
+{
   dprintf("[\e[0;32mIDT\e[0m] Registering IRQ handler for IRQ %d\n", irq);
   irq_handlers[irq] = handler;
 }
 
-void irq_deregister(uint8_t irq) {
+void irq_deregister(uint8_t irq)
+{
   dprintf("[\e[0;32mIDT\e[0m] Deregistering IRQ handler for IRQ %d\n", irq);
   irq_handlers[irq] = NULL;
 }

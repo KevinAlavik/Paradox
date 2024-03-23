@@ -4,9 +4,11 @@
 
 #define RD_MODULE_NAME mod_request.response->modules[0]
 
-ramdisk_t *init_rd(void) {
+ramdisk_t *init_rd(void)
+{
   ramdisk_t *rd = (ramdisk_t *)malloc(sizeof(ramdisk_t));
-  if (rd == NULL) {
+  if (rd == NULL)
+  {
     dprintf("[\e[0;31mRamdisk\e[0m] Failed to allocate memory for ramdisk_t");
     return NULL;
   }
@@ -15,17 +17,19 @@ ramdisk_t *init_rd(void) {
   temp_file = RD_MODULE_NAME;
 
   struct Tar *tar = (struct Tar *)malloc(sizeof(struct Tar));
-  if (tar == NULL) {
+  if (tar == NULL)
+  {
     dprintf("[\e[0;31mRamdisk\e[0m] Failed to allocate memory for Tar");
     free(rd);
     return NULL;
   }
 
-  extractTarData((char *)(temp_file->address), (char *)(temp_file->size), tar);
+  extractTarData((char *)(temp_file->address), temp_file->size, tar);
 
   rd->content = tar; // Assign dynamically allocated tar to rd->content
 
-  if (rd->content == NULL) {
+  if (rd->content == NULL)
+  {
     free(rd); // Free rd if content is NULL
     return NULL;
   }
@@ -42,13 +46,17 @@ ramdisk_t *init_rd(void) {
   return rd;
 }
 
-struct File *rd_get_file(ramdisk_t *rd, const char *filename) {
-  if (rd == NULL || rd->content == NULL || filename == NULL) {
+struct File *rd_get_file(ramdisk_t *rd, const char *filename)
+{
+  if (rd == NULL || rd->content == NULL || filename == NULL)
+  {
     return NULL;
   }
 
-  for (unsigned int i = 0; i < rd->content->fileCount; ++i) {
-    if (strcmp(rd->content->files[i].name, filename) == 0) {
+  for (unsigned int i = 0; i < rd->content->fileCount; ++i)
+  {
+    if (strcmp(rd->content->files[i].name, filename) == 0)
+    {
       return &(rd->content->files[i]);
     }
   }

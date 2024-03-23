@@ -1,37 +1,43 @@
 #include "tga.h"
 #include <printf.h>
+#include <strings.h>
 #include <system/memory/heap.h>
 
-// Scary osdev.wiki type code.
-
-tga_info *tga_parse(uint8_t *ptr, uint32_t size) {
+tga_info *tga_parse(uint8_t *ptr, uint32_t size)
+{
   uint32_t *data;
-  int i, j, k, x, y, w = (ptr[13] << 8) + ptr[12], h = (ptr[15] << 8) + ptr[14],
-                     o = (ptr[11] << 8) + ptr[10];
-  int m = ((ptr[1] ? (ptr[7] >> 3) * ptr[5] : 0) + 18);
+  uint32_t i, j, k, x, y, w = (ptr[13] << 8) + ptr[12], h = (ptr[15] << 8) + ptr[14],
+                          o = (ptr[11] << 8) + ptr[10];
+  uint32_t m = ((ptr[1] ? (ptr[7] >> 3) * ptr[5] : 0) + 18);
 
-  if (w < 1 || h < 1) {
+  if (w < 1 || h < 1)
+  {
     dprintf("[\e[0;31mTGA\e[0m] Invalid image dimensions!\n");
     return NULL;
   }
 
   data = (unsigned int *)malloc((w * h + 2) * sizeof(unsigned int));
-  if (!data) {
+  if (!data)
+  {
     dprintf("[\e[0;31mTGA\e[0m] Memory allocation failed!\n");
     return NULL;
   }
 
-  switch (ptr[2]) {
+  switch (ptr[2])
+  {
   case 1:
     if (ptr[6] != 0 || ptr[4] != 0 || ptr[3] != 0 ||
-        (ptr[7] != 24 && ptr[7] != 32)) {
+        (ptr[7] != 24 && ptr[7] != 32))
+    {
       dprintf("[\e[0;31mTGA\e[0m] Unsupported color depth or format!\n");
       free(data);
       return NULL;
     }
-    for (y = i = 0; y < h; y++) {
+    for (y = i = 0; y < h; y++)
+    {
       k = ((!o ? h - y - 1 : y) * w);
-      for (x = 0; x < w; x++) {
+      for (x = 0; x < w; x++)
+      {
         j = ptr[m + k++] * (ptr[7] >> 3) + 18;
         data[2 + i++] = ((ptr[7] == 32 ? ptr[j + 3] : 0xFF) << 24) |
                         (ptr[j + 2] << 16) | (ptr[j + 1] << 8) | ptr[j];
@@ -40,14 +46,17 @@ tga_info *tga_parse(uint8_t *ptr, uint32_t size) {
     break;
   case 2:
     if (ptr[5] != 0 || ptr[6] != 0 || ptr[1] != 0 ||
-        (ptr[16] != 24 && ptr[16] != 32)) {
+        (ptr[16] != 24 && ptr[16] != 32))
+    {
       dprintf("[\e[0;31mTGA\e[0m] Unsupported color depth or format!\n");
       free(data);
       return NULL;
     }
-    for (y = i = 0; y < h; y++) {
+    for (y = i = 0; y < h; y++)
+    {
       j = ((!o ? h - y - 1 : y) * w * (ptr[16] >> 3));
-      for (x = 0; x < w; x++) {
+      for (x = 0; x < w; x++)
+      {
         data[2 + i++] = ((ptr[16] == 32 ? ptr[j + 3] : 0xFF) << 24) |
                         (ptr[j + 2] << 16) | (ptr[j + 1] << 8) | ptr[j];
         j += ptr[16] >> 3;
@@ -56,32 +65,41 @@ tga_info *tga_parse(uint8_t *ptr, uint32_t size) {
     break;
   case 9:
     if (ptr[6] != 0 || ptr[4] != 0 || ptr[3] != 0 ||
-        (ptr[7] != 24 && ptr[7] != 32)) {
+        (ptr[7] != 24 && ptr[7] != 32))
+    {
       dprintf("[\e[0;31mTGA\e[0m] Unsupported color depth or format!\n");
       free(data);
       return NULL;
     }
     y = i = 0;
-    for (x = 0; x < w * h && m < size;) {
+    for (x = 0; x < w * h && m < size;)
+    {
       k = ptr[m++];
-      if (k > 127) {
+      if (k > 127)
+      {
         k -= 127;
         x += k;
         j = ptr[m++] * (ptr[7] >> 3) + 18;
-        while (k--) {
-          if (!(i % w)) {
+        while (k--)
+        {
+          if (!(i % w))
+          {
             i = ((!o ? h - y - 1 : y) * w);
             y++;
           }
           data[2 + i++] = ((ptr[7] == 32 ? ptr[j + 3] : 0xFF) << 24) |
                           (ptr[j + 2] << 16) | (ptr[j + 1] << 8) | ptr[j];
         }
-      } else {
+      }
+      else
+      {
         k++;
         x += k;
-        while (k--) {
+        while (k--)
+        {
           j = ptr[m++] * (ptr[7] >> 3) + 18;
-          if (!(i % w)) {
+          if (!(i % w))
+          {
             i = ((!o ? h - y - 1 : y) * w);
             y++;
           }
@@ -93,19 +111,24 @@ tga_info *tga_parse(uint8_t *ptr, uint32_t size) {
     break;
   case 10:
     if (ptr[5] != 0 || ptr[6] != 0 || ptr[1] != 0 ||
-        (ptr[16] != 24 && ptr[16] != 32)) {
+        (ptr[16] != 24 && ptr[16] != 32))
+    {
       dprintf("[\e[0;31mTGA\e[0m] Unsupported color depth or format!\n");
       free(data);
       return NULL;
     }
     y = i = 0;
-    for (x = 0; x < w * h && m < size;) {
+    for (x = 0; x < w * h && m < size;)
+    {
       k = ptr[m++];
-      if (k > 127) {
+      if (k > 127)
+      {
         k -= 127;
         x += k;
-        while (k--) {
-          if (!(i % w)) {
+        while (k--)
+        {
+          if (!(i % w))
+          {
             i = ((!o ? h - y - 1 : y) * w);
             y++;
           }
@@ -113,11 +136,15 @@ tga_info *tga_parse(uint8_t *ptr, uint32_t size) {
                           (ptr[m + 2] << 16) | (ptr[m + 1] << 8) | ptr[m];
         }
         m += ptr[16] >> 3;
-      } else {
+      }
+      else
+      {
         k++;
         x += k;
-        while (k--) {
-          if (!(i % w)) {
+        while (k--)
+        {
+          if (!(i % w))
+          {
             i = ((!o ? h - y - 1 : y) * w);
             y++;
           }
@@ -137,7 +164,8 @@ tga_info *tga_parse(uint8_t *ptr, uint32_t size) {
   data[1] = h;
 
   tga_info *tga = (tga_info *)malloc(sizeof(tga_info));
-  if (!tga) {
+  if (!tga)
+  {
     dprintf("[\e[0;31mTGA\e[0m] Memory allocation failed!\n");
     free(data);
     return NULL;
@@ -145,7 +173,8 @@ tga_info *tga_parse(uint8_t *ptr, uint32_t size) {
   tga->width = w;
   tga->height = h;
   tga->data = (uint32_t *)malloc(w * h * 4);
-  if (!tga->data) {
+  if (!tga->data)
+  {
     dprintf("[\e[0;31mTGA\e[0m] Memory allocation failed!\n");
     free(data);
     free(tga);
@@ -158,9 +187,12 @@ tga_info *tga_parse(uint8_t *ptr, uint32_t size) {
   return tga;
 }
 
-void draw_tga(uint32_t x, uint32_t y, tga_info *tga) {
-  for (uint32_t yy = 0; yy < tga->height; yy++) {
-    for (uint32_t xx = 0; xx < tga->width; xx++) {
+void draw_tga(uint32_t x, uint32_t y, tga_info *tga)
+{
+  for (uint32_t yy = 0; yy < tga->height; yy++)
+  {
+    for (uint32_t xx = 0; xx < tga->width; xx++)
+    {
       uint32_t pixel = tga->data[xx + (yy * tga->width)];
 
       // Extract ARGB channels
@@ -175,13 +207,17 @@ void draw_tga(uint32_t x, uint32_t y, tga_info *tga) {
 }
 
 void draw_tga_from_raw(uint32_t x, uint32_t y, char *raw_data,
-                       uint32_t data_size) {
+                       uint32_t data_size)
+{
   tga_info *tga = tga_parse((uint8_t *)raw_data, data_size);
-  if (tga != NULL) {
+  if (tga != NULL)
+  {
     draw_tga(x, y, tga);
     free(tga->data);
     free(tga);
-  } else {
-    dprintf("[\e[0;31mTGA\e[0m] Failed to parse TGA data!\n");
+  }
+  else
+  {
+    dprintf("[\e[0;31mTGA\e[0m] Failed to parse TGA data! (%s)\n", __FILE__);
   }
 }

@@ -3,6 +3,7 @@
 #include <nighterm/nighterm.h>
 #include <printf.h>
 #include <system/cpu/cpu.h>
+#include <system/cpu/panic.h>
 #include <system/drivers/keyboard.h>
 #include <system/idt/idt.h>
 #include <system/memory/pmm.h>
@@ -25,7 +26,9 @@ int_frame_t *cur_frame;
 ramdisk_t *rd;
 VFS_t *vfs;
 
-void init_boot(int debug_info) {
+void init_boot(int debug_info)
+{
+  (void)debug_info; // Eh, idc
   int nstatus;
 
   hhdm_offset = hhdm_request.response->offset;
@@ -44,13 +47,15 @@ void init_boot(int debug_info) {
   dprintf("[\e[0;32mSystem\e[0m] Initialized Keyboard\n");
   rd = init_rd();
 
-  if (rd == NULL) {
+  if (rd == NULL)
+  {
     dprintf("[\e[0;32mRamdisk\e[0m] Failed to initialize ramdisk\n");
     return;
   }
 
   vfs = init_vfs();
-  if (vfs == NULL) {
+  if (vfs == NULL)
+  {
     dprintf("[\e[0;31mVFS\e[0m] Failed to initialize VFS\n");
     return;
   }
@@ -65,14 +70,17 @@ void init_boot(int debug_info) {
 
   status = driver_read(vfs, 0x00000000, "/etc/fonts/nighterm.psf", &font_data);
 
-  if (status == STATUS_OK) {
+  if (status == STATUS_OK)
+  {
     dprintf("[\e[0;32mSystem\e[0m] Found font!\n");
     dprintf("[\e[0;32mSystem\e[0m] Initializing Nighterm with font!\n");
 
     nstatus = nighterm_initialize(font_data, framebuffer->address,
                                   framebuffer->width, framebuffer->height,
                                   framebuffer->pitch, framebuffer->bpp, malloc);
-  } else {
+  }
+  else
+  {
     dprintf("[\e[0;32mSystem\e[0m] Found no font!\n");
     dprintf(
         "[\e[0;32mSystem\e[0m] Initializing Nighterm with built in font!\n");
@@ -82,31 +90,39 @@ void init_boot(int debug_info) {
                                   framebuffer->pitch, framebuffer->bpp, malloc);
   }
 
-  if (nstatus) {
+  if (nstatus)
+  {
     dprintf(
         "[\e[0;32mSystem\e[0m] Nightem failed to initialize, got code: %s\n",
         get_nighterm_return_string(nstatus));
     hcf();
-  } else {
+  }
+  else
+  {
     dprintf("[\e[0;32mSystem\e[0m] Initialized Nighterm with code: %s\n",
             get_nighterm_return_string(nstatus));
   }
 
   int kstatus = main(); // Launch the kernel
 
-  if (kstatus == KERNEL_QUIT_SUCCESS) {
+  if (kstatus == KERNEL_QUIT_SUCCESS)
+  {
     dprintf(
         "[\e[0;32mKernel\e[0m Success] Kernel quit successfully, shutting down "
         "in 10 "
         "seconds!\n");
     pit_sleep(10000);
     shutdown();
-  } else if (kstatus == KERNEL_QUIT_ERROR) {
+  }
+  else if (kstatus == KERNEL_QUIT_ERROR)
+  {
     dprintf(
         "[\e[0;32mKernel Error] A kernel error occured, check kmesg for rason! "
         "Rebooting...\n");
     reboot();
-  } else if (kstatus == KERNEL_QUIT_PANIC) {
+  }
+  else if (kstatus == KERNEL_QUIT_PANIC)
+  {
     panic("[Kernel Panic] Kernel quit with a critical error code, please see "
           "kmsg for extra info.\n",
           *cur_frame);
@@ -117,9 +133,13 @@ void init_boot(int debug_info) {
         "and we are shutting down your computer in 10 seconds!\n");
     pit_sleep(10000);
     shutdown();
-  } else if (kstatus == KERNEL_QUIT_HANG) {
+  }
+  else if (kstatus == KERNEL_QUIT_HANG)
+  {
     hlt();
-  } else {
+  }
+  else
+  {
     dprintf("[\e[0;32mKernel\e[0m Warning] Kernel returned %d\n", kstatus);
   }
 

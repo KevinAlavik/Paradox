@@ -24,6 +24,8 @@ char *mouse_img = NULL;
 uint32_t mouse_img_size = 0;
 bool mouse_img_parsed = false;
 
+void draw_mouse(int x, int y);
+
 void mouse_wait_write()
 {
   while ((inb8(0x64) & 2) != 0)
@@ -84,7 +86,7 @@ void set_mouse_style(const char *s)
 
     if (load_cursor_image(file_path))
     {
-      current_mouse_style = s;
+      current_mouse_style = (char *)s;
       mouse_img_parsed = false;
     }
     else
@@ -116,7 +118,9 @@ void tga_draw(uint32_t x, uint32_t y, char *raw_data, uint32_t data_size)
   }
   else
   {
-    dprintf("[\e[0;31mTGA\e[0m] Failed to parse TGA data!\n");
+    dprintf("[\e[0;31mTGA\e[0m] Failed to parse TGA data for mouse! Faling back to \"normal\"\n");
+    set_mouse_style("normal");
+    draw_mouse(mouse_x, mouse_y);
   }
 }
 

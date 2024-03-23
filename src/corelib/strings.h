@@ -31,6 +31,7 @@ int isdigit(unsigned char c);
 int isspace(int c);
 
 int islower(int c);
+char tolower(int c);
 char *strrchr(const char *s, int c);
 
 #endif // STRINGS_H

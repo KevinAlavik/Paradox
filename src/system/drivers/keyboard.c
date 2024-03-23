@@ -10,10 +10,14 @@
 
 struct Keyboard keyboard;
 
-void keyboard_handler(int_frame_t *frame) {
+void keyboard_handler(int_frame_t *frame)
+{
+  (void)frame; // We dont need the current frame so :)
+
   uint8_t data = inb8(PS2_DATA);
 
-  if (keyboard.data != data) {
+  if (keyboard.data != data)
+  {
     keyboard.data = data;
   }
 
@@ -22,17 +26,21 @@ void keyboard_handler(int_frame_t *frame) {
 
   char *letterString;
 
-  if (keyboard.data == 0) {
+  if (keyboard.data == 0)
+  {
     dprintf("[\e[0;32mKeyboard Handler\e[0m] Invalid keyboard data!\n");
   }
 
-  if (keyboard.data == 0x2A || keyboard.data == 0x36) {
+  if (keyboard.data == 0x2A || keyboard.data == 0x36)
+  {
     keyboard.state = KEYBOARD_SHIFT;
   }
-  if (keyboard.data == 0x3A) {
+  if (keyboard.data == 0x3A)
+  {
     keyboard.state = KEYBOARD_CAPS;
   }
-  if (keyboard.data == 0xAA || keyboard.data == 0xB6) {
+  if (keyboard.data == 0xAA || keyboard.data == 0xB6)
+  {
     keyboard.state = KEYBOARD_NORMAL;
   }
 
@@ -52,13 +60,20 @@ void keyboard_handler(int_frame_t *frame) {
   //   nighterm_set_cursor_position(term.curY, term.curX + 1);
   // }
 
-  if (keyboard.state == KEYBOARD_NORMAL) {
+  if (keyboard.state == KEYBOARD_NORMAL)
+  {
     letterString = sv_layout[data].normal;
-  } else if (keyboard.state == KEYBOARD_SHIFT) {
+  }
+  else if (keyboard.state == KEYBOARD_SHIFT)
+  {
     letterString = sv_layout[data].shifted;
-  } else if (keyboard.state == KEYBOARD_CAPS) {
+  }
+  else if (keyboard.state == KEYBOARD_CAPS)
+  {
     letterString = sv_layout[data].caps;
-  } else {
+  }
+  else
+  {
     dprintf("[\e[0;32mKeybord Handler] Keyboard struct has weird state: %u",
             keyboard.state);
   }
@@ -66,14 +81,16 @@ void keyboard_handler(int_frame_t *frame) {
   // TODO: Store old curor location and compare if its not the same if it isnt
   // then clear the old loc
 
-  if ((keyboard.out) && letterString != "") {
+  if ((keyboard.out) && letterString)
+  {
     printf("%s", letterString);
   }
 
   i8259_SendEndOfInterrupt(1);
 }
 
-void init_keyboard() {
+void init_keyboard()
+{
   keyboard.state = KEYBOARD_NORMAL;
   keyboard.out = 1;
 

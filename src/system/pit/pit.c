@@ -5,13 +5,13 @@
 #include <system/cpu/cpu.h>
 #include <system/idt/idt.h>
 #include <system/pic/pic.h>
-#include <system/wm/windows.h>
 
 uint64_t uptime_secs;
 uint16_t uptime_milis;
 uint64_t countdown;
 
-void pit_set_divisor(uint16_t divisor) {
+void pit_set_divisor(uint16_t divisor)
+{
   if (divisor < 100)
     divisor = 100;
   outb8(PIT_DATA, (uint8_t)(divisor & 0x00ff));
@@ -23,7 +23,8 @@ void pit_set_divisor(uint16_t divisor) {
   dprintf("[\e[0;32mPIT\e[0m] - 0x%08llx\n", divisor);
 }
 
-uint16_t pit_read_count() {
+uint16_t pit_read_count()
+{
   uint16_t count = 0;
 
   __asm__ volatile("cli");
@@ -44,7 +45,8 @@ uint16_t pit_read_count() {
   return count;
 }
 
-void pit_set_count(uint16_t count) {
+void pit_set_count(uint16_t count)
+{
   // Disable interrupts
   __asm__ volatile("cli");
 
@@ -60,13 +62,15 @@ void pit_set_count(uint16_t count) {
   return;
 }
 
-void pit_handler(int_frame_t *frame) {
+void pit_handler(int_frame_t *frame)
+{
   cur_frame = frame;
-  update_all_windows();
+  // update_wm();
   pit_int();
 }
 
-void pit_init() {
+void pit_init()
+{
   pit_set_count(0);
   pit_set_divisor(1193182 / 1000);
   countdown = 0;
@@ -78,22 +82,27 @@ void pit_init() {
 uint64_t pit_get_uptime_secs() { return uptime_secs; }
 uint64_t pit_get_uptime_milis() { return uptime_milis; }
 
-void pit_int() {
+void pit_int()
+{
   uptime_milis++;
-  if (uptime_milis >= 1000) {
+  if (uptime_milis >= 1000)
+  {
     uptime_secs++;
     uptime_milis = 0;
   }
 
-  if (countdown != 0) {
+  if (countdown != 0)
+  {
     countdown--;
   }
 }
 
-void pit_sleep(uint64_t millis) {
+void pit_sleep(uint64_t millis)
+{
   countdown = millis;
 
-  while (countdown != 0) {
+  while (countdown != 0)
+  {
     __asm__ volatile("hlt");
   }
 }

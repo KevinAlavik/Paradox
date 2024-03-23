@@ -14,13 +14,29 @@
 #include <system/drivers/mouse.h>
 #include <system/memory/pmm.h>
 #include <system/utilities/utilities.h>
-#include <system/wm/windows.h>
 #include <tga.h>
 #include <transform.h>
+#include <system/pit/pit.h>
 #include <vga.h>
 
 extern bool should_draw_cursor;
 
+void update_wm();
 void init_wm();
+
+// Window stuff
+
+typedef struct
+{
+    int x;
+    int y;
+    int width;
+    int height;
+    uint32_t **old_pixels;
+} Window;
+
+void window_init(Window *win, int x, int y, int width, int height);
+void draw_window(Window *win);
+void destroy_window(Window *win);
 
 #endif // __GUI_H__

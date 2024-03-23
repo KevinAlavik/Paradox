@@ -85,22 +85,26 @@ override HEADER_DEPS := $(addprefix obj/,$(CFILES:.c=.c.d) $(ASFILES:.S=.S.d))
 all: bin/$(KERNEL)
 
 bin/$(KERNEL): GNUmakefile linker.ld $(OBJ)
-	mkdir -p "$$(dirname $@)"
-	$(LD) $(OBJ) $(LDFLAGS) -o $@
+	@printf "  LD\t$@\n"
+	@mkdir -p "$$(dirname $@)"
+	@$(LD) $(OBJ) $(LDFLAGS) -o $@
 
 -include $(HEADER_DEPS)
 
 obj/%.c.o: src/%.c GNUmakefile
-	mkdir -p "$$(dirname $@)"
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@printf "  CC\t$<\n"
+	@mkdir -p "$$(dirname $@)"
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 obj/%.S.o: src/%.S GNUmakefile
-	mkdir -p "$$(dirname $@)"
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@printf "  CC\t$<\n"
+	@mkdir -p "$$(dirname $@)"
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 obj/%.asm.o: src/%.asm GNUmakefile
-	mkdir -p "$$(dirname $@)"
-	nasm $(NASMFLAGS) $< -o $@
+	@printf "  AS\t$<\n"
+	@mkdir -p "$$(dirname $@)"
+	@nasm $(NASMFLAGS) $< -o $@
 
 .PHONY: clean
 clean:

@@ -4,8 +4,10 @@
 #include <strings.h>
 #include <system/utilities/utilities.h>
 
-char *get_nighterm_return_string(int return_code) {
-  switch (return_code) {
+char *get_nighterm_return_string(int return_code)
+{
+  switch (return_code)
+  {
   case NIGHTERM_FONT_INVALID:
     return "NIGHTERM_FONT_INVALID";
   case NIGHTERM_INVALID_FRAMEBUFFER_ADDRESS:
@@ -25,21 +27,15 @@ char *get_nighterm_return_string(int return_code) {
   }
 }
 
-int endsWith(const char *str, const char *suffix) {
+int endsWith(const char *str, const char *suffix)
+{
   size_t str_len = strlen(str);
   size_t suffix_len = strlen(suffix);
 
-  if (str_len < suffix_len) {
+  if (str_len < suffix_len)
+  {
     return 0; // String is shorter than the suffix
   }
 
   return strcmp(str + (str_len - suffix_len), suffix) == 0;
-}
-
-int tolower(int c) {
-  if (c >= 'A' && c <= 'Z') {
-    return c + ('a' - 'A');
-  } else {
-    return c;
-  }
 }
