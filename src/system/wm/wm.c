@@ -70,11 +70,10 @@ void destroy_window(Window *win)
 {
   if (win == NULL)
   {
-    printf("Error: Attempting to destroy window with NULL pointer to window\n");
     return;
   }
 
-  should_draw_cursor = false;
+  disable_mouse();
 
   for (int i = 0; i < win->width; i++)
   {
@@ -94,5 +93,5 @@ void destroy_window(Window *win)
   }
 
   win->old_pixels = NULL;
-  should_draw_cursor = true;
+  enable_mouse();
 }

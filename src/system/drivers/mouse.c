@@ -108,20 +108,18 @@ void tga_draw(uint32_t x, uint32_t y, char *raw_data, uint32_t data_size)
   {
     tga = tga_parse((uint8_t *)raw_data, data_size);
     mouse_img_parsed = true;
+
+    if (tga == NULL)
+    {
+      tga = tga_parse((uint8_t *)raw_data, data_size);
+      mouse_img_parsed = true;
+      return;
+    }
   }
 
-  if (tga != NULL)
-  {
-    draw_tga(x, y, tga);
-    free(tga->data);
-    free(tga);
-  }
-  else
-  {
-    dprintf("[\e[0;31mTGA\e[0m] Failed to parse TGA data for mouse! Faling back to \"normal\"\n");
-    set_mouse_style("normal");
-    draw_mouse(mouse_x, mouse_y);
-  }
+  draw_tga(x, y, tga);
+  free(tga->data);
+  free(tga);
 }
 
 void draw_mouse(int x, int y)
@@ -257,6 +255,20 @@ void mouse_handler(int_frame_t *frame)
   }
 }
 
+void disable_mouse()
+{
+  mouse_write(0xf5);
+  should_draw_cursor = false;
+  dprintf("[\e[0;32mMouse\e[0m] Disabled Mouse\n");
+}
+
+void enable_mouse()
+{
+  mouse_write(0xf4);
+  should_draw_cursor = true;
+  dprintf("[\e[0;32mMouse\e[0m] Enabled Mouse\n");
+}
+
 void mouse_init()
 {
   uint8_t data;
@@ -279,4 +291,5 @@ void mouse_init()
   mouse_read();
 
   irq_register(12, mouse_handler);
+  dprintf("[\e[0;32mMouse\e[0m] Initialized Mouse\n");
 }

@@ -1,8 +1,6 @@
 #!/bin/bash
 OS_NAME="Paradox"
 
-make clean
-
 make -C limine
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
