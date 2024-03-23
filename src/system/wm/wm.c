@@ -35,18 +35,11 @@ void update_wm()
 
 void init_wm()
 {
-  keyboard.out = true;
+  keyboard.out = false;
   process_mouse_input = true;
   init_wallpaper();
-
   Window window;
-  window.x = 100;
-  window.y = 100;
-  window.width = 600;
-  window.height = 400;
-
-  window_init(&window, window.x, window.y, window.width, window.height);
-
+  window_init(&window, 100, 100, 600, 400);
   draw_window(&window);
 }
 
