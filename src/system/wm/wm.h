@@ -18,20 +18,24 @@
 #include <transform.h>
 #include <system/pit/pit.h>
 #include <vga.h>
+#include <printf.h>
 
 extern bool should_draw_cursor;
 
 void update_wm();
 void init_wm();
 
-// Window stuff
+// Mouse stuff
+void mouse(int x, int y);
 
+// Window stuff
 typedef struct
 {
     int x;
     int y;
     int width;
     int height;
+    uint32_t **buffer;
     uint32_t **old_pixels;
 } Window;
 

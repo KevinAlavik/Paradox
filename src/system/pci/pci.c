@@ -1,20 +1,23 @@
 #include "pci.h"
 #include <printf.h>
 
-uint32_t read_pci(uint16_t bus, uint16_t device, uint16_t function, uint32_t regoffset) {
+uint32_t read_pci(uint16_t bus, uint16_t device, uint16_t function, uint32_t regoffset)
+{
     uint32_t id = 0x1 << 31 | ((bus & 0xFF) << 16) | ((device & 0x1F) << 11) | ((function & 0x07) << 8) | (regoffset & 0xFC);
     outb32(0xCF8, id);
     uint32_t result = inb32(0xCFC);
     return result >> ((regoffset % 4) << 3);
 }
 
-void write_pci(uint16_t bus, uint16_t device, uint16_t function, uint32_t regoffset, uint32_t data) {
-    uint32_t id = 0x1 << 31 | ((bus & 0xFF) << 16) | ((device & 0x1F) << 11) | ((function & 0x07) << 8) | (regoffset & 0xFC); //we construct an ID like in the read function
+void write_pci(uint16_t bus, uint16_t device, uint16_t function, uint32_t regoffset, uint32_t data)
+{
+    uint32_t id = 0x1 << 31 | ((bus & 0xFF) << 16) | ((device & 0x1F) << 11) | ((function & 0x07) << 8) | (regoffset & 0xFC); // we construct an ID like in the read function
     outb32(0xCF8, id);
     outb32(0xCFC, data);
 }
 
-device_descriptor get_device_descriptor(uint16_t bus, uint16_t device, uint16_t function) {
+device_descriptor get_device_descriptor(uint16_t bus, uint16_t device, uint16_t function)
+{
     device_descriptor result;
 
     result.bus = bus;
@@ -34,30 +37,27 @@ device_descriptor get_device_descriptor(uint16_t bus, uint16_t device, uint16_t 
     return result;
 }
 
-void register_pci() {
-    for(int bus = 0; bus < 8; bus++)
+void register_pci()
+{
+    for (int bus = 0; bus < 8; bus++)
     {
-        for(int device = 0; device < 32; device++)
+        for (int device = 0; device < 32; device++)
         {
-            for(int function = 0; function < 8; function++)
+            for (int function = 0; function < 8; function++)
             {
                 device_descriptor desc = get_device_descriptor(bus, device, function);
 
-                if(desc.vendor_id == 0x0000 || desc.vendor_id == 0xFFFF)
+                if (desc.vendor_id == 0x0000 || desc.vendor_id == 0xFFFF)
                     continue;
 
-                dprintf("PCI bus: %d\n", (uint8_t)(bus & 0xFF));
-                dprintf(" - Device: %d\n", (uint8_t)(device & 0xFF));
-                dprintf(" - Function: %d\n", ((uint8_t)((function & 0xFF))));
-                dprintf(" - Vendor ID: %d%d\n", (uint8_t)((desc.vendor_id & 0xFF00) >> 8), (uint8_t)(desc.vendor_id & 0xFF));
-                dprintf(" - Device ID: %d%d\n", (uint8_t)((desc.device_id & 0xFF00) >> 8), (uint8_t)(desc.device_id & 0xFF));
-                if((desc.class_id == 0x0C) && (desc.subclass_id == 0x03)) 
-                {
-                    dprintf("USB device ^^\n");
-                } else {
-                    dprintf("\n");
-                }
+                printf("PCI Bus: %d Device: %d ID: %04X Function: %d USB: %s\n",
+                       (uint8_t)(bus & 0xFF),
+                       (uint8_t)(device & 0xFF),
+                       desc.device_id,
+                       ((uint8_t)((function & 0xFF))),
+                       ((desc.class_id == 0x0C) && (desc.subclass_id == 0x03)) ? "true" : "false");
             }
         }
     }
+    printf("\n");
 }

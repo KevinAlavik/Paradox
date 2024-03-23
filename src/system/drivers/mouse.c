@@ -7,24 +7,15 @@ uint8_t mouse_bytes[3] = {0, 0, 0};
 uint32_t mouse_x = 0;
 uint32_t mouse_y = 0;
 
-uint32_t old_pixels[50][50];
-uint32_t old_mouse_x = 0;
-uint32_t old_mouse_y = 0;
-
 int32_t mouse_wrap_x = 0;
 int32_t mouse_wrap_y = 0;
+
+bool process_mouse_input = true;
 
 bool mouse_left_pressed = false;
 bool mouse_right_pressed = false;
 
 bool mouse_moved = false;
-
-char *current_mouse_style = "normal";
-char *mouse_img = NULL;
-uint32_t mouse_img_size = 0;
-bool mouse_img_parsed = false;
-
-void draw_mouse(int x, int y);
 
 void mouse_wait_write()
 {
@@ -56,115 +47,6 @@ uint8_t mouse_read()
   return inb8(0x60);
 }
 
-// Function to load cursor image from file
-bool load_cursor_image(const char *file_path)
-{
-  vfs_op_status status = driver_read(vfs, 0x00000000, file_path, &mouse_img);
-  if (status == STATUS_OK)
-  {
-    mouse_img_size = vfs_get_file_size(vfs, 0x00000000, file_path);
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-void set_mouse_style(const char *s)
-{
-  if (strcmp(current_mouse_style, s) != 0 || !mouse_img_parsed)
-  {
-    if (mouse_img != NULL)
-    {
-      free(mouse_img);
-      mouse_img = NULL;
-    }
-
-    char file_path[100];
-    snprintf(file_path, sizeof(file_path), "/etc/theme/cursors/%s.tga", s);
-
-    if (load_cursor_image(file_path))
-    {
-      current_mouse_style = (char *)s;
-      mouse_img_parsed = false;
-    }
-    else
-    {
-      printf("[\e[0;31mMouse Handler\e[0m] Cursor style '%s' not found. "
-             "Falling back to default.\n",
-             s);
-      load_cursor_image("/etc/theme/cursors/normal.tga");
-      current_mouse_style = "normal";
-      mouse_img_parsed = false;
-    }
-  }
-}
-
-void tga_draw(uint32_t x, uint32_t y, char *raw_data, uint32_t data_size)
-{
-  tga_info *tga;
-  if (!mouse_img_parsed)
-  {
-    tga = tga_parse((uint8_t *)raw_data, data_size);
-    mouse_img_parsed = true;
-
-    if (tga == NULL)
-    {
-      tga = tga_parse((uint8_t *)raw_data, data_size);
-      mouse_img_parsed = true;
-      return;
-    }
-  }
-
-  draw_tga(x, y, tga);
-  free(tga->data);
-  free(tga);
-}
-
-void draw_mouse(int x, int y)
-{
-  if (mouse_img == NULL || mouse_img_size == 0)
-  {
-    set_mouse_style(current_mouse_style);
-  }
-
-  for (int i = 0; i < 50; i++)
-  {
-    for (int j = 0; j < 50; j++)
-    {
-      int pixel_x = x + i;
-      int pixel_y = y + j;
-
-      old_pixels[i][j] = *(uint32_t *)(framebuffer->address +
-                                       pixel_x * (framebuffer->bpp >> 3) +
-                                       pixel_y * framebuffer->pitch);
-    }
-  }
-
-  tga_draw(x, y, mouse_img, mouse_img_size);
-}
-
-void remove_mouse(int x, int y)
-{
-  for (int i = 0; i < 32; i++)
-  {
-    for (int j = 0; j < 32; j++)
-    {
-      int pixel_x = x + i;
-      int pixel_y = y + j;
-
-      uint32_t old_pixel = old_pixels[i][j];
-
-      if (x != 0 && y != 0)
-      {
-        uint32_t *framebuffer_address = (uint32_t *)(framebuffer->address + pixel_x * (framebuffer->bpp >> 3) + pixel_y * framebuffer->pitch);
-        *framebuffer_address = old_pixel;
-      }
-    }
-  }
-}
-
 void mouse_update(int8_t accel_x, int8_t accel_y)
 {
   if (mouse_wrap_x + accel_x <= 0)
@@ -194,20 +76,15 @@ void mouse_update(int8_t accel_x, int8_t accel_y)
   mouse_x = (uint32_t)mouse_wrap_x;
   mouse_y = (uint32_t)mouse_wrap_y;
 
-  if (should_draw_cursor)
-  {
-    if (old_mouse_x != mouse_x || old_mouse_y != mouse_y)
-    {
-      remove_mouse(old_mouse_x, old_mouse_y);
-      draw_mouse(mouse_x, mouse_y);
-      old_mouse_x = mouse_x;
-      old_mouse_y = mouse_y;
-    }
-  }
+  if (process_mouse_input)
+    mouse(mouse_x, mouse_y);
 }
 
 void mouse_handler(int_frame_t *frame)
 {
+  if (!process_mouse_input)
+    return;
+
   (void)frame;
   uint8_t byte = inb8(0x64);
   if ((!(byte & 1)) == 1)
@@ -253,20 +130,6 @@ void mouse_handler(int_frame_t *frame)
     mouse_moved = true;
     break;
   }
-}
-
-void disable_mouse()
-{
-  mouse_write(0xf5);
-  should_draw_cursor = false;
-  dprintf("[\e[0;32mMouse\e[0m] Disabled Mouse\n");
-}
-
-void enable_mouse()
-{
-  mouse_write(0xf4);
-  should_draw_cursor = true;
-  dprintf("[\e[0;32mMouse\e[0m] Enabled Mouse\n");
 }
 
 void mouse_init()

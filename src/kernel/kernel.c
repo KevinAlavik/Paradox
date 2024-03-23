@@ -32,7 +32,9 @@ return codes)
 #include <transform.h>
 #include <vector.h>
 
-int main() {
+int main()
+{
+  keyboard.out = false;
   register_pci();
   init_wm();
   return KERNEL_QUIT_HANG;

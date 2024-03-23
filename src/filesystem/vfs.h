@@ -8,7 +8,8 @@
 
 #define DISK_TYPE_RAMDISK 0
 
-typedef enum {
+typedef enum
+{
   STATUS_OK = 0,
   STATUS_ERROR_FILE_NOT_FOUND,
   STATUS_ERROR_NO_SPACE_LEFT,
@@ -21,12 +22,14 @@ typedef enum {
 
 typedef struct VFS_t VFS_t; // Forward declaration
 
-typedef struct {
+typedef struct
+{
   VFS_t *disk;
   const char *label;
 } mount_point_t;
 
-typedef struct {
+typedef struct
+{
   uint64_t address;
   uint64_t id;
   uint8_t type;
@@ -36,7 +39,8 @@ typedef struct {
   uint64_t actual_size;
 } drive_t;
 
-struct VFS_t {
+struct VFS_t
+{
   drive_t *drives;
 
   uint64_t address;
