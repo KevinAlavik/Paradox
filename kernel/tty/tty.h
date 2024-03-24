@@ -17,7 +17,7 @@ int tty_spawn(uint8_t id);
 int tty_destroy(uint8_t id);
 
 void tty_switch(uint8_t id);
-void tty_write(uint8_t id, char ch);
-void tty_flush(uint8_t id);
+void tty_write(char ch);
+void tty_flush();
 
 #endif // __TTY_H__
