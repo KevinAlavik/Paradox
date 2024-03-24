@@ -77,7 +77,7 @@ void init_boot(int debug_info)
 
     nstatus = nighterm_initialize(font_data, framebuffer->address,
                                   framebuffer->width, framebuffer->height,
-                                  framebuffer->pitch, framebuffer->bpp, malloc);
+                                  framebuffer->pitch, framebuffer->bpp, malloc, free);
   }
   else
   {
@@ -87,7 +87,7 @@ void init_boot(int debug_info)
 
     nstatus = nighterm_initialize(NULL, framebuffer->address,
                                   framebuffer->width, framebuffer->height,
-                                  framebuffer->pitch, framebuffer->bpp, malloc);
+                                  framebuffer->pitch, framebuffer->bpp, malloc, free);
   }
 
   if (nstatus)
