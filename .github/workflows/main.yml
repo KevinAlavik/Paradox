@@ -1,9 +1,9 @@
-name: Daily Build (Rewrite)
+name: Daily Build
 
 on:
   push:
     branches:
-      - rewrite
+      - main
   schedule:
     - cron: '0 0 * * *'
 
