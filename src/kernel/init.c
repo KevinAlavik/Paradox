@@ -1,4 +1,4 @@
-#include <kernel/boot.h>
+#include <kernel/init.h>
 #include <kernel/kernel.h>
 #include <nighterm/nighterm.h>
 #include <printf.h>
@@ -68,7 +68,7 @@ void init_boot(int debug_info)
 
   vfs_op_status status;
 
-  status = driver_read(vfs, 0x00000000, "/etc/fonts/nighterm.psf", &font_data);
+  status = driver_read(vfs, 0x00000000, DEFAULT_FONT, &font_data);
 
   if (status == STATUS_OK)
   {

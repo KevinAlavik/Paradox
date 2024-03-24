@@ -1,7 +1,7 @@
 #include "pmm.h"
 
 #include <system/bitmap/bitmap.h>
-#include <kernel/boot.h>
+#include <kernel/init.h>
 #include <math.h>
 #include <nighterm/nighterm.h>
 #include <vga.h>

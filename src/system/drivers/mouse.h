@@ -2,14 +2,13 @@
 #ifndef __MOUSE_H__
 #define __MOUSE_H__
 
-#include <kernel/boot.h>
+#include <kernel/init.h>
 #include <kif.h>
 #include <serial/serial.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <system/idt/idt.h>
-#include <system/wm/wm.h>
 #include <vga.h>
 
 extern uint32_t mouse_x;

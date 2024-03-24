@@ -1,10 +1,12 @@
-#ifndef __BOOT_H__
-#define __BOOT_H__
+#ifndef __INIT_H__
+#define __INIT_H__
 
 #include <filesystem/ramdisk.h>
 #include <filesystem/vfs.h>
 #include <limine.h>
 #include <system/idt/idt.h>
+
+#define DEFAULT_FONT "/usr/share/fonts/Uni3-Terminus16.psf"
 
 extern volatile struct limine_module_request mod_request;
 extern volatile struct limine_framebuffer_request framebuffer_request;
@@ -17,4 +19,4 @@ extern VFS_t *vfs;
 
 void init_boot(int debug_info);
 
-#endif // __BOOT_H__
+#endif // __INIT_H__

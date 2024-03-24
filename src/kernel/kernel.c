@@ -11,7 +11,7 @@ return codes)
 #include <filesystem/ramdisk.h>
 #include <filesystem/tar.h>
 #include <filesystem/vfs.h>
-#include <kernel/boot.h>
+#include <kernel/init.h>
 #include <kernel/kernel.h>
 #include <nighterm/nighterm.h>
 #include <stdint.h>
@@ -24,7 +24,6 @@ return codes)
 #include <system/pit/pit.h>
 #include <system/processes/processes.h>
 #include <system/utilities/utilities.h>
-#include <system/wm/wm.h>
 
 // Corelib includes
 #include <kif.h>
@@ -36,6 +35,6 @@ int main()
 {
   keyboard.out = false;
   register_pci();
-  init_wm();
+
   return KERNEL_QUIT_HANG;
 }

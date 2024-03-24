@@ -1,5 +1,5 @@
 #include "ramdisk.h"
-#include <kernel/boot.h>
+#include <kernel/init.h>
 #include <printf.h>
 
 #define RD_MODULE_NAME mod_request.response->modules[0]

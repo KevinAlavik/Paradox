@@ -1,6 +1,6 @@
 #include "vga.h"
 
-#include <kernel/boot.h> // Include to get access to the framebuffer
+#include <kernel/init.h> // Include to get access to the framebuffer
 #include <math.h>
 
 void put_pixel_rgba(uint64_t x, uint64_t y, uint8_t r, uint8_t g, uint8_t b,

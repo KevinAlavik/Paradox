@@ -1,5 +1,5 @@
 #include "processes.h"
-#include <kernel/boot.h>
+#include <kernel/init.h>
 #include <system/memory/pmm.h>
 
 struct Process processes[MAX_PROCESSES];

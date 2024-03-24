@@ -77,7 +77,7 @@ void mouse_update(int8_t accel_x, int8_t accel_y)
   mouse_y = (uint32_t)mouse_wrap_y;
 
   if (process_mouse_input)
-    mouse(mouse_x, mouse_y);
+    return; // We dont have any mouse handler!
 }
 
 void mouse_handler(int_frame_t *frame)
