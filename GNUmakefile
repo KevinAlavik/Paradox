@@ -3,6 +3,8 @@ override LD := ld
 override MAKEFLAGS += -rR
 
 override KERNEL := Paradox
+KERNEL_DIR := kernel
+ARCH_DIR := arch/x86_64
 
 UNAME_S := $(shell uname -s)
 
@@ -41,8 +43,9 @@ $(eval $(call DEFAULT_VAR,LDFLAGS,$(DEFAULT_LDFLAGS)))
 override CFLAGS += \
     -O0 \
     -Ilimine \
-    -Isrc \
-    -Isrc/corelib \
+    -Ikernel \
+    -Iarch \
+    -Ikernel/corelib \
     -Wall \
     -Wextra \
     -std=gnu11 \
@@ -67,41 +70,60 @@ override CFLAGS += \
     -Wdiv-by-zero \
     -Wunused-variable
 
-
-
 override LDFLAGS += -nostdlib -static -m elf_x86_64 -z max-page-size=0x1000 -T linker.ld
 
 override CPPFLAGS := -I. $(CPPFLAGS) -MMD -MP
 
 override NASMFLAGS += -Wall -f elf64
 
-override CFILES := $(shell cd src && find -L * -type f -name '*.c')
-override ASFILES := $(shell cd src && find -L * -type f -name '*.S')
-override NASMFILES := $(shell cd src && find -L * -type f -name '*.asm')
+override CFILES := $(shell cd $(KERNEL_DIR) && find -L * -type f -name '*.c')
+override ASFILES := $(shell cd $(KERNEL_DIR) && find -L * -type f -name '*.S')
+override NASMFILES := $(shell cd $(KERNEL_DIR) && find -L * -type f -name '*.asm')
 override OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o))
 override HEADER_DEPS := $(addprefix obj/,$(CFILES:.c=.c.d) $(ASFILES:.S=.S.d))
+
+override ARCH_CFILES := $(shell cd $(ARCH_DIR) && find -L * -type f -name '*.c')
+override ARCH_ASFILES := $(shell cd $(ARCH_DIR) && find -L * -type f -name '*.S')
+override ARCH_ASMFILES := $(shell cd $(ARCH_DIR) && find -L * -type f -name '*.asm')
+override ARCH_OBJ := $(addprefix obj/,$(ARCH_CFILES:.c=.c.o) $(ARCH_ASFILES:.S=.S.o) $(ARCH_ASMFILES:.asm=.asm.o))
+override ARCH_HEADER_DEPS := $(addprefix obj/,$(ARCH_CFILES:.c=.c.d) $(ARCH_ASFILES:.S=.S.d) $(ARCH_ASMFILES:.asm=.asm.d))
 
 .PHONY: all
 all: bin/$(KERNEL)
 
-bin/$(KERNEL): GNUmakefile linker.ld $(OBJ)
+bin/$(KERNEL): GNUmakefile linker.ld $(OBJ) $(ARCH_OBJ)
 	@printf "  LD\t$@\n"
 	@mkdir -p "$$(dirname $@)"
-	@$(LD) $(OBJ) $(LDFLAGS) -o $@
+	@$(LD) $(OBJ) $(ARCH_OBJ) $(LDFLAGS) -o $@
 
--include $(HEADER_DEPS)
+-include $(HEADER_DEPS) $(ARCH_HEADER_DEPS)
 
-obj/%.c.o: src/%.c GNUmakefile
+obj/%.c.o: $(KERNEL_DIR)/%.c GNUmakefile
 	@printf "  CC\t$<\n"
 	@mkdir -p "$$(dirname $@)"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-obj/%.S.o: src/%.S GNUmakefile
+obj/%.S.o: $(KERNEL_DIR)/%.S GNUmakefile
+	@printf "  AS\t$<\n"
+	@mkdir -p "$$(dirname $@)"
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+obj/%.asm.o: $(KERNEL_DIR)/%.asm GNUmakefile
+	@printf "  AS\t$<\n"
+	@mkdir -p "$$(dirname $@)"
+	@nasm $(NASMFLAGS) $< -o $@
+
+obj/%.c.o: $(ARCH_DIR)/%.c GNUmakefile
 	@printf "  CC\t$<\n"
 	@mkdir -p "$$(dirname $@)"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-obj/%.asm.o: src/%.asm GNUmakefile
+obj/%.S.o: $(ARCH_DIR)/%.S GNUmakefile
+	@printf "  AS\t$<\n"
+	@mkdir -p "$$(dirname $@)"
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+obj/%.asm.o: $(ARCH_DIR)/%.asm GNUmakefile
 	@printf "  AS\t$<\n"
 	@mkdir -p "$$(dirname $@)"
 	@nasm $(NASMFLAGS) $< -o $@
@@ -109,4 +131,3 @@ obj/%.asm.o: src/%.asm GNUmakefile
 .PHONY: clean
 clean:
 	rm -rf bin obj Paradox.raw.bin image.iso modules/ramdisk.tar
-
