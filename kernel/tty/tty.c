@@ -12,16 +12,27 @@ int tty_spawn(uint8_t id)
 
   tty temp;
   struct nighterm_ctx context;
+
+  char *font_data;
+
+  vfs_op_status status;
+
+  status = driver_read(vfs, 0x00000000, DEFAULT_FONT, &font_data);
+
+  if (status != STATUS_OK)
+    return 2;
+  
   int s = nighterm_initialize(&context,
-            NULL,
+            font_data,
             framebuffer->address,
             framebuffer->width,
             framebuffer->height,
             framebuffer->pitch,
             framebuffer->bpp,
             malloc, free);
+  
   if(s != NIGHTERM_OK)
-    return 2;
+    return 3;
 
   temp.id = id;
   temp.context = &context;
