@@ -25,9 +25,7 @@ void panic(const char *reason, int_frame_t frame)
                 draw_image(img, 0, 0, 0);
         }
 
-        nighterm_set_cursor_position(0, 20);
-
-        printf("\tComputer no workie :( \n\n");
+        nighterm_set_cursor_position(0, 24);
 
         printf("\t* %s\n\n", reason);
 

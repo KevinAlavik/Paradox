@@ -13,7 +13,7 @@ struct Process
     int_frame_t *context;
 };
 
-extern struct Process processes[MAX_PROCESSES];
+extern struct Process *processes[MAX_PROCESSES];
 
 void switch_context(uint16_t pid);
 

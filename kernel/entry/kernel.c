@@ -31,18 +31,15 @@ return codes)
 #include <transform.h>
 #include <vector.h>
 
+void test()
+{
+  printf("Hello from PID 0!\n");
+}
+
 int main()
 {
   keyboard.out = false;
   register_pci();
-  printf("-------------------------\n\n");
-  vfs_op_status status;
-  char *motd;
-  status = driver_read(vfs, 0, "/etc/motd", &motd);
-
-  if (status != STATUS_OK)
-    return KERNEL_QUIT_ERROR;
-
-  printf("%s\n", motd);
+  spawn_process(0, test);
   return KERNEL_QUIT_HANG;
 }

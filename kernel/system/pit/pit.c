@@ -65,7 +65,6 @@ void pit_set_count(uint16_t count)
 void pit_handler(int_frame_t *frame)
 {
   cur_frame = frame;
-  // update_wm();
   pit_int();
 }
 

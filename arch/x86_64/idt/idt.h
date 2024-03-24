@@ -3,22 +3,25 @@
 
 #include <stdint.h>
 
-typedef struct {
-    uint16_t offset_low;
-    uint16_t selector;
-    uint8_t ist;
-    uint8_t flags;
-    uint16_t offset_middle;
-    uint32_t offset_high;
-    uint32_t zero;
+typedef struct
+{
+	uint16_t offset_low;
+	uint16_t selector;
+	uint8_t ist;
+	uint8_t flags;
+	uint16_t offset_middle;
+	uint32_t offset_high;
+	uint32_t zero;
 } __attribute__((packed)) idt_entry_t;
 
-typedef struct {
-    uint16_t limit;
-    uint64_t base;
+typedef struct
+{
+	uint16_t limit;
+	uint64_t base;
 } __attribute__((packed)) idt_pointer_t;
 
-typedef struct {
+typedef struct
+{
 	uint64_t r15;
 	uint64_t r14;
 	uint64_t r13;
@@ -49,7 +52,7 @@ void load_idt(uint64_t);
 void trigger_interupt(uint64_t a);
 void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags);
 void init_idt();
-void irq_register(uint8_t irq, void* handler);
+void irq_register(uint8_t irq, void *handler);
 void irq_deregister(uint8_t irq);
 
 #endif /* IDT_H */
