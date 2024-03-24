@@ -2,6 +2,7 @@
 #define __TTY_H__
 
 #include <nighterm/nighterm.h>
+#include <kernel/init.h>
 #incluse <stdint.h>
 #include <stdlib.h>
 #include <string.h>
