@@ -1,3 +1,6 @@
 #include "tty.h"
 
-TTY_t* ttys[MAX_TTYS];
+tty* ttys[MAX_TTYS];
+
+uint8_t cur_tty_id;
+tty* cur_tty;
