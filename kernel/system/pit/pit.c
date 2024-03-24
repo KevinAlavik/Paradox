@@ -1,5 +1,5 @@
 #include "pit.h"
-#include <kernel/init.h>
+#include <entry/init.h>
 #include <printf.h>
 #include <serial/serial.h>
 #include <x86_64/cpu/cpu.h>

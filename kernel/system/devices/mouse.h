@@ -2,7 +2,7 @@
 #ifndef __MOUSE_H__
 #define __MOUSE_H__
 
-#include <kernel/init.h>
+#include <entry/init.h>
 #include <kif.h>
 #include <serial/serial.h>
 #include <stdbool.h>

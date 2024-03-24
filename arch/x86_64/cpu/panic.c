@@ -1,5 +1,5 @@
 #include <filesystem/tar.h>
-#include <kernel/init.h>
+#include <entry/init.h>
 #include <kif.h>
 #include <nighterm/nighterm.h> // Dont make this need nighterm.h to draw things on the screen. Use vga.h
 #include <printf.h>

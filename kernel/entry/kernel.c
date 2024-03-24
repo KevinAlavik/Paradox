@@ -11,8 +11,8 @@ return codes)
 #include <filesystem/ramdisk.h>
 #include <filesystem/tar.h>
 #include <filesystem/vfs.h>
-#include <kernel/init.h>
-#include <kernel/kernel.h>
+#include <entry/init.h>
+#include <entry/kernel.h>
 #include <nighterm/nighterm.h>
 #include <stdint.h>
 #include <system/devices/mouse.h>
@@ -35,6 +35,14 @@ int main()
 {
   keyboard.out = false;
   register_pci();
+  printf("-------------------------\n\n");
+  vfs_op_status status;
+  char *motd;
+  status = driver_read(vfs, 0, "/etc/motd", &motd);
 
+  if (status != STATUS_OK)
+    return KERNEL_QUIT_ERROR;
+
+  printf("%s\n", motd);
   return KERNEL_QUIT_HANG;
 }

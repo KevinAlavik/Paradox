@@ -1,5 +1,5 @@
-#include <kernel/init.h>
-#include <kernel/kernel.h>
+#include <entry/init.h>
+#include <entry/kernel.h>
 #include <nighterm/nighterm.h>
 #include <printf.h>
 #include <x86_64/cpu/cpu.h>

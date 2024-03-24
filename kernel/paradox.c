@@ -1,4 +1,4 @@
-#include <kernel/init.h>
+#include <entry/init.h>
 #include <printf.h>
 #include <x86_64/cpu/cpu.h>
 #include <x86_64/idt/idt.h>

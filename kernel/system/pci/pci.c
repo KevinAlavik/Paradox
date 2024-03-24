@@ -59,5 +59,4 @@ void register_pci()
             }
         }
     }
-    printf("\n");
 }
