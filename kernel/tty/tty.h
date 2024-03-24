@@ -3,6 +3,7 @@
 
 #include <nighterm/nighterm.h>
 #include <entry/init.h>
+#include <filesystem/vfs.h>
 #incluse <stdint.h>
 #include <stdlib.h>
 #include <string.h>
