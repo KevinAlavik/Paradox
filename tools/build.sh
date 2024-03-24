@@ -1,8 +1,6 @@
 #!/bin/bash
 OS_NAME="Paradox"
 
-make clean
-
 make -C limine
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -13,7 +11,7 @@ fi
 
 mkdir -p iso_root
 
-tar -cvf modules/ramdisk.tar ramdisk/*
+tar -cvf modules/ramdisk.tar initrd/*
 
 # PARADOX_VER=0.1.1
 # echo -n "Build Version: Paradox v$(echo $PARADOX_VER), Build Date: $(date "+%A (%m/%d/%Y) %H:%M")" > modules/build_info.txt
