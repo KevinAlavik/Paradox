@@ -36,7 +36,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 
-#include <nighterm/nighterm.h>
+#include <tty/tty.h>
 #include <serial/serial.h>
 
 

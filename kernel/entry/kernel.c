@@ -39,7 +39,10 @@ void test()
 int main()
 {
   keyboard.out = false;
+  tty_spawn(0);
   register_pci();
-  spawn_process(0, test);
+  pit_sleep(1000);
+  tty_spawn(1);
+  printf("local @ tty1\n");
   return KERNEL_QUIT_HANG;
 }

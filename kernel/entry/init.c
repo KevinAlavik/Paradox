@@ -29,7 +29,6 @@ VFS_t *vfs;
 void init_boot(int debug_info)
 {
   (void)debug_info; // Eh, idc
-  int nstatus;
 
   hhdm_offset = hhdm_request.response->offset;
   framebuffer = framebuffer_request.response->framebuffers[0];
@@ -64,44 +63,8 @@ void init_boot(int debug_info)
 
   dprintf("[\e[0;32mVFS\e[0m] Mounted ramdisk\n");
 
-  char *font_data;
 
-  vfs_op_status status;
-
-  status = driver_read(vfs, 0x00000000, DEFAULT_FONT, &font_data);
-
-  if (status == STATUS_OK)
-  {
-    dprintf("[\e[0;32mSystem\e[0m] Found font!\n");
-    dprintf("[\e[0;32mSystem\e[0m] Initializing Nighterm with font!\n");
-
-    nstatus = nighterm_initialize(font_data, framebuffer->address,
-                                  framebuffer->width, framebuffer->height,
-                                  framebuffer->pitch, framebuffer->bpp, malloc, free);
-  }
-  else
-  {
-    dprintf("[\e[0;32mSystem\e[0m] Found no font!\n");
-    dprintf(
-        "[\e[0;32mSystem\e[0m] Initializing Nighterm with built in font!\n");
-
-    nstatus = nighterm_initialize(NULL, framebuffer->address,
-                                  framebuffer->width, framebuffer->height,
-                                  framebuffer->pitch, framebuffer->bpp, malloc, free);
-  }
-
-  if (nstatus)
-  {
-    dprintf(
-        "[\e[0;32mSystem\e[0m] Nightem failed to initialize, got code: %s\n",
-        get_nighterm_return_string(nstatus));
-    hcf();
-  }
-  else
-  {
-    dprintf("[\e[0;32mSystem\e[0m] Initialized Nighterm with code: %s\n",
-            get_nighterm_return_string(nstatus));
-  }
+  tty_init(vfs, framebuffer);
 
   int kstatus = main(); // Launch the kernel
 

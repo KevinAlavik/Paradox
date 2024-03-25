@@ -8,28 +8,11 @@
 #include <system/devices/speaker.h>
 #include <system/memory/pmm.h>
 #include <vga.h>
+#include <tty/tty.h>
 
 void panic(const char *reason, int_frame_t frame)
 {
-        flush(70, 105, 255);
-        nighterm_set_bg_color(70, 105, 255);
-
-        char *img;
-
-        vfs_op_status status;
-
-        status = driver_read(vfs, 0x00000000, "/usr/share/icons/bsod.kif", &img);
-
-        if (status == STATUS_OK)
-        {
-                draw_image(img, 0, 0, 0);
-        }
-
-        nighterm_set_cursor_position(0, 24);
-
         printf("\t* %s\n\n", reason);
-
-        nighterm_set_fg_color(201, 183, 193);
 
         printf("\trax: 0x%.16llX, rbx: 0x%.16llX, rcx: 0x%.16llX, rdx: 0x%.16llX\n",
                frame.rax, frame.rbx, frame.rcx, frame.rdx);

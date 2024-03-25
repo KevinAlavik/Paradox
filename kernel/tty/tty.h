@@ -2,9 +2,9 @@
 #define __TTY_H__
 
 #include <nighterm/nighterm.h>
-#include <entry/init.h>
 #include <filesystem/vfs.h>
-#incluse <stdint.h>
+#include <filesystem/ramdisk.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -17,6 +17,7 @@ typedef struct {
 
 extern tty* ttys[MAX_TTYS];
 
+void tty_init(VFS_t *vfs, struct limine_framebuffer *framebuffer);
 int tty_spawn(uint8_t id);
 int tty_destroy(uint8_t id);
 

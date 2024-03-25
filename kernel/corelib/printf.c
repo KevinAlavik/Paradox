@@ -155,7 +155,7 @@ static inline void _out_null(char character, void *buffer, size_t idx,
 // internal _putchar wrapper
 static inline void _out_char(char character, UNUSED void *buffer,
                              UNUSED size_t idx, UNUSED size_t maxlen) {
-    nighterm_write(character);
+    tty_write(character);
 }
 
 // internal output function wrapper
