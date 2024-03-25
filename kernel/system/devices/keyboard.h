@@ -10,6 +10,7 @@
 #define KEYBOARD_NORMAL 0
 #define KEYBOARD_SHIFT 1
 #define KEYBOARD_CAPS 2
+#define KEYBOARD_SPECIAL 3
 
 struct Keyboard
 {

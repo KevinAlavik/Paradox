@@ -34,7 +34,6 @@ return codes)
 void terminal_launch()
 {
   tty_spawn(1, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-  printf("Paradox 1.4.1-dev (tty1)\n\n");
   keyboard.out = true;
 }
 

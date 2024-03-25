@@ -7,6 +7,7 @@
 #include <system/pic/pic.h>
 
 #include <nighterm/nighterm.h>
+#include <tty/tty.h>
 
 struct Keyboard keyboard;
 
@@ -74,7 +75,7 @@ void keyboard_handler(int_frame_t *frame)
   }
   else
   {
-    dprintf("[\e[0;32mKeybord Handler] Keyboard struct has weird state: %u",
+    dprintf("[\e[0;31mKeybord Handler\e[0m] Keyboard struct has weird state: %u",
             keyboard.state);
   }
 
@@ -83,7 +84,29 @@ void keyboard_handler(int_frame_t *frame)
 
   if ((keyboard.out) && letterString)
   {
-    printf("%s", letterString);
+      if (strcmp(letterString, "0") == 0) {
+          tty_spawn(0, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else if (strcmp(letterString, "1") == 0) {
+          tty_spawn(1, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else if (strcmp(letterString, "2") == 0) {
+          tty_spawn(2, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else if (strcmp(letterString, "3") == 0) {
+          tty_spawn(3, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else if (strcmp(letterString, "4") == 0) {
+          tty_spawn(4, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else if (strcmp(letterString, "5") == 0) {
+          tty_spawn(5, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else if (strcmp(letterString, "6") == 0) {
+          tty_spawn(6, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else if (strcmp(letterString, "7") == 0) {
+          tty_spawn(7, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else if (strcmp(letterString, "8") == 0) {
+          tty_spawn(8, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else if (strcmp(letterString, "9") == 0) {
+          tty_spawn(9, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+      } else {
+          printf("%s", letterString);
+      }
   }
 
   i8259_SendEndOfInterrupt(1);
