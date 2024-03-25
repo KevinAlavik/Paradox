@@ -18,7 +18,7 @@ typedef struct {
 extern tty* ttys[MAX_TTYS];
 
 void tty_init(VFS_t *vfs, struct limine_framebuffer *framebuffer);
-int tty_spawn(uint8_t id);
+int tty_spawn(uint8_t id, char* font_path);
 int tty_destroy(uint8_t id);
 
 void tty_switch(uint8_t id);

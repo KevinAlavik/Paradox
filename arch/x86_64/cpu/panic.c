@@ -12,21 +12,21 @@
 
 void panic(const char *reason, int_frame_t frame)
 {
-        printf("\t* %s\n\n", reason);
+        printf("\n\n* %s\n\n", reason);
 
-        printf("\trax: 0x%.16llX, rbx: 0x%.16llX, rcx: 0x%.16llX, rdx: 0x%.16llX\n",
+        printf("rax: 0x%.16llX, rbx: 0x%.16llX, rcx: 0x%.16llX, rdx: 0x%.16llX\n",
                frame.rax, frame.rbx, frame.rcx, frame.rdx);
 
-        printf("\trsp: 0x%.16llX, rbp: 0x%.16llX, rsi: 0x%.16llX, rdi: 0x%.16llX\n",
+        printf("rsp: 0x%.16llX, rbp: 0x%.16llX, rsi: 0x%.16llX, rdi: 0x%.16llX\n",
                frame.rsp, frame.rbp, frame.rsi, frame.rdi);
 
-        printf("\tr8:  0x%.16llX, r9:  0x%.16llX, r10: 0x%.16llX, r11: 0x%.16llX\n",
+        printf("r8:  0x%.16llX, r9:  0x%.16llX, r10: 0x%.16llX, r11: 0x%.16llX\n",
                frame.r8, frame.r9, frame.r10, frame.r11);
 
-        printf("\tr12: 0x%.16llX, r13: 0x%.16llX, r14: 0x%.16llX, r15: 0x%.16llX\n",
+        printf("r12: 0x%.16llX, r13: 0x%.16llX, r14: 0x%.16llX, r15: 0x%.16llX\n",
                frame.r12, frame.r13, frame.r14, frame.r15);
 
-        printf("\trfl: 0x%.16llX, rip: 0x%.16llX, cs:  0x%.16llX, ss:  0x%.16llX\n",
+        printf("rfl: 0x%.16llX, rip: 0x%.16llX, cs:  0x%.16llX, ss:  0x%.16llX\n",
                frame.rflags, frame.rip, frame.cs, frame.ss);
 
         dprintf("[\e[0;31mKernel Panic\e[0m] rax: 0x%.16llX, rbx: 0x%.16llX, rcx: "

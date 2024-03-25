@@ -19,7 +19,7 @@ void tty_flush() {
   nighterm_set_cursor_position(cur_tty->context, 0, 0);
 }
 
-int tty_spawn(uint8_t id)
+int tty_spawn(uint8_t id, char* font_path)
 {
   if(ttys[id] != NULL)
     return 1;
@@ -29,7 +29,7 @@ int tty_spawn(uint8_t id)
     return 4;
 
   char *font_data;
-  vfs_op_status status = driver_read(vfs_b, 0x00000000, "/usr/share/fonts/Uni3-Terminus12x6.psf", &font_data);
+  vfs_op_status status = driver_read(vfs_b, 0x00000000, font_path, &font_data);
 
   if (status != STATUS_OK) {
     free(context);

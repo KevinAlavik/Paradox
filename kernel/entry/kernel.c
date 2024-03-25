@@ -31,18 +31,18 @@ return codes)
 #include <transform.h>
 #include <vector.h>
 
-void test()
+void terminal_launch()
 {
-  printf("Hello from PID 0!\n");
+  tty_spawn(1, "/usr/share/fonts/Uni3-Terminus20x10.psf");
+  printf("Paradox 1.4.1-dev (tty1)\n\n");
+  keyboard.out = true;
 }
 
 int main()
 {
   keyboard.out = false;
-  tty_spawn(0);
+  tty_spawn(0, "/usr/share/fonts/Uni3-Terminus12x6.psf");
   register_pci();
-  pit_sleep(1000);
-  tty_spawn(1);
-  printf("local @ tty1\n");
+  terminal_launch();
   return KERNEL_QUIT_HANG;
 }
