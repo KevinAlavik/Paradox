@@ -84,29 +84,7 @@ void keyboard_handler(int_frame_t *frame)
 
   if ((keyboard.out) && letterString)
   {
-      if (strcmp(letterString, "0") == 0) {
-          tty_spawn(0, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else if (strcmp(letterString, "1") == 0) {
-          tty_spawn(1, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else if (strcmp(letterString, "2") == 0) {
-          tty_spawn(2, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else if (strcmp(letterString, "3") == 0) {
-          tty_spawn(3, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else if (strcmp(letterString, "4") == 0) {
-          tty_spawn(4, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else if (strcmp(letterString, "5") == 0) {
-          tty_spawn(5, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else if (strcmp(letterString, "6") == 0) {
-          tty_spawn(6, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else if (strcmp(letterString, "7") == 0) {
-          tty_spawn(7, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else if (strcmp(letterString, "8") == 0) {
-          tty_spawn(8, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else if (strcmp(letterString, "9") == 0) {
-          tty_spawn(9, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-      } else {
-          printf("%s", letterString);
-      }
+    printf("%s", letterString);
   }
 
   i8259_SendEndOfInterrupt(1);

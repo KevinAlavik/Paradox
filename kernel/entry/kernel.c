@@ -30,18 +30,10 @@ return codes)
 #include <printf.h>
 #include <transform.h>
 #include <vector.h>
-
-void terminal_launch()
-{
-  tty_spawn(1, "/usr/share/fonts/Uni3-Terminus20x10.psf");
-  keyboard.out = true;
-}
-
 int main()
 {
   keyboard.out = false;
   tty_spawn(0, "/usr/share/fonts/Uni3-Terminus12x6.psf");
   register_pci();
-  terminal_launch();
   return KERNEL_QUIT_HANG;
 }

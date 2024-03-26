@@ -102,7 +102,7 @@ void tty_switch(uint8_t id) {
 
     cur_tty = ttys[id];
     cur_tty_id = id;
-    tty_flush();
+    // tty_flush();
     printf("Paradox 1.4.1-dev (tty%d)\n\n", cur_tty_id);
 }
 
