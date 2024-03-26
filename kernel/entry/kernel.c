@@ -24,16 +24,33 @@ return codes)
 #include <system/pit/pit.h>
 #include <system/processes/processes.h>
 #include <utilities/utilities.h>
+#include <x86_64/cpu/panic.h>
+#include <x86_64/idt/idt.h>
 
 // Corelib includes
 #include <kif.h>
 #include <printf.h>
 #include <transform.h>
 #include <vector.h>
-int main()
+
+int kmain()
 {
-  keyboard.out = false;
-  tty_spawn(0, "/usr/share/fonts/Uni3-Terminus12x6.psf");
-  register_pci();
+  tty_spawn(1, FONT_BIG);
+
+  vfs_op_status status;
+  char* votd = NULL;
+
+  status = driver_read(vfs, 0, "/usr/share/paradox/bible_votd", &votd);
+
+  if(status != STATUS_OK)
+    return KERNEL_QUIT_ERROR;
+
+  if (votd != NULL) {
+    dprintf("BibleVOTD: \033[1m%s\033[0m\n", votd);
+    free(votd);
+  }
+
+  keyboard.out = true;
+
   return KERNEL_QUIT_HANG;
 }

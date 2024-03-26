@@ -10,6 +10,7 @@
 #include <system/pic/pic.h>
 #include <system/pit/pit.h>
 #include <utilities/utilities.h>
+#include <system/pci/pci.h>
 
 volatile struct limine_module_request mod_request = {
     .id = LIMINE_MODULE_REQUEST, .revision = 0};
@@ -26,10 +27,8 @@ int_frame_t *cur_frame;
 ramdisk_t *rd;
 VFS_t *vfs;
 
-void init_boot(int debug_info)
+void init()
 {
-  (void)debug_info; // Eh, idc
-
   hhdm_offset = hhdm_request.response->offset;
   framebuffer = framebuffer_request.response->framebuffers[0];
 
@@ -63,10 +62,13 @@ void init_boot(int debug_info)
 
   dprintf("[\e[0;32mVFS\e[0m] Mounted ramdisk\n");
 
-
   tty_init(vfs, framebuffer);
 
-  int kstatus = main(); // Launch the kernel
+  keyboard.out = false;
+  tty_spawn(0, FONT_SMALL);
+  register_pci();
+
+  int kstatus = kmain(); // Launch the kernel
 
   if (kstatus == KERNEL_QUIT_SUCCESS)
   {

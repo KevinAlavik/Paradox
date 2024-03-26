@@ -12,7 +12,7 @@
 
 void panic(const char *reason, int_frame_t frame)
 {
-        printf("\n\n* %s\n\n", reason);
+        printf("\n\n* %s\n", reason);
 
         printf("rax: 0x%.16llX, rbx: 0x%.16llX, rcx: 0x%.16llX, rdx: 0x%.16llX\n",
                frame.rax, frame.rbx, frame.rcx, frame.rdx);

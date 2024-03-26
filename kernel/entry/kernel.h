@@ -6,6 +6,6 @@
 #define KERNEL_QUIT_PANIC      2   // Return this on kernel panic, shutdowns immediately
 #define KERNEL_QUIT_HANG       3   // Return this to do nothing
 
-int main(); // ONLY RETURN TO QUIT
+int kmain(); // ONLY RETURN TO QUIT
 
 #endif // __KERNEL_H__

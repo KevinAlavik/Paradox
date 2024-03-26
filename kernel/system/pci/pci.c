@@ -55,7 +55,7 @@ void register_pci()
                        (uint8_t)(device & 0xFF),
                        desc.device_id,
                        ((uint8_t)((function & 0xFF))),
-                       ((desc.class_id == 0x0C) && (desc.subclass_id == 0x03)) ? "true" : "false");
+                       ((desc.class_id == 0x0C) && (desc.subclass_id == 0x03)) ? "yes" : "no");
             }
         }
     }
