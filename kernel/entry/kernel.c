@@ -35,22 +35,5 @@ return codes)
 
 int kmain()
 {
-  tty_spawn(1, FONT_BIG);
-
-  vfs_op_status status;
-  char* votd = NULL;
-
-  status = driver_read(vfs, 0, "/usr/share/paradox/bible_votd", &votd);
-
-  if(status != STATUS_OK)
-    return KERNEL_QUIT_ERROR;
-
-  if (votd != NULL) {
-    dprintf("BibleVOTD: \033[1m%s\033[0m\n", votd);
-    free(votd);
-  }
-
-  keyboard.out = true;
-
   return KERNEL_QUIT_HANG;
 }

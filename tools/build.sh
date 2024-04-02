@@ -10,8 +10,7 @@ else
 fi
 
 mkdir -p iso_root
-
-curl -s "https://labs.bible.org/api/?passage=votd&type=text&formatting=plain" > initrd/usr/share/paradox/bible_votd
+mkdir -p modules
 
 tar -cvf modules/ramdisk.tar initrd/*
 
