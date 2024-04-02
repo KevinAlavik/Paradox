@@ -65,7 +65,7 @@ void init()
   tty_init(vfs, framebuffer);
 
   keyboard.out = false;
-  tty_spawn(0, FONT_SMALL);
+  tty_spawn(0, FONT_BIG);
   register_pci();
 
   int kstatus = kmain(); // Launch the kernel
