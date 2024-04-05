@@ -23,7 +23,7 @@ VFS_t *init_vfs()
   vfs->size = sizeof(VFS_t);
   vfs->actual_size = 0;
 
-  dprintf("[\e[0;32mVFS\e[0m] Initialized VFS at 0x%08llX\n", vfs->address);
+  dprintf("[\e[0;32mVFS\e[0m] Initialized VFS at 0x%016llX\n", vfs->address);
 
   return vfs;
 }
@@ -66,8 +66,8 @@ int mount_drive(VFS_t *vfs, int64_t id, uint64_t address, const char *label,
   vfs->drives[id] = temp_drive;
 
   dprintf(
-      "[\e[0;32mVFS\e[0m] Mounted drive with id 0x%08llX from 0x%08llX\n\e[0m",
-      temp_drive.id, temp_drive.address);
+      "[\e[0;32mVFS\e[0m] Mounted drive with id 0x%016llX (\"%s\") from 0x%016llX\n\e[0m",
+      temp_drive.id, label, temp_drive.address);
 
   return 0;
 }

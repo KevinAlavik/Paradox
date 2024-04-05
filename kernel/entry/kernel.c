@@ -25,10 +25,13 @@ return codes)
 #include <system/processes/processes.h>
 #include <utilities/utilities.h>
 #include <x86_64/cpu/panic.h>
+#include <x86_64/cpu/cpu.h>
 #include <x86_64/idt/idt.h>
+#include <tty/tty.h>
 
 // Corelib includes
 #include <kif.h>
+#include <tga.h>
 #include <printf.h>
 #include <transform.h>
 #include <vector.h>

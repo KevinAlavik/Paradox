@@ -52,7 +52,7 @@ extern void load_idt(uint64_t);
 void set_idt_gate(int num, uint64_t base, uint16_t sel, uint8_t flags)
 {
   dprintf("[\e[0;32mIDT\e[0m] Setting IDT gate for interrupt %d. Base: "
-          "0x%016llX, Sel: 0x%08llX, Flags: 0x%04llX\n",
+          "0x%016llX, Sel: 0x%04llX, Flags: 0x%02llX\n",
           num, base, sel, flags);
   idt[num].offset_low = (base & 0xFFFF);
   idt[num].offset_middle = (base >> 16) & 0xFFFF;

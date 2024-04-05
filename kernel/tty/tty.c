@@ -21,9 +21,9 @@ void tty_flush()
 {
     if (cur_tty != NULL && cur_tty->context != NULL)
     {
-        nighterm_flush(cur_tty->context, 22, 22, 22);
+        nighterm_flush(cur_tty->context, 30, 30, 30);
         nighterm_set_cursor_position(cur_tty->context, 0, 0);
-        nighterm_set_bg_color(cur_tty->context, 22, 22, 22);
+        nighterm_set_bg_color(cur_tty->context, 30, 30, 30);
     }
 }
 

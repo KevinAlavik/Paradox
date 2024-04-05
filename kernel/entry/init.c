@@ -65,7 +65,20 @@ void init()
   tty_init(vfs, framebuffer);
 
   keyboard.out = false;
-  tty_spawn(0, FONT_BIG);
+  tty_spawn(0, FONT_SMALL);
+
+  char *ver;
+  vfs_op_status status;
+
+  status = driver_read(vfs, 0, "/usr/share/paradox/version", &ver);
+  if (status != STATUS_OK)
+  {
+    printf("Failed to read disk. See kmesg for error\n");
+    return;
+  }
+
+  printf("Paradox v%s\n\n", ver);
+
   register_pci();
 
   int kstatus = kmain(); // Launch the kernel
